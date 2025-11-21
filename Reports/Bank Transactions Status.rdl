@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="Comp_Name">
+          <DataField>Comp_Name</DataField>
+        </Field>
+        <Field Name="Comp_Address">
+          <DataField>Comp_Address</DataField>
+        </Field>
+        <Field Name="Date_">
+          <DataField>Date_</DataField>
+        </Field>
+        <Field Name="AppNo_">
+          <DataField>AppNo_</DataField>
+        </Field>
+        <Field Name="BankAccNo_">
+          <DataField>BankAccNo_</DataField>
+        </Field>
+        <Field Name="DocNo_">
+          <DataField>DocNo_</DataField>
+        </Field>
+        <Field Name="PostDate_">
+          <DataField>PostDate_</DataField>
+        </Field>
+        <Field Name="ChequeNo_">
+          <DataField>ChequeNo_</DataField>
+        </Field>
+        <Field Name="ChequeDate_">
+          <DataField>ChequeDate_</DataField>
+        </Field>
+        <Field Name="Amt_">
+          <DataField>Amt_</DataField>
+        </Field>
+        <Field Name="Amt_Format">
+          <DataField>Amt_Format</DataField>
+        </Field>
+        <Field Name="Statmentstatus_">
+          <DataField>Statmentstatus_</DataField>
+        </Field>
+        <Field Name="StatementNo_">
+          <DataField>StatementNo_</DataField>
+        </Field>
+        <Field Name="TotamAmt_">
+          <DataField>TotamAmt_</DataField>
+        </Field>
+        <Field Name="TotamAmt_Format">
+          <DataField>TotamAmt_Format</DataField>
+        </Field>
+        <Field Name="AppNo_1">
+          <DataField>AppNo_1</DataField>
+        </Field>
+        <Field Name="BankAccNo_1">
+          <DataField>BankAccNo_1</DataField>
+        </Field>
+        <Field Name="DocNo_1">
+          <DataField>DocNo_1</DataField>
+        </Field>
+        <Field Name="PostDate_1">
+          <DataField>PostDate_1</DataField>
+        </Field>
+        <Field Name="ChequeNo_1">
+          <DataField>ChequeNo_1</DataField>
+        </Field>
+        <Field Name="ChequeDate_1">
+          <DataField>ChequeDate_1</DataField>
+        </Field>
+        <Field Name="Amt_1">
+          <DataField>Amt_1</DataField>
+        </Field>
+        <Field Name="Amt_1Format">
+          <DataField>Amt_1Format</DataField>
+        </Field>
+        <Field Name="Statmentstatus_1">
+          <DataField>Statmentstatus_1</DataField>
+        </Field>
+        <Field Name="StatementNo_1">
+          <DataField>StatementNo_1</DataField>
+        </Field>
+        <Field Name="ValueDate_1">
+          <DataField>ValueDate_1</DataField>
+        </Field>
+        <Field Name="UserID_1">
+          <DataField>UserID_1</DataField>
+        </Field>
+        <Field Name="TotamAmt1_">
+          <DataField>TotamAmt1_</DataField>
+        </Field>
+        <Field Name="TotamAmt1_Format">
+          <DataField>TotamAmt1_Format</DataField>
+        </Field>
+        <Field Name="AppNo_2">
+          <DataField>AppNo_2</DataField>
+        </Field>
+        <Field Name="BankAccNo_2">
+          <DataField>BankAccNo_2</DataField>
+        </Field>
+        <Field Name="DocNo_2">
+          <DataField>DocNo_2</DataField>
+        </Field>
+        <Field Name="PostDate_2">
+          <DataField>PostDate_2</DataField>
+        </Field>
+        <Field Name="ChequeNo_2">
+          <DataField>ChequeNo_2</DataField>
+        </Field>
+        <Field Name="ChequeDate_2">
+          <DataField>ChequeDate_2</DataField>
+        </Field>
+        <Field Name="Amt_2">
+          <DataField>Amt_2</DataField>
+        </Field>
+        <Field Name="Amt_2Format">
+          <DataField>Amt_2Format</DataField>
+        </Field>
+        <Field Name="Statmentstatus_2">
+          <DataField>Statmentstatus_2</DataField>
+        </Field>
+        <Field Name="StatementNo_2">
+          <DataField>StatementNo_2</DataField>
+        </Field>
+        <Field Name="ValueDate_2">
+          <DataField>ValueDate_2</DataField>
+        </Field>
+        <Field Name="UserID_2">
+          <DataField>UserID_2</DataField>
+        </Field>
+        <Field Name="TotamAmt2_">
+          <DataField>TotamAmt2_</DataField>
+        </Field>
+        <Field Name="TotamAmt2_Format">
+          <DataField>TotamAmt2_Format</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

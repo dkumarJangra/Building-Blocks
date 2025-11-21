@@ -1,0 +1,97 @@
+table 50200 "Region/Districts Rank Entry"
+{
+    DataPerCompany = false;
+    DrillDownPageId = "Region/Districts default Rank";
+    fields
+    {
+        field(1; "Region_Districts Code"; Code[50])
+        {
+            DataClassification = ToBeClassified;
+        }
+        Field(2; Rank; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = Rank;
+            trigger OnValidate()
+            var
+                Rank_1: Record Rank;
+            begin
+                TestField("Region/Rank Code");
+                Rank_1.RESET;
+                IF Rank_1.GET(Rank) THEN
+                    Description := Rank_1.Description
+                ELSE
+                    Description := '';
+            end;
+        }
+
+        field(3; Description; Text[200])
+        {
+            DataClassification = ToBeClassified;
+            Editable = False;
+        }
+        field(4; Status; Option)
+        {
+            DataClassification = ToBeClassified;
+            OptionCaption = 'Active,In-Active';
+            OptionMembers = Active,"In-Active";
+        }
+        field(5; "State Code"; Integer)
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "Cluster State Master";
+            trigger OnValidate()
+            Var
+                ClusterstateMaster: Record "Cluster State Master";
+
+            begin
+
+                IF "State Code" <> 0 THEN begin
+                    ClusterstateMaster.RESET;
+                    IF ClusterstateMaster.GET("State Code") then begin
+                        "State Name" := ClusterstateMaster."State Name";
+                        IF "State Code" = 1 then
+                            "Region/Rank Code" := 'R0001';
+                        IF "State Code" = 2 then
+                            "Region/Rank Code" := 'R0002';
+                        IF "State Code" = 3 then
+                            "Region/Rank Code" := 'R0003';
+
+                    END ELSE begin
+                        "State Name" := '';
+                        "Region/Rank Code" := '';
+                    end;
+                end;
+            end;
+
+        }
+        field(8; "State Name"; text[100])
+        {
+            DataClassification = ToBeClassified;
+            Editable = False;
+
+        }
+        Field(9; "Region/Rank Code"; code[10])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "Rank Code Master".Code;
+            Editable = false;
+        }
+
+
+    }
+
+    keys
+    {
+        key(Key1; "Region_Districts Code", Rank)
+
+        {
+            Clustered = true;
+        }
+    }
+
+    fieldgroups
+    {
+    }
+}
+

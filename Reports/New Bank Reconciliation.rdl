@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="CompanyName_">
+          <DataField>CompanyName_</DataField>
+        </Field>
+        <Field Name="CompAddress_">
+          <DataField>CompAddress_</DataField>
+        </Field>
+        <Field Name="CompAddress_2_">
+          <DataField>CompAddress_2_</DataField>
+        </Field>
+        <Field Name="CompPhone_">
+          <DataField>CompPhone_</DataField>
+        </Field>
+        <Field Name="disp_diff_">
+          <DataField>disp_diff_</DataField>
+        </Field>
+        <Field Name="disp_cleared_">
+          <DataField>disp_cleared_</DataField>
+        </Field>
+        <Field Name="DateFrom_">
+          <DataField>DateFrom_</DataField>
+        </Field>
+        <Field Name="DateTo_">
+          <DataField>DateTo_</DataField>
+        </Field>
+        <Field Name="SNo_">
+          <DataField>SNo_</DataField>
+        </Field>
+        <Field Name="BankAccountNAme_">
+          <DataField>BankAccountNAme_</DataField>
+        </Field>
+        <Field Name="BankAccountNo_">
+          <DataField>BankAccountNo_</DataField>
+        </Field>
+        <Field Name="Showtable_">
+          <DataField>Showtable_</DataField>
+        </Field>
+        <Field Name="PostDate_">
+          <DataField>PostDate_</DataField>
+        </Field>
+        <Field Name="DocNo_">
+          <DataField>DocNo_</DataField>
+        </Field>
+        <Field Name="Desc_">
+          <DataField>Desc_</DataField>
+        </Field>
+        <Field Name="ChequeNo_">
+          <DataField>ChequeNo_</DataField>
+        </Field>
+        <Field Name="DebitAmt_">
+          <DataField>DebitAmt_</DataField>
+        </Field>
+        <Field Name="DebitAmt_Format">
+          <DataField>DebitAmt_Format</DataField>
+        </Field>
+        <Field Name="ShowDebitBLE_">
+          <DataField>ShowDebitBLE_</DataField>
+        </Field>
+        <Field Name="TotalD_">
+          <DataField>TotalD_</DataField>
+        </Field>
+        <Field Name="TotalD_Format">
+          <DataField>TotalD_Format</DataField>
+        </Field>
+        <Field Name="BLECredit_PostDate">
+          <DataField>BLECredit_PostDate</DataField>
+        </Field>
+        <Field Name="BLECredit_DocDate">
+          <DataField>BLECredit_DocDate</DataField>
+        </Field>
+        <Field Name="BLECredit_Desc">
+          <DataField>BLECredit_Desc</DataField>
+        </Field>
+        <Field Name="BLECredit_ChequeNo">
+          <DataField>BLECredit_ChequeNo</DataField>
+        </Field>
+        <Field Name="BLECredit_CreditAmt">
+          <DataField>BLECredit_CreditAmt</DataField>
+        </Field>
+        <Field Name="BLECredit_CreditAmtFormat">
+          <DataField>BLECredit_CreditAmtFormat</DataField>
+        </Field>
+        <Field Name="TotalC_">
+          <DataField>TotalC_</DataField>
+        </Field>
+        <Field Name="TotalC_Format">
+          <DataField>TotalC_Format</DataField>
+        </Field>
+        <Field Name="ShowCreditBLE_">
+          <DataField>ShowCreditBLE_</DataField>
+        </Field>
+        <Field Name="BookTotal_">
+          <DataField>BookTotal_</DataField>
+        </Field>
+        <Field Name="BookTotal_Format">
+          <DataField>BookTotal_Format</DataField>
+        </Field>
+        <Field Name="Total_amt_dr_TotalOpen_">
+          <DataField>Total_amt_dr_TotalOpen_</DataField>
+        </Field>
+        <Field Name="Total_amt_dr_TotalOpen_Format">
+          <DataField>Total_amt_dr_TotalOpen_Format</DataField>
+        </Field>
+        <Field Name="Total_amt_cr_TotalOpen2_TotalC_1">
+          <DataField>Total_amt_cr_TotalOpen2_TotalC_1</DataField>
+        </Field>
+        <Field Name="Total_amt_cr_TotalOpen2_TotalC_1Format">
+          <DataField>Total_amt_cr_TotalOpen2_TotalC_1Format</DataField>
+        </Field>
+        <Field Name="ADD_Crdt_diff_">
+          <DataField>ADD_Crdt_diff_</DataField>
+        </Field>
+        <Field Name="ADD_Crdt_diff_Format">
+          <DataField>ADD_Crdt_diff_Format</DataField>
+        </Field>
+        <Field Name="ADD_Debit_diff_">
+          <DataField>ADD_Debit_diff_</DataField>
+        </Field>
+        <Field Name="ADD_Debit_diff_Format">
+          <DataField>ADD_Debit_diff_Format</DataField>
+        </Field>
+        <Field Name="Gtotal_">
+          <DataField>Gtotal_</DataField>
+        </Field>
+        <Field Name="Gtotal_Format">
+          <DataField>Gtotal_Format</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="CustName">
+          <DataField>CustName</DataField>
+        </Field>
+        <Field Name="CustName1">
+          <DataField>CustName1</DataField>
+        </Field>
+        <Field Name="No">
+          <DataField>No</DataField>
+        </Field>
+        <Field Name="BarcodeScan">
+          <DataField>BarcodeScan</DataField>
+        </Field>
+        <Field Name="CustMobile">
+          <DataField>CustMobile</DataField>
+        </Field>
+        <Field Name="CustEmail">
+          <DataField>CustEmail</DataField>
+        </Field>
+        <Field Name="PostingDate_NewConfirmedOrder">
+          <DataField>PostingDate_NewConfirmedOrder</DataField>
+        </Field>
+        <Field Name="DimValueName">
+          <DataField>DimValueName</DataField>
+        </Field>
+        <Field Name="SaleableArea_NewConfirmedOrder">
+          <DataField>SaleableArea_NewConfirmedOrder</DataField>
+        </Field>
+        <Field Name="UmasterFacing">
+          <DataField>UmasterFacing</DataField>
+        </Field>
+        <Field Name="TotalReceivedAmount_NewConfirmedOrder">
+          <DataField>TotalReceivedAmount_NewConfirmedOrder</DataField>
+        </Field>
+        <Field Name="PlotAmt">
+          <DataField>PlotAmt</DataField>
+        </Field>
+        <Field Name="DueAmt">
+          <DataField>DueAmt</DataField>
+        </Field>
+        <Field Name="PlotNo1">
+          <DataField>PlotNo1</DataField>
+        </Field>
+        <Field Name="PaymentMethod">
+          <DataField>PaymentMethod</DataField>
+        </Field>
+        <Field Name="Amount">
+          <DataField>Amount</DataField>
+        </Field>
+        <Field Name="AmountFormat">
+          <DataField>AmountFormat</DataField>
+        </Field>
+        <Field Name="BankAndBranch">
+          <DataField>BankAndBranch</DataField>
+        </Field>
+        <Field Name="ChecqueNo">
+          <DataField>ChecqueNo</DataField>
+        </Field>
+        <Field Name="ChecqueDate">
+          <DataField>ChecqueDate</DataField>
+        </Field>
+        <Field Name="DataText">
+          <DataField>DataText</DataField>
+        </Field>
+        <Field Name="BackPagePicture">
+          <DataField>BackPagePicture</DataField>
+        </Field>
+        <Field Name="HeaderPicture">
+          <DataField>HeaderPicture</DataField>
+        </Field>
+        <Field Name="FooterPicture">
+          <DataField>FooterPicture</DataField>
+        </Field>
+        <Field Name="RespCentrePicture">
+          <DataField>RespCentrePicture</DataField>
+        </Field>
+        <Field Name="PlotCaption_">
+          <DataField>PlotCaption_</DataField>
+        </Field>
+        <Field Name="PrintPlotNo">
+          <DataField>PrintPlotNo</DataField>
+        </Field>
+        <Field Name="Postingdate_NewApplicationPaymentEntry">
+          <DataField>Postingdate_NewApplicationPaymentEntry</DataField>
+        </Field>
+        <Field Name="PostedDocumentNo_NewApplicationPaymentEntry">
+          <DataField>PostedDocumentNo_NewApplicationPaymentEntry</DataField>
+        </Field>
+        <Field Name="Amount_NewApplicationPaymentEntry">
+          <DataField>Amount_NewApplicationPaymentEntry</DataField>
+        </Field>
+        <Field Name="Amount_NewApplicationPaymentEntryFormat">
+          <DataField>Amount_NewApplicationPaymentEntryFormat</DataField>
+        </Field>
+        <Field Name="ChequeStatus_NewApplicationPaymentEntry">
+          <DataField>ChequeStatus_NewApplicationPaymentEntry</DataField>
+        </Field>
+        <Field Name="ChequeNoTransactionNo_NewApplicationPaymentEntry">
+          <DataField>ChequeNoTransactionNo_NewApplicationPaymentEntry</DataField>
+        </Field>
+        <Field Name="ChequeDate_NewApplicationPaymentEntry">
+          <DataField>ChequeDate_NewApplicationPaymentEntry</DataField>
+        </Field>
+        <Field Name="PaymentMethod_NewApplicationPaymentEntry">
+          <DataField>PaymentMethod_NewApplicationPaymentEntry</DataField>
+        </Field>
+        <Field Name="BarCodeNo">
+          <DataField>BarCodeNo</DataField>
+        </Field>
+        <Field Name="SkipRow">
+          <DataField>SkipRow</DataField>
+        </Field>
+        <Field Name="FooterDesc">
+          <DataField>FooterDesc</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

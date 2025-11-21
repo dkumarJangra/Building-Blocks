@@ -1,0 +1,86 @@
+{
+    "name": "ALLE Ruleset",
+    "description": "These rules must be respected by all the AL code written within the company.",
+    "rules": [
+ 	{
+            "id": "AL0432",
+            "action": "Hidden",
+            "justification": "Marked for removal, be careful with this rule?"
+        },
+        {
+            "id": "AL0603",
+            "action": "Hidden",
+            "justification": "An Implicit conversion is being performed, be careful with this rule?"
+        },
+        {
+            "id": "AL0482",
+            "action": "Hidden",
+            "justification": "An Implicit conversion is being performed, be careful with this rule?"
+        },
+        {
+            "id": "AL0547",
+            "action": "Hidden",
+            "justification": "An Implicit conversion is being performed, be careful with this rule?"
+        },
+        {
+            "id": "AL0269",
+            "action": "Hidden",
+            "justification": "An Implicit conversion is being performed, be careful with this rule?"
+        },
+        {
+            "id": "AL0523",
+            "action": "Hidden",
+            "justification": "An Implicit conversion is being performed, be careful with this rule?"
+        },
+        {
+            "id": "AL0667",
+            "action": "Hidden",
+            "justification": "An Implicit conversion is being performed, be careful with this rule?"
+        },
+        {
+            "id": "AL0254",
+            "action": "Hidden",
+            "justification": "An Implicit conversion is being performed, be careful with this rule?"
+        },
+        {
+            "id": "AL0755",
+            "action": "Hidden",
+            "justification": "An Implicit conversion is being performed, be careful with this rule?"
+        },
+        {
+            "id": "AL0598",
+            "action": "Hidden",
+            "justification": "An Implicit conversion is being performed, be careful with this rule?"
+        },
+        {
+            "id": "AL0558",
+            "action": "Hidden",
+            "justification": "An Implicit conversion is being performed, be careful with this rule?"
+        },
+        {
+            "id": "AL0659",
+            "action": "Hidden",
+            "justification": "An Implicit conversion is being performed, be careful with this rule?"
+        },
+        {
+            "id": "AL0729",
+            "action": "Hidden",
+            "justification": "An Implicit conversion is being performed, be careful with this rule?"
+        },
+        {
+            "id": "AL0606",
+            "action": "Hidden",
+            "justification": "An Implicit conversion is being performed, be careful with this rule?"
+        },
+        {
+            "id": "AL0468",
+            "action": "Hidden",
+            "justification": "An Implicit conversion is being performed, be careful with this rule?"
+        },
+        {
+            "id": "AL0299",
+            "action": "Hidden",
+            "justification": "An Implicit conversion is being performed, be careful with this rule?"
+        }
+    ]
+}

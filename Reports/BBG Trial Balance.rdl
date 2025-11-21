@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="CompInfoName_">
+          <DataField>CompInfoName_</DataField>
+        </Field>
+        <Field Name="Address_">
+          <DataField>Address_</DataField>
+        </Field>
+        <Field Name="Filters">
+          <DataField>Filters</DataField>
+        </Field>
+        <Field Name="Date_">
+          <DataField>Date_</DataField>
+        </Field>
+        <Field Name="UserID_">
+          <DataField>UserID_</DataField>
+        </Field>
+        <Field Name="LedgerCode_">
+          <DataField>LedgerCode_</DataField>
+        </Field>
+        <Field Name="AccountHead_">
+          <DataField>AccountHead_</DataField>
+        </Field>
+        <Field Name="OpeningDr_">
+          <DataField>OpeningDr_</DataField>
+        </Field>
+        <Field Name="OpeningDr_Format">
+          <DataField>OpeningDr_Format</DataField>
+        </Field>
+        <Field Name="OpeningCr_">
+          <DataField>OpeningCr_</DataField>
+        </Field>
+        <Field Name="OpeningCr_Format">
+          <DataField>OpeningCr_Format</DataField>
+        </Field>
+        <Field Name="TransactionDr_">
+          <DataField>TransactionDr_</DataField>
+        </Field>
+        <Field Name="TransactionDr_Format">
+          <DataField>TransactionDr_Format</DataField>
+        </Field>
+        <Field Name="TransactionCr_">
+          <DataField>TransactionCr_</DataField>
+        </Field>
+        <Field Name="TransactionCr_Format">
+          <DataField>TransactionCr_Format</DataField>
+        </Field>
+        <Field Name="ClosingDr_">
+          <DataField>ClosingDr_</DataField>
+        </Field>
+        <Field Name="ClosingDr_Format">
+          <DataField>ClosingDr_Format</DataField>
+        </Field>
+        <Field Name="ClosingCr_">
+          <DataField>ClosingCr_</DataField>
+        </Field>
+        <Field Name="ClosingCr_Format">
+          <DataField>ClosingCr_Format</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>
