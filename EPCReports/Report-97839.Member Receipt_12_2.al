@@ -270,9 +270,9 @@ report 97839 "Member Receipt_12_2"
                 IF DimValue.GET(GenLedSetup."Global Dimension 1 Code", "Shortcut Dimension 1 Code") THEN
                     DimValueName := DimValue.Name;
 
-                IF NOT CurrReport.PREVIEW THEN BEGIN
-                    InsertPrintLog('Member Receipt', "Application No.");
-                END;
+                //IF NOT CurrReport.PREVIEW THEN BEGIN  //25112025 Code comment
+                InsertPrintLog('Member Receipt', "Application No.");
+                //END;  //25112025 Code comment
 
                 //040517 code comment
                 /*

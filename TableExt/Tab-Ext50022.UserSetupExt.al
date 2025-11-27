@@ -316,17 +316,11 @@ tableextension 50022 "BBG User Setup Ext" extends "User Setup"
             DataClassification = ToBeClassified;
         }
 
-
-
-
-
-
-
-
-
-
-
-
+        field(50503; "Allow configurationPckg"; Boolean)    //110525  added new field
+        {
+            Caption = 'Allow configuration Package';
+            Editable = false;
+        }
 
 
         field(90000; "Branch Specific"; Boolean)

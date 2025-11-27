@@ -122,6 +122,10 @@ page 97945 "Unit Master List"
                 {
 
                 }
+                field("Purchasing LLP Name"; Rec."Purchasing LLP Name")
+                {
+
+                }
             }
         }
     }

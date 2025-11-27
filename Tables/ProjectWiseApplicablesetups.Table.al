@@ -111,6 +111,11 @@ table 50435 "Project wise Appl. Setup"
                     If ProjectwiseAppSetup.FindFIRST() then
                         Error('Setup already lie between' + Format("Effective From Date") + '..' + Format("Effective To Date"));
                 END;
+
+                "Travel Applicale modify" := CurrentDateTime;
+                "Travel Applicable modify By" := UserId;
+
+
             END;
 
         }
@@ -156,7 +161,16 @@ table 50435 "Project wise Appl. Setup"
                 END;
             END;
         }
+        field(10; "Travel Applicale modify"; DateTime)
+        {
+            Editable = false;
 
+        }
+        field(11; "Travel Applicable modify By"; Code[50])
+        {
+            Editable = False;
+
+        }
     }
 
     keys

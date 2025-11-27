@@ -769,6 +769,10 @@ table 97761 "Responsibility Center 1"
             DataClassification = ToBeClassified;
             Description = '//121023 Loan EMI';
         }
+        field(60105; "Project Consider on MIS Report"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys

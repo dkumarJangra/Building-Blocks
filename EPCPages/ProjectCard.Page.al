@@ -217,6 +217,14 @@ page 97757 "Project Card"
                 {
 
                 }
+                field("Bank APF PER SQYD VALUE"; Rec."Bank APF PER SQYD VALUE")
+                {
+
+                }
+                field("Purchasing LLP Name"; Rec."Purchasing LLP Name")
+                {
+
+                }
 
             }
 

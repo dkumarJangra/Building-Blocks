@@ -990,7 +990,16 @@ tableextension 97002 "EPC Job Ext" extends Job
         }
         field(50152; "Cluster Name"; Code[20])
         {
+            DataClassification = ToBeClassified;
             TableRelation = "New Cluster Master"."Cluster Code";
+        }
+        field(50153; "Bank APF PER SQYD VALUE"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50154; "Purchasing LLP Name"; TExt[190])
+        {
+            DataClassification = ToBeClassified;
         }
     }
 

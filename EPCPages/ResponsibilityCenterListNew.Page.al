@@ -89,6 +89,10 @@ page 97820 "Responsibility Center ListNew"
                 field("Option C Option Change Days"; Rec."Option C Option Change Days")
                 {
                 }
+                field("Project Consider on MIS Report"; Rec."Project Consider on MIS Report")
+                {
+
+                }
             }
         }
     }

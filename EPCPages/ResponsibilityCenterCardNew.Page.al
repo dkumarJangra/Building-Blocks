@@ -85,6 +85,10 @@ page 97819 "Responsibility Center Card New"
                 field("Loan Applicable"; Rec."Loan Applicable")
                 {
                 }
+                field("Project Consider on MIS Report"; Rec."Project Consider on MIS Report")
+                {
+
+                }
             }
             group(Image)
             {

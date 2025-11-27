@@ -619,6 +619,11 @@ table 97821 "Unit Master"
         {
             DataClassification = ToBeClassified;
         }
+        field(90093; "Purchasing LLP Name"; Text[50])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = Company.Name;
+        }
     }
 
     keys

@@ -227,6 +227,10 @@ page 97826 "Project Unit Card"
                 {
 
                 }
+                field("Purchasing LLP Name"; Rec."Purchasing LLP Name")
+                {
+
+                }
             }
         }
     }
