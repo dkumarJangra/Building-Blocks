@@ -190,6 +190,13 @@ table 97867 "Associate Hierarcy with App."
             FieldClass = Normal;
 
         }
+        field(50210; "Region Wise Team Code"; Code[50])   //New field Added 02122025
+        {
+            CalcFormula = Lookup("Region wise Vendor"."Team Code" WHERE("Region Code" = field("Region/Rank Code"), "No." = FIELD("Associate Code")));
+            Editable = false;
+            FieldClass = FlowField;
+            TableRelation = "Team Master";
+        }
 
 
     }

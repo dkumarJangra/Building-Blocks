@@ -767,6 +767,12 @@ page 97757 "Project Card"
                         UnitMasterUpdateforJV.RUN;
                     end;
                 }
+                action("Project MIS Sumary Data")
+                {
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    RunObject = xmlport 50103;
+                }
                 action("Test Report")
                 {
                     Image = TestReport;

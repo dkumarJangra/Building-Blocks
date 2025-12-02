@@ -619,10 +619,10 @@ table 97821 "Unit Master"
         {
             DataClassification = ToBeClassified;
         }
-        field(90093; "Purchasing LLP Name"; Text[50])
+        field(90093; "Purchasing LLP Name"; Text[185])
         {
             DataClassification = ToBeClassified;
-            TableRelation = Company.Name;
+            //TableRelation = Company.Name;
         }
     }
 

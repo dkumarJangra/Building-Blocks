@@ -150,6 +150,13 @@ page 97945 "Unit Master List"
                     Caption = '&Unit Project Plan Details';
                     RunObject = Report "OD Adjustment in Companies";
                 }
+
+                action("Project MIS Details upload")
+                {
+                    Caption = 'Project MIS Details upload';
+                    RunObject = xmlport 50102;
+                }
+
             }
         }
     }
