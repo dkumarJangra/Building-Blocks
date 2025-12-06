@@ -66,66 +66,68 @@ codeunit 50003 "Web App Service"
         WebLogDetails: Record "Web Log Details";
         OldWebLogDetails: Record "Web Log Details";
         EntryNo: Integer;
+        Compinfor: Record "Company Information";
 
     begin
+        Compinfor.GET;  //Code added 05122025
+        IF NOT Compinfor."Stop Data Push to WebApp" then BEGIN  //Code added 05122025
+            Clear(CustObject);
+            CustObject.Add('secret_key', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP');
+            CustObject.Add('navision_id', navision_id);
+            CustObject.Add('name', name);
+            CustObject.Add('mobile', mobile);
+            CustObject.Add('email', email);
+            CustObject.Add('team_name', team_name);
+            CustObject.Add('leader_code', leader_code);
+            CustObject.Add('parent_code', parent_code);
+            CustObject.Add('status', status);
+            CustObject.Add('rank_code', rank_code);
+            CustObject.Add('rank_description', rank_description);
+            CustObject.WriteTo(Post_FinalJSON);
+            //070425 Added Jiva Log Start
+            EntryNo := 0;
+            OldWebLogDetails.RESET;
+            IF OldWebLogDetails.FINDLAST THEN
+                EntryNo := OldWebLogDetails."Entry No.";
 
-        Clear(CustObject);
-        CustObject.Add('secret_key', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP');
-        CustObject.Add('navision_id', navision_id);
-        CustObject.Add('name', name);
-        CustObject.Add('mobile', mobile);
-        CustObject.Add('email', email);
-        CustObject.Add('team_name', team_name);
-        CustObject.Add('leader_code', leader_code);
-        CustObject.Add('parent_code', parent_code);
-        CustObject.Add('status', status);
-        CustObject.Add('rank_code', rank_code);
-        CustObject.Add('rank_description', rank_description);
-        CustObject.WriteTo(Post_FinalJSON);
-        //070425 Added Jiva Log Start
-        EntryNo := 0;
-        OldWebLogDetails.RESET;
-        IF OldWebLogDetails.FINDLAST THEN
-            EntryNo := OldWebLogDetails."Entry No.";
+            WebLogDetails.INIT;
+            WebLogDetails."Entry No." := EntryNo + 1;
+            WebLogDetails."Request Date" := TODAY;
+            WebLogDetails."Request Time" := TIME;
+            WebLogDetails."Request Description" := COPYSTR(Post_FinalJSON, 1, 1024);
+            WebLogDetails."Request Description 2" := COPYSTR(Post_FinalJSON, 1025, 1024);
+            WebLogDetails."Function Name" := 'Push_JivaData';
+            WebLogDetails.INSERT;
+            //070425 Added Jiva Log End
 
-        WebLogDetails.INIT;
-        WebLogDetails."Entry No." := EntryNo + 1;
-        WebLogDetails."Request Date" := TODAY;
-        WebLogDetails."Request Time" := TIME;
-        WebLogDetails."Request Description" := COPYSTR(Post_FinalJSON, 1, 1024);
-        WebLogDetails."Request Description 2" := COPYSTR(Post_FinalJSON, 1025, 1024);
-        WebLogDetails."Function Name" := 'Push_JivaData';
-        WebLogDetails.INSERT;
-        //070425 Added Jiva Log End
+            Headers := Client.DefaultRequestHeaders();
+            TextString := STRSUBSTNO(Post_FinalJSON);
+            Bytes := cu.Convert(1200, 28591, TextString);
+            RequestUrl := 'https://bbgjiva.com/api/navision_associate';
+            Request.Method := 'POST';
+            Content.WriteFrom(Bytes);
+            content.GetHeaders(Headers);
+            Headers.Remove('Content-Type');
+            Headers.Add('Content-Type', 'application/json; charset=utf-8');
+            Client.Post(RequestUrl, Content, HttpWebResponse);
+            if HttpWebResponse.IsSuccessStatusCode then begin
+                HttpWebResponse.Content.ReadAs(Post_ResText);
+                //                Message(JsonResponse);
+            End Else begin
+                HttpWebResponse.Content.ReadAs(Post_ResText);
+                //              Message(RespMsg);
+            end;
 
-        Headers := Client.DefaultRequestHeaders();
-        TextString := STRSUBSTNO(Post_FinalJSON);
-        Bytes := cu.Convert(1200, 28591, TextString);
-        RequestUrl := 'https://bbgjiva.com/api/navision_associate';
-        Request.Method := 'POST';
-        Content.WriteFrom(Bytes);
-        content.GetHeaders(Headers);
-        Headers.Remove('Content-Type');
-        Headers.Add('Content-Type', 'application/json; charset=utf-8');
-        Client.Post(RequestUrl, Content, HttpWebResponse);
-        if HttpWebResponse.IsSuccessStatusCode then begin
-            HttpWebResponse.Content.ReadAs(Post_ResText);
-            //                Message(JsonResponse);
-        End Else begin
-            HttpWebResponse.Content.ReadAs(Post_ResText);
-            //              Message(RespMsg);
-        end;
+            //070425 Added Jiva Log Start
+            WebLogDetails."Response Date" := TODAY;
+            WebLogDetails."Response Description" := COPYSTR(FORMAT(Post_ResText), 1, 1024);
+            WebLogDetails."Response Description 2" := COPYSTR(FORMAT(Post_ResText), 1025, 1024);
+            WebLogDetails."Response Time" := TIME;
+            WebLogDetails.MODIFY;
+            //070425 Added Jiva Log End
 
-        //070425 Added Jiva Log Start
-        WebLogDetails."Response Date" := TODAY;
-        WebLogDetails."Response Description" := COPYSTR(FORMAT(Post_ResText), 1, 1024);
-        WebLogDetails."Response Description 2" := COPYSTR(FORMAT(Post_ResText), 1025, 1024);
-        WebLogDetails."Response Time" := TIME;
-        WebLogDetails.MODIFY;
-        //070425 Added Jiva Log End
-
-
-    end;
+        END;
+    end;  //Code added 05122025
 
 
 

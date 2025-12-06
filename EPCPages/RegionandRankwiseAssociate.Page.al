@@ -126,6 +126,8 @@ page 50076 "Region and Rank wise Associate"
                     trigger OnAction()
                     var
                         RecVendor_1: Record Vendor;
+                        OtherEventMgnt: Codeunit 70005;
+                        TeamCode: Code[50];
                     begin
                         UserSetup.RESET;
                         UserSetup.SETRANGE("User ID", USERID);
@@ -167,7 +169,13 @@ page 50076 "Region and Rank wise Associate"
 
                         Rec."Vendor Check Status" := Rec."Vendor Check Status"::Release;
                         Rec."Introducer Update on Vendor" := TRUE;
+
+                        TeamCode := OtherEventMgnt.ReturnTeamCode(Rec."Parent Code", Rec."Region Code", Rec."No.", true);  //05122025 Code added
+                        IF TeamCode <> '' then
+                            Rec."Team Code" := TeamCode;
                         Rec.MODIFY;
+
+
                         MESSAGE('Release the document');
                     end;
                 }

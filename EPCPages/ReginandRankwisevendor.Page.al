@@ -67,6 +67,10 @@ page 50078 "Regin and Rank wise vendor"
                 field("Sub Team Code"; Rec."Sub Team Code")
                 {
                 }
+                field("Vendor Exists"; Rec."Vendor Exists")   //field added 05122025
+                {
+
+                }
             }
         }
     }

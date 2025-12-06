@@ -87,6 +87,11 @@ page 50403 "Vendor Master API"
                     Caption = 'Is Help Desk User';
                 }
 
+                field(DateOfJoining; Rec."BBG date of joining")
+                {
+                    Caption = 'BBG Date of Joining';
+                }
+
                 field(systemId; Rec.SystemId)
                 {
                     Caption = 'SystemId';

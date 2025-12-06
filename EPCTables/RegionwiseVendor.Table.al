@@ -1,24 +1,5 @@
 table 50012 "Region wise Vendor"
 {
-    // //NDALLE 051107
-    // //Added new fields
-    // ////NDALLE 051107 To Master validate
-    // // ALLEAS02 >> >> To Flow Vendor Posting Group
-    // ALLRE : New Field Added
-    // //AlleBLK : New Field Added
-    // ALLESP BCL0004 11-07-2007 : New Field Added
-    // //AlleDK 130308 : using for Report
-    // //added by DDS : New Field Added
-    // --JPL : New Field Added
-    // JPL0002 : indicator that party is related ie. group related--JPL
-    // 
-    // ALLERP KRN0014 19-08-2010: Field "Validity till date" added and code added for updating in product vendors
-    // ALLERP AlleHF 07-09-2010: Applying HF1 to HF5
-    // ALLEPG 270711 :   Added HotFix PS59643 for Service Tax.
-    // ALLEPG 040712 : Added field.
-    // ALLEPG 310812 : Added Fields.
-    // ALLEPG 051012 : Created function CreateVendorFromWeb.
-    // ALELDK 040313 Code commented
 
     Caption = 'Region_ Rank wise Vendor';
     DataPerCompany = false;
@@ -96,6 +77,8 @@ table 50012 "Region wise Vendor"
                 END;
                 IF "Parent Code" = '' THEN
                     "Parent Rank" := 0;
+                //clear(OtherEventMgnt);   //05122025 Code added
+                //"Team Code" := OtherEventMgnt.ReturnTeamCode("Parent Code", "Region Code");  //05122025 Code added
             end;
         }
         field(6; "Rank Code"; Decimal)
@@ -241,6 +224,12 @@ table 50012 "Region wise Vendor"
             DataClassification = ToBeClassified;
             TableRelation = "CP Leader Master";
         }
+        field(50309; "Vendor Exists"; Code[20])   //field added 05122025
+        {
+            CalcFormula = Lookup(Vendor."No." WHERE("No." = FIELD("Parent Code")));
+            FieldClass = FlowField;
+            Editable = false;
+        }
     }
 
     keys
@@ -298,5 +287,6 @@ table 50012 "Region wise Vendor"
         RegionwiseVend_1: Record "Region wise Vendor";
         UserSetup: Record "User Setup";
         RecVendor: Record Vendor;
+        OtherEventMgnt: codeunit "Other Event Mgnt";
 }
 

@@ -97,12 +97,9 @@ xmlport 50103 "Project MIS Sum. Data Upload"
                             job."Draft LP No" := DraftLPNo;
                             Evaluate(job."Extent of Layout (Acres)", ExtentLayoutAcres);
                             Evaluate(job."Extent of Layout(Guntas/Cents)", ExtentLayoutGuntas);
-                            If ApprovalType = 'HMDA' then
-                                job."Approval Type" := job."Approval Type"::HMDA;
-                            If ApprovalType = 'MUNCIPAL' then
-                                job."Approval Type" := job."Approval Type"::MUNCIPAL;
-                            If ApprovalType = 'VILLAGE' then
-                                job."Approval Type" := job."Approval Type"::VILLAGE;
+
+                            job."Approval Type 1" := ApprovalType;
+
                             job."Project Type" := ProjectType;
                             job.Village := Village;
                             job."Rera No" := Rerano;

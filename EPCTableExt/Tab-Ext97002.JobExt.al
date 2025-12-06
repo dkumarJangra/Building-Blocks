@@ -928,7 +928,7 @@ tableextension 97002 "EPC Job Ext" extends Job
         {
             DataClassification = ToBeClassified;
         }
-        field(50138; "Draft LP No"; Text[80])
+        field(50138; "Draft LP No"; Text[250])
         {
             DataClassification = ToBeClassified;
         }
@@ -941,11 +941,13 @@ tableextension 97002 "EPC Job Ext" extends Job
             DataClassification = ToBeClassified;
             Caption = 'Extent of Layout (Guntas/Cents)';
         }
-        field(50141; "Approval Type"; Option)
+
+        field(50141; "Approval Type"; Option)              //Old not in use
         {
             DataClassification = ToBeClassified;
             OptionCaption = ' ,HMDA,MUNCIPAL,VILLAGE';
             OptionMembers = "",HMDA,MUNCIPAL,VILLAGE;
+            Editable = False;
         }
         field(50142; "Project Type"; Text[80])
         {
@@ -997,9 +999,15 @@ tableextension 97002 "EPC Job Ext" extends Job
         {
             DataClassification = ToBeClassified;
         }
-        field(50154; "Purchasing LLP Name"; TExt[190])
+        field(50154; "Purchasing LLP Name"; TExt[250])
         {
             DataClassification = ToBeClassified;
+        }
+        field(50155; "Approval Type 1"; Text[80])
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Approval Type';
+
         }
     }
 

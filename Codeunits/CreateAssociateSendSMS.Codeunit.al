@@ -499,6 +499,9 @@ codeunit 50013 "Create Associate / SendSMS"
         RankCodeMaster: Record "Rank Code";
         AssStatus: Text;
         WebAppService: Codeunit "Web App Service";
+        RegionwiseVendor_1: Record "Region wise Vendor";
+        Vendor_2: Record vendor;
+        OtherEventMgt: Codeunit "Other Event Mgnt";
     begin
         AssociateLoginDetails.RESET;
         AssociateLoginDetails.SETRANGE(USER_ID, RecUserID_1);
@@ -654,6 +657,23 @@ codeunit 50013 "Create Associate / SendSMS"
             RegionwiseVendor.VALIDATE("Rank Code");
             RegionwiseVendor.VALIDATE("Parent Code");
             RegionwiseVendor.MODIFY;
+            //06122025 Code added start
+            RegionwiseVendor_1.Reset;
+            RegionwiseVendor_1.SetRange("Region Code", RegionwiseVendor."Region Code");
+            RegionwiseVendor_1.SetRange("No.", RegionwiseVendor."No.");
+            IF RegionwiseVendor_1.FindFirst THEN begin
+                RegionwiseVendor_1."Team Code" := OtherEventMgt.ReturnTeamCode(AssociateLoginDetails.Introducer_Code, RegionwiseVendor."Region Code", RegionwiseVendor."No.", False);
+                RegionwiseVendor_1.Modify;
+                Vendor_2.Reset;
+                IF Vendor_2.GET(RegionwiseVendor_1."No.") then begin
+                    Vendor_2."BBG Team Code" := RegionwiseVendor_1."Team Code";
+                    Vendor_2.Modify;
+                end;
+
+            end;
+
+
+            //06122025 Code added END
 
 
             //ALLEDK 160922

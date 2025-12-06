@@ -15,6 +15,9 @@ report 50052 "New Change Chain"
             DataItemTableView = SORTING("No.");
 
             trigger OnAfterGetRecord()
+            var
+                OtherEvents: Codeunit 70005;
+                TeamCode: code[50];
             begin
                 //BBG1.7 030114
                 CLEAR(RankChangeHistory);
@@ -66,6 +69,9 @@ report 50052 "New Change Chain"
 
                 VALIDATE("Parent Code", NewParent);
                 MODIFY;
+
+                TeamCode := OtherEvents.ReturnTeamCode(NewParent, "Region Code", "Region wise Vendor"."No.", true);  //Code added
+
 
             end;
 

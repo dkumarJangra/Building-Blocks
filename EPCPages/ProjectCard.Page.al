@@ -181,8 +181,9 @@ page 97757 "Project Card"
                 {
 
                 }
-                field("Approval Type"; Rec."Approval Type")
+                field("Approval Type 1"; Rec."Approval Type 1")
                 {
+                    Caption = 'Approval Type';
 
                 }
                 field("Project Type"; Rec."Project Type")

@@ -54,9 +54,9 @@ page 50026 "Bottom Up Chain"
                 field("Team Code"; Rec."Team Code")
                 {
                 }
-                // field("Region Wise Team Code"; Rec."Region Wise Team Code")  //Field added 02122025
-                // {
-                // }
+                field("Region Wise Team Code"; Rec."Region Wise Team Code")  //Field added 02122025
+                {
+                }
                 field("Posting Date"; Rec."Posting Date")
                 {
                 }
