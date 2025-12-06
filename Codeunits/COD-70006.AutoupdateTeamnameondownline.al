@@ -154,16 +154,16 @@ codeunit 70006 "Team codeupdate at downline"
 
     procedure BuildHierarchy(MCode: Code[20])
     var
-        Vend: Record 50012;
+        RegionwiseVendor: Record 50012;
         Level: Integer;
     begin
-        Vend.RESET;
-        Vend.SETCURRENTKEY("Region Code", "Parent Code");
-        Vend.SETRANGE("Region Code", RankCode);
-        Vend.SETRANGE("Parent Code", MCode);
-        IF Vend.FINDSET THEN
+        RegionwiseVendor.RESET;
+        RegionwiseVendor.SETCURRENTKEY("Region Code", "Parent Code");
+        RegionwiseVendor.SETRANGE("Region Code", RankCode);
+        RegionwiseVendor.SETRANGE("Parent Code", MCode);
+        IF RegionwiseVendor.FINDSET THEN
             REPEAT
-                IF Chain.GET(RankCode, Vend."No.") THEN BEGIN
+                IF Chain.GET(RankCode, RegionwiseVendor."No.") THEN BEGIN
                     Cnt += 1;
 
                     Chain2.RESET;
@@ -178,9 +178,9 @@ codeunit 70006 "Team codeupdate at downline"
                     Chain2 := Chain;
                     Chain2.INSERT;
 
-                    BuildHierarchy(Vend."No.");
+                    BuildHierarchy(RegionwiseVendor."No.");
                 END;
-            UNTIL Vend.NEXT = 0;
+            UNTIL RegionwiseVendor.NEXT = 0;
     end;
 
 }

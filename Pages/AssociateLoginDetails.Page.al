@@ -226,6 +226,9 @@ page 50101 "Associate Login Details"
                     UserSetup: Record "User Setup";
                     MobFirstLetter: Text;
                     WebAppService: Codeunit "Web App Service";
+                    RegionwiseVendor_1: Record "Region wise Vendor";
+                    Vendor_2: Record vendor;
+                    OtherEventMgt: Codeunit "Other Event Mgnt";
                 begin
                     /*
                     CLEAR(CreateAssociateandSendSMS);
@@ -347,6 +350,23 @@ page 50101 "Associate Login Details"
 
                                 RegionwiseVendor."Associate DOJ" := AssociateLoginDetails.Date_OF_Joining;
                                 RegionwiseVendor.INSERT;
+
+                                //06122025 code added start 
+
+                                RegionwiseVendor_1.Reset;
+                                RegionwiseVendor_1.SetRange("Region Code", RegionwiseVendor."Region Code");
+                                RegionwiseVendor_1.SetRange("No.", RegionwiseVendor."No.");
+                                IF RegionwiseVendor_1.FindFirst THEN begin
+                                    RegionwiseVendor_1."Team Code" := OtherEventMgt.ReturnTeamCode(AssociateLoginDetails.Introducer_Code, RegionwiseVendor."Region Code", RegionwiseVendor."No.", False);
+                                    RegionwiseVendor_1.Modify;
+                                    Vendor_2.Reset;
+                                    IF Vendor_2.GET(RegionwiseVendor_1."No.") then begin
+                                        Vendor_2."BBG Team Code" := RegionwiseVendor_1."Team Code";
+                                        Vendor_2.Modify;
+                                    end;
+                                end;
+
+                                //06122025 code added END 
                                 /*
                                 BondSetup.GET;
                                 BondSetup.TESTFIELD("TDS Nature of Deduction");
