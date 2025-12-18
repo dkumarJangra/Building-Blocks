@@ -7,6 +7,19 @@ table 50200 "Region/Districts Rank Entry"
         field(1; "Region_Districts Code"; Code[50])
         {
             DataClassification = ToBeClassified;
+            trigger OnValidate()
+            var
+                Region_districtsRankEntry: Record "Region/Districts Rank Entry";  //18122025
+            begin
+
+                //Code added 18122025 Start
+                // Region_districtsRankEntry.RESET;
+                // Region_districtsRankEntry.SetRange("Region_Districts Code", Rec."Region_Districts Code");
+                // IF Region_districtsRankEntry.Count > 1 THEN
+                //     Error('Data already Exists against =' + Rec."Region_Districts Code");
+                //Code added 18122025 END
+
+            end;
         }
         Field(2; Rank; Decimal)
         {
@@ -15,8 +28,18 @@ table 50200 "Region/Districts Rank Entry"
             trigger OnValidate()
             var
                 Rank_1: Record Rank;
+                Region_districtsRankEntry: Record "Region/Districts Rank Entry";  //18122025
             begin
                 TestField("Region/Rank Code");
+                //Code addded 18122025 Start
+                // If Rank <> 0 THEN begin
+                //     Region_districtsRankEntry.RESET;
+                //     Region_districtsRankEntry.SetRange("Region_Districts Code", Rec."Region_Districts Code");
+                //     IF Region_districtsRankEntry.Count > 1 THEN
+                //         Error('Data already Exists against =' + Rec."Region_Districts Code");
+                // end;
+                //Code addded 18122025 END
+
                 Rank_1.RESET;
                 IF Rank_1.GET(Rank) THEN
                     Description := Rank_1.Description
@@ -43,13 +66,25 @@ table 50200 "Region/Districts Rank Entry"
             trigger OnValidate()
             Var
                 ClusterstateMaster: Record "Cluster State Master";
+                Region_districtsRankEntry: Record "Region/Districts Rank Entry";  //18122025
 
             begin
+                //Code added 18122025 Start
+                // Region_districtsRankEntry.RESET;
+                // Region_districtsRankEntry.SetRange("Region_Districts Code", Rec."Region_Districts Code");
+                // IF Region_districtsRankEntry.Count > 1 THEN
+                //     Error('Data already Exists against =' + Rec."Region_Districts Code");
+
+
+                //Code added 18122025 END
+
+
 
                 IF "State Code" <> 0 THEN begin
                     ClusterstateMaster.RESET;
                     IF ClusterstateMaster.GET("State Code") then begin
                         "State Name" := ClusterstateMaster."State Name";
+                        //Code commented 18122025 Start
                         IF "State Code" = 1 then
                             "Region/Rank Code" := 'R0001';
                         IF "State Code" = 2 then
@@ -61,8 +96,12 @@ table 50200 "Region/Districts Rank Entry"
                         "State Name" := '';
                         "Region/Rank Code" := '';
                     end;
+                    //Code commented 18122025 END
+                    // end;
+
+
                 end;
-            end;
+            END;
 
         }
         field(8; "State Name"; text[100])
@@ -75,7 +114,7 @@ table 50200 "Region/Districts Rank Entry"
         {
             DataClassification = ToBeClassified;
             TableRelation = "Rank Code Master".Code;
-            Editable = false;
+            //Editable = false;
         }
 
 
