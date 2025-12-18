@@ -972,7 +972,7 @@ page 50015 "Unit Allocation"
                             UnitMaster_2.GET(v_ConfirmedOrder1."Unit Code");
                             UnitMaster_2."Customer Code" := v_ConfirmedOrder1."Customer No.";
                             IF recCustomer.GET(v_ConfirmedOrder1."Customer No.") THEN BEGIN
-                                UnitMaster_2."Customer Name" := recCustomer.Name;
+                                UnitMaster_2."Customer Name" := Copystr(recCustomer.Name, 1, 58);  //Added new code 18122025
                                 UnitMaster_2.MODIFY;
                             END;
                             // END;      //Code commented 25082025                                    
@@ -2103,7 +2103,7 @@ page 50015 "Unit Allocation"
 
         Unitmaster.VALIDATE(Status, Unitmaster.Status::Booked);
         IF Customer.GET(Rec."Customer No.") THEN  //121021
-            Unitmaster."Customer Name" := Customer.Name;   //121021
+            Unitmaster."Customer Name" := CopyStr(Customer.Name, 1, 58);   //Added new code 18122025
         Unitmaster.MODIFY;
 
         //"New Unit No." := '';//ALLETDK120413
