@@ -154,7 +154,11 @@ page 97932 "Confirmed Order"
                 field("Loan File"; Rec."Loan File")   //251124 new field added
                 {
                     Caption = 'Loan File';
-
+                    Visible = false;
+                }
+                field("New Loan File"; Rec."New Loan File")
+                {
+                    Caption = 'New Loan File';
                 }
                 field("Gold/Silver Voucher Issued"; Rec."Gold/Silver Voucher Issued")
                 {

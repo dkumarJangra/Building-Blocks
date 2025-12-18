@@ -265,16 +265,17 @@ page 60696 "Lead List"
     {
         area(navigation)
         {
-            group("C&ontact")
+            group("Associate Data upload")
             {
-                Caption = 'C&ontact';
-                Image = ContactPerson;
-                Visible = false;
+                Caption = 'Associate Data upload';
+                Image = Process;
+                //Visible = false;
                 group("P&erson")
                 {
                     Caption = 'P&erson';
                     Enabled = PersonGroupEnabled;
                     Image = User;
+                    Visible = false;
                 }
                 action("Pro&files")
                 {
@@ -303,6 +304,13 @@ page 60696 "Lead List"
                     Image = ViewComments;
                     RunObject = Page "Rlshp. Mgt. Comment Sheet";
                     Visible = false;
+                }
+                action("Create Assoicate and Lead")
+                {
+                    Caption = 'Create Assoicate and Lead';
+                    Image = Process;
+                    RunObject = XMlport 50101;
+
                 }
             }
         }

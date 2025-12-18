@@ -1360,6 +1360,12 @@ table 97793 "Confirmed Order"
             DataClassification = ToBeClassified;
             Editable = false;
         }
+        field(60045; "New Loan File"; Option)     //251124 New field
+        {
+            DataClassification = ToBeClassified;
+            OptionMembers = " ",Yes,No;
+            OptionCaption = ' ,Yes,No';
+        }
 
         field(90122; "Gold/Silver Voucher Issued"; Decimal)   //080425 New field added
         {

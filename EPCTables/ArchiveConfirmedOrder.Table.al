@@ -491,6 +491,12 @@ table 97824 "Archive Confirmed Order"
             DataClassification = ToBeClassified;
             Editable = false;
         }
+        field(60045; "New Loan File"; Option)     //251124 New field
+        {
+            DataClassification = ToBeClassified;
+            OptionMembers = " ",Yes,No;
+            OptionCaption = ' ,Yes,No';
+        }
         field(90123; "R194 Gift Issued"; Boolean)   //251124 Added new field
         {
             DataClassification = ToBeClassified;

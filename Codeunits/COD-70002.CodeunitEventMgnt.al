@@ -268,6 +268,7 @@ codeunit 70002 "BBG Codeunit Event Mgnt."
         GLEntry."BBG Verified By" := GenJournalLine."Verified By";
         GLEntry."BBG Created By" := GenJournalLine."Created By";
 
+
         GLEntry."BBG Narration" := GenJournalLine.Narration;
         GLEntry."BBG Month" := DATE2DMY(GenJournalLine."Posting Date", 2);
         GLEntry."BBG Year" := DATE2DMY(GenJournalLine."Posting Date", 3);
@@ -292,8 +293,7 @@ codeunit 70002 "BBG Codeunit Event Mgnt."
         GLEntry."BBG Special Incentive Bonanza" := GenJournalLine."Special Incentive Bonanza";//100924 Added new code
         GLEntry."BBG Posting Type" := GenJournalLine."Posting Type";  //100924 Added new code
         GLEntry."Ref. Invoice No." := GenJournalLine."Ref. Invoice No.";
-
-
+        GLEntry."Ref. External Doc. No." := GenJournalLine."Ref. External Doc. No.";  //Added new code 15122025
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Vendor Ledger Entry", 'OnAfterCopyVendLedgerEntryFromGenJnlLine', '', false, false)]
@@ -327,6 +327,7 @@ codeunit 70002 "BBG Codeunit Event Mgnt."
         VendorLedgerEntry."Payment Mode" := GenJournalLine."Payment Mode"; //ALLEDK 010313
         VendorLedgerEntry."Tranasaction Type" := GenJournalLine."Tranasaction Type"; //110815
         VendorLedgerEntry."Club 9 Entry" := GenJournalLine."Club 9 Entry"; //260225
+        VendorLedgerEntry."Ref. External Doc. No." := GenJournalLine."Ref. External Doc. No.";  //Added new code 15122025
         //ALLE190619
     End;
 
@@ -4742,6 +4743,8 @@ codeunit 70002 "BBG Codeunit Event Mgnt."
             GenJnlLine."Posting Type" := PurchHeader."Associate Posting Type"
         Else
             GenJnlLine."Posting Type" := GenJnlLine."Posting Type"::Running;
+
+        GenJnlLine."Ref. External Doc. No." := PurchHeader."Ref. External Doc. No."; //Added new code 15122025
     End;
 
     procedure UpdateVoucherHeader(VAR VoucherNo: Code[20])

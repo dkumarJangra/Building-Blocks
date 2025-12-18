@@ -211,12 +211,12 @@ page 97982 "Customer Correction"
 
 
                             ConfOrder."Customer No." := CorrectAssociateNo;
-                            ConfOrder."Bill-to Customer Name" := CustName;
+                            ConfOrder."Bill-to Customer Name" := CopyStr(CustName, 1, 58);
                             ConfOrder.MODIFY;
                             CLEAR(NewConforder);
                             IF NewConforder.GET(BondNo) THEN BEGIN
                                 NewConforder."Customer No." := CorrectAssociateNo;
-                                NewConforder."Bill-to Customer Name" := CustName;
+                                NewConforder."Bill-to Customer Name" := CopyStr(CustName, 1, 58);
                                 NewConforder.MODIFY;
                                 CompanyWise.RESET;
                                 CompanyWise.SETRANGE(CompanyWise."MSC Company", TRUE);
@@ -278,7 +278,7 @@ page 97982 "Customer Correction"
         DtlCustLedgerEntry: Record "Detailed Cust. Ledg. Entry";
         BondType: Option Application,"Confirmed Order";
         GoldCoinEligibility: Record "Gold Coin Eligibility";
-        CustName: Text[80];
+        CustName: Text[100];
         ArchConf: Record "Archive Confirmed Order";
         Versn: Integer;
         PmntTrmsLineSale: Record "Payment Terms Line Sale";
@@ -289,7 +289,7 @@ page 97982 "Customer Correction"
 
         CorrectChequeNoEnable: Boolean;
         Text19045372: Label 'Customer change in respective Co. / LLP.';
-        ExistsCustName: Text;
+        ExistsCustName: Text[100];
         ExistsCustNo: Code[20];
         MemberOf: Record "Access Control";
         WebAppService: Codeunit "Web App Service";

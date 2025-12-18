@@ -488,6 +488,14 @@ tableextension 50007 "BBG Vendor Ext" extends Vendor
             DataClassification = ToBeClassified;
             TableRelation = "Village Details".Code where("State Code" = field("State Code"), "District Code" = field("District Code"), "Mandal Code" = field("Mandal Code"));
         }
+
+        field(60050; "Create from XMLPort"; Boolean)           //added new field 15122025
+        {
+            Caption = 'Create from XMLPort';
+            DataClassification = ToBeClassified;
+            Editable = False;
+
+        }
     }
 
     keys

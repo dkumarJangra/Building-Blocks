@@ -68,6 +68,7 @@ codeunit 70000 "BBG Table Event Mgnt."
         VendorLedgerEntry."User Branch Code" := GenJournalLine."Branch Code"; //ALLETDK141112
         VendorLedgerEntry."Payment Mode" := GenJournalLine."Payment Mode"; //ALLEDK 010313
         VendorLedgerEntry."Tranasaction Type" := GenJournalLine."Tranasaction Type"; //110815
+        VendorLedgerEntry."Ref. External Doc. No." := GenJournalLine."Ref. External Doc. No."; //Add new 
         //Code Added Start 01072025
         AssHierarcy.RESET;
         AssHierarcy.SetRange("Application Code", VendorLedgerEntry."Application No.");
@@ -363,6 +364,7 @@ codeunit 70000 "BBG Table Event Mgnt."
         GenJournalLine."Special Incentive Bonanza" := PurchaseHeader."Special Incentive Bonanza";  //110924 Code added
                                                                                                    //ALLE-SR-081107 >>
         GenJournalLine."Posting Type" := GenJournalLine."Posting Type"::Running;
+        GenJournalLine."Ref. External Doc. No." := PurchaseHeader."Ref. External Doc. No."; //Added new code 15122025
 
         //ALLETDK--BEGIN 081212
         IF (PurchaseHeader."Bal. Account Type" = PurchaseHeader."Bal. Account Type"::"Bank Account") AND (PurchaseHeader."Document Type" = PurchaseHeader."Document Type"::Invoice) THEN BEGIN

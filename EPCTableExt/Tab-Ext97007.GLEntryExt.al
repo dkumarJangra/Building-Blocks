@@ -215,6 +215,11 @@ tableextension 97007 "EPC G/L Entry" extends "G/L Entry"
             DataClassification = ToBeClassified;
             Editable = false;
         }
+        Field(90210; "Ref. External Doc. No."; Code[50])   //New field added 15122025
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
     }
 
     keys

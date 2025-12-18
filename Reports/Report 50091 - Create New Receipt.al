@@ -109,9 +109,10 @@ report 50091 "Create New Receipt"
                         NewApplicationBooking.VALIDATE("Associate Code", "Payment transaction Details"."Associate Id");
                         NewApplicationBooking.VALIDATE("Unit Payment Plan", "Payment transaction Details"."Unit Payment Plan");
                         NewApplicationBooking.VALIDATE("Unit Code", UMaster."No."); //,UMaster."No.");
-                        IF "Payment transaction Details"."Loan File" = 'Yes' THEN  //251124
+                        IF "Payment transaction Details"."Loan File" = 'Yes' THEN Begin //251124
                             NewApplicationBooking."Loan File" := TRUE; //251124
-                                                                       //Code added start 23072025
+                            NewApplicationBooking."New Loan File" := NewApplicationBooking."New Loan File"::Yes;
+                        End;                                           //Code added start 23072025
                         NewApplicationBooking."Customer State Code" := "Payment transaction Details"."State Code";
                         NewApplicationBooking."District Code" := "Payment transaction Details"."District Code";
                         NewApplicationBooking."Mandal Code" := "Payment transaction Details"."Mandal Code";

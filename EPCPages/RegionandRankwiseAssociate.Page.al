@@ -126,7 +126,7 @@ page 50076 "Region and Rank wise Associate"
                     trigger OnAction()
                     var
                         RecVendor_1: Record Vendor;
-                        OtherEventMgnt: Codeunit 70005;
+                        OtherEventMgnt: codeunit "Other Event Mgnt";
                         TeamCode: Code[50];
                     begin
                         UserSetup.RESET;
@@ -169,14 +169,19 @@ page 50076 "Region and Rank wise Associate"
 
                         Rec."Vendor Check Status" := Rec."Vendor Check Status"::Release;
                         Rec."Introducer Update on Vendor" := TRUE;
-
+                        Rec.Modify;
+                        Commit;
+                        // Ankur 09122025
                         TeamCode := OtherEventMgnt.ReturnTeamCode(Rec."Parent Code", Rec."Region Code", Rec."No.", true);  //05122025 Code added
-                        IF TeamCode <> '' then
-                            Rec."Team Code" := TeamCode;
-                        Rec.MODIFY;
+                        IF TeamCode <> '' then BEGIN
+                            NewRegionwiseVend.RESET;
+                            IF NewRegionwiseVend.GET(Rec."Region Code", Rec."No.") then
+                                NewRegionwiseVend."Team Code" := TeamCode;
+                            NewRegionwiseVend.Modify;
+                        END;
 
 
-                        MESSAGE('Release the document');
+                        MESSAGE('Document has been Released');
                     end;
                 }
                 action("Copy Vendor on All Region")
@@ -296,5 +301,6 @@ page 50076 "Region and Rank wise Associate"
         Vend: Record Vendor;
         OldVend: Record Vendor;
         MemberOf: Record "Access Control";
+        NewRegionwiseVend: Record 50012;
 }
 

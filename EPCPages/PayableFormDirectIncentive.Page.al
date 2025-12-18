@@ -172,6 +172,10 @@ page 50043 "Payable Form Direct Incentive"
                 field("Special Inc. Reject Dt."; Rec."Special Inc. Reject Dt.")
                 {
                 }
+                field("Ref. External Doc. No."; Rec."Ref. External Doc. No.")  //New field added 15122025 
+                {
+                    ApplicationArea = All;
+                }
             }
             part(VoucherSubform; "Voucher Sub form Incentive")
             {
@@ -605,6 +609,7 @@ page 50043 "Payable Form Direct Incentive"
                 PHeader."Sent for Approval" := TRUE;
                 PHeader."Associate Posting Type" := PHeader."Associate Posting Type"::"Travel Allowance";
                 PHeader.Approved := TRUE;
+                PHeader."Ref. External Doc. No." := rec."Ref. External Doc. No.";  //Added code 15122025
                 PHeader.MODIFY;
 
                 PLine.INIT;
@@ -713,6 +718,7 @@ page 50043 "Payable Form Direct Incentive"
                 PHeader."Sent for Approval" := TRUE;
                 PHeader."Associate Posting Type" := PHeader."Associate Posting Type"::Commission;
                 PHeader.Approved := TRUE;
+                PHeader."Ref. External Doc. No." := rec."Ref. External Doc. No.";  //Added code 15122025
                 PHeader.MODIFY;
 
 
@@ -831,6 +837,7 @@ page 50043 "Payable Form Direct Incentive"
         PHeader."Sent for Approval" := TRUE;
         PHeader."Associate Posting Type" := PHeader."Associate Posting Type"::CommAndTA;
         PHeader.Approved := TRUE;
+        PHeader."Ref. External Doc. No." := rec."Ref. External Doc. No.";  //Added code 15122025
         PHeader.MODIFY;
 
         IF Amt2 > 0 THEN BEGIN
@@ -956,6 +963,7 @@ page 50043 "Payable Form Direct Incentive"
                 PHeader.Approved := TRUE;
                 PHeader."Application No." := Rec."Application No.";  //100924 code added
                 PHeader."Special Incentive Bonanza" := Rec."Special Incentive for Bonanza";
+                PHeader."Ref. External Doc. No." := rec."Ref. External Doc. No.";  //Added code 15122025
                 PHeader.MODIFY;
 
                 //InsertDocumentDimension(PHeader); //BBG1.00 ALLEDK 070313
@@ -1221,6 +1229,7 @@ page 50043 "Payable Form Direct Incentive"
                 AssociatePaymentHdr."Rejected/Approved" := AssociatePaymentHdr."Rejected/Approved"::Approved;
                 AssociatePaymentHdr."TDS Amount" := ROUND(((VoucherLine.Amount) * TDS / 100), 1, '=');
                 AssociatePaymentHdr."Club 9 Amount" := ((VoucherLine.Amount) * Unitsetup."Corpus %" / 100);
+                AssociatePaymentHdr."Ref. External Doc. No." := Rec."Ref. External Doc. No.";  //Added new code 15122025
                 AssociatePaymentHdr.INSERT;
             UNTIL VoucherLine.NEXT = 0;
         PostPayment.NewPostAssociatePayment(AssociatePaymentHdr);
@@ -1309,6 +1318,7 @@ page 50043 "Payable Form Direct Incentive"
         LineNo: Integer;
         GenJournalPost: Codeunit "Gen. Jnl.-Post Line";
         VendLedgerEntry: Record "Vendor Ledger Entry";
+
     begin
         LineNo := 0;
         UnitSetup.Get();

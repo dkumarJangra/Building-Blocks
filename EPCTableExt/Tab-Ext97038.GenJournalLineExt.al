@@ -620,6 +620,10 @@ tableextension 97038 "EPC Gen. Journal Line Ext" extends "Gen. Journal Line"
             DataClassification = ToBeClassified;
             Editable = false;
         }
+        field(50120; "Ref. External Doc. No."; Code[50])   //New field added 15122025 
+        {
+            DataClassification = ToBeClassified;
+        }
 
     }
 

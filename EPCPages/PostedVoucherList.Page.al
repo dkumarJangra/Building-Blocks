@@ -62,6 +62,10 @@ page 97970 "Posted Voucher List"
                 field(Type; Rec.Type)
                 {
                 }
+                field("Ref. External Doc. No."; Rec."Ref. External Doc. No.")   //New field added 15122025 
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

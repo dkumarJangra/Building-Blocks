@@ -122,6 +122,37 @@ table 60677 "Archive Region wise Vendor"
         {
             DataClassification = ToBeClassified;
         }
+        field(60000; "Creation Date"; Date)   //Added new field 17122025 
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
+        field(50304; "Team Code"; Code[50])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "Team Master";
+        }
+        field(50305; "Leader Code"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "Leader Master";
+        }
+        field(50306; "Sub Team Code"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "Sub Team Master";
+        }
+        field(50307; "CP Team Code"; Code[50])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "CP Team Master";
+        }
+        field(50308; "CP Leader Code"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = "CP Leader Master";
+        }
+
     }
 
     keys

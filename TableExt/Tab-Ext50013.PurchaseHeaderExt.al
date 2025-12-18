@@ -280,6 +280,11 @@ tableextension 50013 "BBG Purchase Header Ext" extends "Purchase Header"
             Caption = 'BizTalk Document Sent';
             DataClassification = ToBeClassified;
         }
+        Field(98522; "Ref. External Doc. No."; Code[50])
+        {
+            DataClassification = ToBeClassified;
+            Editable = False;
+        }
     }
 
     keys

@@ -59,8 +59,12 @@ codeunit 50047 "Updation of plot details"
         NewConfirmedOrder_2.RESET;
         IF NewConfirmedOrder_2.GET(NewConfirmedOrder."No.") THEN BEGIN
             Updationofplotdetails.RESET;
-            IF NOT Updationofplotdetails.GET(NewConfirmedOrder_2."No.") THEN BEGIN
+            // IF NOT Updationofplotdetails.GET(NewConfirmedOrder_2."No.") THEN BEGIN
+            If updationofplotdetails.Get(NewConfirmedOrder_2."No.") Then begin
+                Exit(updationofplotdetails."No. Of Days")
+            End else begin
                 ResponsibilityCenter.RESET;
+
                 IF ResponsibilityCenter.GET(NewConfirmedOrder."Shortcut Dimension 1 Code") THEN BEGIN
                     // ResponsibilityCenter.TESTFIELD(ResponsibilityCenter."Min. Amt. Single plot for Web");
                     // ResponsibilityCenter.TESTFIELD("Min. Amt. Double plot for Web");
@@ -332,4 +336,3 @@ codeunit 50047 "Updation of plot details"
         EXIT(TestNoofdays."No. of Days");
     end;
 }
-

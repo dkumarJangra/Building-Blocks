@@ -111,6 +111,10 @@ pageextension 50005 "BBG General Ledger Entries Ext" extends "General Ledger Ent
             {
                 ApplicationArea = All;
             }
+            field("Ref. External Doc. No."; Rec."Ref. External Doc. No.")
+            {
+                ApplicationArea = All;
+            }
 
 
         }

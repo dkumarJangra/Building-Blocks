@@ -93,6 +93,10 @@ pageextension 50011 "BBG Vendor Ledger Entries Ext" extends "Vendor Ledger Entri
             {
                 ApplicationArea = All;
             }
+            field("Ref. External Doc. No."; Rec."Ref. External Doc. No.")  //New field added 15122025
+            {
+                ApplicationArea = All;
+            }
 
         }
     }

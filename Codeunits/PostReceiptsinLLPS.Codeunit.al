@@ -165,6 +165,7 @@ codeunit 50008 "Post Receipts in LLPS"
             Application."Customer State Code" := NewConforder."Customer State Code";
             Application."Mandal Code" := NewConforder."Mandal Code";
             Application."Village Code" := NewConforder."Village Code";
+            Application."New Loan File" := NewConforder."New Loan File";//Ankur
             //Code added END 23072025
 
             Application.MODIFY;
@@ -252,6 +253,7 @@ codeunit 50008 "Post Receipts in LLPS"
         AppPayEntry."Cheque No./ Transaction No." := NewApplPayEntry."Cheque No./ Transaction No.";
         AppPayEntry."Cheque Date" := NewApplPayEntry."Cheque Date";
         AppPayEntry."Cheque Bank and Branch" := NewApplPayEntry."Cheque Bank and Branch";
+
         //AppPayEntry."Cheque Status" := NewApplPayEntry."Cheque Status";
         IF v_NewApplicationPaymentEntry_1."Bank Type" <> v_NewApplicationPaymentEntry_1."Bank Type"::ProjectCompany THEN BEGIN
             AppPayEntry."MSC Bank Code" := NewApplPayEntry."Deposit/Paid Bank";

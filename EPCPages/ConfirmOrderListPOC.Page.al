@@ -45,7 +45,11 @@ page 50083 "Confirm Order List (POC)"
                 }
                 field("Loan File"; Rec."Loan File")  //251124 Added
                 {
-
+                    Visible = false;
+                }
+                field("New Loan File"; Rec."New Loan File")
+                {
+                    Caption = 'New Loan File';
                 }
                 field("60 feet road"; Rec."60 feet road")
                 {

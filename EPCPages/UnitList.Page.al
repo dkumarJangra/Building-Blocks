@@ -65,7 +65,11 @@ page 97909 "Unit List"
                 }
                 field("Loan File"; Rec."Loan File")  //251124 field added
                 {
-
+                    Visible = false;
+                }
+                field("New Loan File"; Rec."New Loan File")
+                {
+                    Caption = 'New Loan File';
                 }
                 field("Registration No."; Rec."Registration No.")
                 {

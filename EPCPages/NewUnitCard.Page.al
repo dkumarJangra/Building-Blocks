@@ -195,6 +195,16 @@ page 50081 "New Unit Card"
                 field("Restriction Remark"; Rec."Restriction Remark")
                 {
                 }
+                field("Loan File"; Rec."Loan File")
+                {
+                    ApplicationArea = all;
+                    Editable = true;
+                    Visible = false;
+                }
+                field("New Loan File"; Rec."New Loan File")
+                {
+                    Caption = 'New Loan File';
+                }
             }
             part("Receipt Lines"; "NewUnit Payment Entry  Subform")
             {
@@ -623,6 +633,7 @@ page 50081 "New Unit Card"
                     trigger OnAction()
                     begin
                         Rec.TESTFIELD(Status, Rec.Status::Open);
+                        rec.TestField("New Loan File");
                     end;
                 }
                 action(ReOpen)

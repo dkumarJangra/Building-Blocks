@@ -77,8 +77,7 @@ table 50012 "Region wise Vendor"
                 END;
                 IF "Parent Code" = '' THEN
                     "Parent Rank" := 0;
-                //clear(OtherEventMgnt);   //05122025 Code added
-                //"Team Code" := OtherEventMgnt.ReturnTeamCode("Parent Code", "Region Code");  //05122025 Code added
+
             end;
         }
         field(6; "Rank Code"; Decimal)
@@ -99,7 +98,7 @@ table 50012 "Region wise Vendor"
                     IF RegionwiseVendor.GET("Region Code", "Parent Code") THEN BEGIN
                         RegionwiseVendor.TESTFIELD("Rank Code");
                         IF Rec."Rank Code" >= RegionwiseVendor."Rank Code" THEN
-                            ERROR('Rank cannot be greater or equal with parent.');
+                            ERROR('Rank cannot be greater or equal with parent. =' + "Parent Code");
                     END;
 
                 //280824 Start----

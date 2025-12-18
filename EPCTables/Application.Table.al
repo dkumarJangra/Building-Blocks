@@ -1006,6 +1006,12 @@ table 97790 Application
             DataClassification = ToBeClassified;
             Editable = false;
         }
+        field(60045; "New Loan File"; Option)     //251124 New field
+        {
+            DataClassification = ToBeClassified;
+            OptionMembers = " ",Yes,No;
+            OptionCaption = ' ,Yes,No';
+        }
         field(50011; "Rank Code"; Code[10])   // Code added 01072025
         {
             Editable = false;

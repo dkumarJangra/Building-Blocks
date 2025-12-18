@@ -131,6 +131,11 @@ page 97997 "Posted Payable Form"
                 {
                     Editable = false;
                 }
+                field("Ref. External Doc. No."; Rec."Ref. External Doc. No.")  //New field added 15122025 
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
             }
             part(VoucherSubform; "Posted Voucher Sub form")
             {

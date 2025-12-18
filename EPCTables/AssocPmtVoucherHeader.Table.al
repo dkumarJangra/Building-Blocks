@@ -567,6 +567,10 @@ table 97814 "Assoc Pmt Voucher Header"
             DataClassification = ToBeClassified;
             Editable = false;
         }
+        field(50021; "Ref. External Doc. No."; Code[50])   //New field added 15122025 
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys

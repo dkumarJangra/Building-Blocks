@@ -1212,6 +1212,12 @@ table 50015 "New Confirmed Order"
             DataClassification = ToBeClassified;
             Editable = False;
         }
+        field(60045; "New Loan File"; Option)     //251124 New field
+        {
+            DataClassification = ToBeClassified;
+            OptionMembers = " ",Yes,No;
+            OptionCaption = ' ,Yes,No';
+        }
     }
 
     keys

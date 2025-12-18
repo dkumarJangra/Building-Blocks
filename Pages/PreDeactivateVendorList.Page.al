@@ -167,10 +167,73 @@ page 50183 "Pre-Deactivate Vendor List"
                                     END;
                                     COMMIT;
                                 UNTIL PreDeactivateVendors.NEXT = 0;
-                            //--------------------Delet-------------
 
 
+                            //Added code 16122025 Start
+                            DeActivateVendors.RESET;
+                            DeActivateVendors.SetRange("Batch Run Date", Today);
+                            IF DeActivateVendors.FindSet() then
+                                repeat
+                                    RegionwisevendOld.RESET;
+                                    RegionwisevendOld.SetRange("Parent Code", DeActivateVendors."No.");
+                                    IF RegionwisevendOld.Findset then
+                                        repeat
+                                            ArchiveRegionwiseVendor.RESET;
+                                            ArchiveRegionwiseVendor.SETRANGE("Region Code", RegionwisevendOld."Region Code");
+                                            ArchiveRegionwiseVendor.SETRANGE("No.", RegionwisevendOld."No.");
+                                            IF ArchiveRegionwiseVendor.FINDLAST THEN
+                                                ArchiveNo := ArchiveRegionwiseVendor."Version No."
+                                            ELSE
+                                                ArchiveNo := 1;
 
+                                            ArchiveRegionwiseVendor.RESET;
+                                            ArchiveRegionwiseVendor.INIT;
+                                            ArchiveRegionwiseVendor.TRANSFERFIELDS(RegionwisevendOld);
+                                            ArchiveRegionwiseVendor."Version No." := ArchiveNo + 1;
+                                            ArchiveRegionwiseVendor."Creation Date" := Today;
+                                            ArchiveRegionwiseVendor.INSERT;
+                                        Until RegionwisevendOld.Next = 0;
+
+                                    Regionwisevend.RESET;
+                                    Regionwisevend.SetRange("Parent Code", DeActivateVendors."No.");
+                                    IF Regionwisevend.Findset then
+                                        repeat
+                                            Clear(OtherEventMgnt);
+                                            Newparentcode := '';
+                                            Newparentcode := OtherEventMgnt.ReturnParentCode(DeActivateVendors."No.", Regionwisevend."Region Code", True);
+
+                                            IF Newparentcode <> '' then BEGIN
+                                                Regionwisevend.Validate("Parent Code", Newparentcode);
+
+                                                Updatevendor.RESET;
+                                                IF Updatevendor.GET(Regionwisevend."No.") THEN begin
+                                                    Newregionwisevend.RESET;
+                                                    IF Newregionwisevend.GET(Regionwisevend."Region Code", Newparentcode) then
+                                                        Updatevendor."BBG Team Code" := Newregionwisevend."Team Code";
+                                                    Updatevendor.Modify;
+                                                end;
+                                                Regionwisevend."Team Code" := Newregionwisevend."Team Code";
+                                                Regionwisevend.Modify;
+                                            END;
+                                        Until Regionwisevend.Next = 0;
+                                Until DeActivateVendors.Next = 0;
+
+                            // DeActivateVendors.RESET;
+                            // DeActivateVendors.SetRange("Batch Run Date", Today);
+                            // IF DeActivateVendors.FindSet() then
+                            //     repeat
+                            //         RegionwisevendOld.RESET;
+                            //         RegionwisevendOld.SetRange("No.", DeActivateVendors."No.");
+                            //         IF RegionwisevendOld.Findset then
+                            //             repeat
+                            //                 Clear(Teamcodeupdatedownline);
+                            //                 Teamcodeupdatedownline.UpdateTeamNameatDownline(DeActivateVendors."No.", RegionwisevendOld."Region Code", RegionwisevendOld."Team Code");
+                            //             Until Regionwisevend.Next = 0;
+
+                            //     Until DeActivateVendors.Next = 0;
+
+
+                            //Added code 16122025 END
                             COMMIT;
 
                             //------------------------SEND SMS--------------
@@ -203,12 +266,26 @@ page 50183 "Pre-Deactivate Vendor List"
                                 PreDeactivateVendors.RESET;
                                 IF PreDeactivateVendors.FINDSET THEN
                                     PreDeactivateVendors.DELETEALL;
-
                             END;
                         END ELSE
                             MESSAGE('Nothing Process');
                     END ELSE
                         MESSAGE('Contact Admin');
+                end;
+            }
+            action("Un-Select All")
+            {
+                trigger OnAction()
+                var
+                    PReDactiveVendors: Record "Pre- De-activate Vendors";
+                begin
+                    PReDactiveVendors.RESET;
+                    IF PReDactiveVendors.FindSet() then
+                        repeat
+                            PReDactiveVendors.Selected := False;
+                            PReDactiveVendors.Modify;
+                        until PReDactiveVendors.Next = 0;
+                    Message('Done');
                 end;
             }
         }
@@ -225,6 +302,14 @@ page 50183 "Pre-Deactivate Vendor List"
         CompanyInformation: Record "Company Information";
         ArchiveRegionwiseVendor: Record "Archive Region wise Vendor";
         AssociateLoginDetails: Record "Associate Login Details";
+        OtherEventMgnt: Codeunit "Other Event Mgnt";
+        Regionwisevend: Record "Region wise Vendor";
+        RegionwisevendOld: Record "Region wise Vendor";
+        Newparentcode: code[20];
+        ArchiveNo: Integer;
+        Teamcodeupdatedownline: codeunit "Team codeupdate at downline";
+        Updatevendor: Record vendor;
+        Newregionwisevend: Record "Region wise Vendor";
 
     local procedure UpdateRankWiseVendorData(VendorCode: Code[20])
     var

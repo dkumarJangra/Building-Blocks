@@ -183,6 +183,10 @@ tableextension 50008 "BBG Vendor Ledger Entry Ext" extends "Vendor Ledger Entry"
             Editable = false;
 
         }
+        field(70050; "Ref. External Doc. No."; Code[50])   //New field added 15122025 
+        {
+            DataClassification = ToBeClassified;
+        }
 
     }
 

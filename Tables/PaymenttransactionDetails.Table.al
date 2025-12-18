@@ -271,6 +271,12 @@ table 50046 "Payment transaction Details"
         {
             DataClassification = ToBeClassified;
         }
+        field(60045; "New Loan File"; Option)     //251124 New field
+        {
+            DataClassification = ToBeClassified;
+            OptionMembers = " ",Yes,No;
+            OptionCaption = ' ,Yes,No';
+        }
 
 
         field(50039; "BENPAY Payment Response"; Text[1000])   //251124 New field

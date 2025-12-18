@@ -16,7 +16,7 @@ report 50052 "New Change Chain"
 
             trigger OnAfterGetRecord()
             var
-                OtherEvents: Codeunit 70005;
+                OtherEvents: codeunit "Other Event Mgnt";
                 TeamCode: code[50];
             begin
                 //BBG1.7 030114
@@ -69,9 +69,8 @@ report 50052 "New Change Chain"
 
                 VALIDATE("Parent Code", NewParent);
                 MODIFY;
-
+                //Ankur 09122025
                 TeamCode := OtherEvents.ReturnTeamCode(NewParent, "Region Code", "Region wise Vendor"."No.", true);  //Code added
-
 
             end;
 

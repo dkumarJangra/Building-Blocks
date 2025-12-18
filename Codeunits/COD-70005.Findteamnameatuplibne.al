@@ -106,6 +106,66 @@ codeunit 70005 "Other Event Mgnt"
         Exit(Newteamcode);
     end;
 
+    procedure ReturnParentCode(MMCode_1: Code[20]; RankCode_1: Code[10]; RunDownteam: Boolean): Code[50]
+    var
+        AssociateCode: Code[20];
+        ChainMgt: Codeunit 97722;
+        Chain: Record 50012 temporary;
+        Vend: Record 23;
+        Rank: Record 97815;
+        Vend2: Record 23;
+        WEDate: Date;
+        RankCode: Code[10];
+        Regionwisevend: Record 50012;
+        Integer: Record integer;
+        Noofrecords: Integer;
+        Recodrfind: Boolean;
+        NewParentcode: code[20];
+        Teamheadcode: Code[20];
+        Newteamcode: code[50];
+    begin
+        AssociateCode := MMCode_1;
+        RankCode := RankCode_1;
+        Recodrfind := false;
+        WEDate := Today;
+        NewParentcode := '';
+        Noofrecords := 1;
+        Teamheadcode := '';
+        Newteamcode := '';
+        ChainMgt.NewInitChain;
+        ChainMgt.NewChainFromToUp(AssociateCode, WEDate, FALSE, RankCode);
+        ChainMgt.NewUpdateChainRank(WEDate, RankCode);
+        ChainMgt.NewReturnChain(Chain);
+        Chain.SETCURRENTKEY("Rank Code");
+        //Chain.ASCENDING(FALSE);
+        Noofrecords := Chain.COUNT;
+        Integer.SETRANGE(Number, 1, Noofrecords);
+        If Integer.FindSet() then
+            repeat
+                IF integer.Number = 1 THEN
+                    Chain.FIND('-')
+                ELSE
+                    Chain.NEXT;
+                CLEAR(Vend);
+                Regionwisevend.RESET;
+                Regionwisevend.SetRange("Region Code", RankCode);
+                Regionwisevend.SetRange("No.", Chain."Parent Code");
+                If Regionwisevend.FindFirst() then begin
+                    Newteamcode := Regionwisevend."Team Code";
+                    if Vend.GET(Chain."Parent Code") then
+                        NewParentcode := Chain."Parent Code";
+                END;
+            until (integer.Next = 0) OR (NewParentcode <> '');
+        Exit(NewParentcode);
+
+        IF RunDownteam THEN BEGIN
+            Commit();
+            Clear(UpdateTeamcode);
+            If (MMCode_1 <> '') and (RankCode <> '') and (Newteamcode <> '') then
+                UpdateTeamcode.UpdateTeamNameatDownline(MMCode_1, RankCode, Newteamcode);
+        END;
+    END;
+
 
 
     var

@@ -650,6 +650,11 @@ table 50018 "Associate Payment Hdr"
             DataClassification = ToBeClassified;
             Editable = false;
         }
+        field(50011; "Ref. External Doc. No."; code[50])  //Added New field 15122025
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
     }
 
     keys

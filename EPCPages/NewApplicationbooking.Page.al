@@ -237,6 +237,10 @@ page 50079 "New Application booking"
                     Caption = 'Company Name';
                     Editable = false;
                 }
+                field("New Loan File"; Rec."New Loan File")
+                {
+                    ApplicationArea = all;
+                }
             }
             group("R&eceipts")
             {
@@ -608,6 +612,7 @@ page 50079 "New Application booking"
                         Rec.TestField("Customer State Code");
                         Rec.TestField("District Code");
                         Rec.TestField("Mandal Code");
+                        Rec.TestField("New Loan File");
                         Rec.TestField("Village Code");
                         //Code added Start 19082025
                         Rec.TestField("Aadhar No.");

@@ -932,6 +932,12 @@ table 50016 "New Application Booking"
             DataClassification = ToBeClassified;
 
         }
+        field(60045; "New Loan File"; Option)     //251124 New field
+        {
+            DataClassification = ToBeClassified;
+            OptionMembers = " ",Yes,No;
+            OptionCaption = ' ,Yes,No';
+        }
 
         field(90121; "Travel applicable"; Boolean)  //New field added 01072025
         {

@@ -7394,6 +7394,8 @@ codeunit 97725 PostPayment
                         GenJnlLine."BBG Cheque No." := AssociatePaymentHdr."Cheque No.";//ALLE-AM
                         GenJnlLine."System-Created Entry" := TRUE;
                         GenJnlLine.Description := 'Associate Pmt';
+                        GenJnlLine."Ref. External Doc. No." := AssociatePaymentHdr."Ref. External Doc. No.";  //Added new code 15122025
+
                         GenJnlLine.INSERT;
                     END ELSE BEGIN
                         GenJnlLine.VALIDATE("Account Type", GenJnlLine."Account Type"::"G/L Account");
@@ -7419,6 +7421,7 @@ codeunit 97725 PostPayment
                         GenJnlLine."Application No." := AssociatePaymentHdr."Application No.";
                         GenJnlLine."Special Incentive Bonanza" := AssociatePaymentHdr."Special Incentive for Bonanza";  //100924 Code added
                         LineNo := GenJnlLine."Line No.";
+                        GenJnlLine."Ref. External Doc. No." := AssociatePaymentHdr."Ref. External Doc. No.";  //Added new code 15122025
                         GenJnlLine.INSERT;
                     END;
                     InitVoucherNarration(GenJnlLine."Journal Template Name", GenJnlLine."Journal Batch Name", GenJnlLine."Document No.",
@@ -7471,6 +7474,7 @@ codeunit 97725 PostPayment
             GenJnlLine."Application No." := AssPmtHeader."Application No.";  //100924 code added
             GenJnlLine."Special Incentive Bonanza" := AssPmtHeader."Special Incentive for Bonanza";  //100924 Code added
             LineNo := GenJnlLine."Line No.";
+            GenJnlLine."Ref. External Doc. No." := AssPmtHeader."Ref. External Doc. No.";  //Added new code 15122025
             GenJnlLine.INSERT;
             InitVoucherNarration(GenJnlLine."Journal Template Name", GenJnlLine."Journal Batch Name", GenJnlLine."Document No.",
               GenJnlLine."Line No.", GenJnlLine."Line No.", NarrationText1);
@@ -7515,6 +7519,7 @@ codeunit 97725 PostPayment
                 GenJnlLine.Description := 'Incentive Invoice';
                 GenJnlLine."Application No." := AssPmtHdr."Application No.";  //100924 Code added
                 GenJnlLine."Special Incentive Bonanza" := AssPmtHdr."Special Incentive for Bonanza";  //100924 Code added
+                GenJnlLine."Ref. External Doc. No." := AssPmtHdr."Ref. External Doc. No.";  //Added new code 15122025
                 GenJnlLine.INSERT;
                 LineNo := GenJnlLine."Line No.";
                 GenJnlLine.INIT;
@@ -7551,6 +7556,7 @@ codeunit 97725 PostPayment
                 GenJnlLine."External Document No." := PostedDocNo;
                 GenJnlLine."Application No." := AssPmtHdr."Application No.";  //110924 Code added
                 GenJnlLine."Special Incentive Bonanza" := AssPmtHdr."Special Incentive for Bonanza";  //100924 Code added
+                GenJnlLine."Ref. External Doc. No." := AssPmtHdr."Ref. External Doc. No.";  //Added new code 15122025
                 GenJnlLine.INSERT;
                 LineNo := GenJnlLine."Line No.";
                 GenJnlLine.INIT;
@@ -7587,6 +7593,7 @@ codeunit 97725 PostPayment
                 GenJnlLine."External Document No." := PostedDocNo;
                 GenJnlLine."Application No." := AssPmtHdr."Application No.";  //110924 Code added
                 GenJnlLine."Special Incentive Bonanza" := AssPmtHdr."Special Incentive for Bonanza";  //100924 Code added
+                GenJnlLine."Ref. External Doc. No." := AssPmtHdr."Ref. External Doc. No.";  //Added new code 15122025
                 GenJnlLine.INSERT;
                 LineNo := GenJnlLine."Line No.";
                 GenJnlLine.INIT;
@@ -7625,6 +7632,7 @@ codeunit 97725 PostPayment
                 GenJnlLine."Applies-to Doc. Type" := GenJnlLine."Applies-to Doc. Type"::Payment;
                 GenJnlLine."Applies-to Doc. No." := PostedDocNo;
                 GenJnlLine.Description := 'Incentive Invoice';
+                GenJnlLine."Ref. External Doc. No." := AssPmtHeader."Ref. External Doc. No.";  //Added new code 15122025
                 GenJnlLine.INSERT;
                 CreateTDSEntry(PostedDocNo, AssPmtHeader."Associate Code", ABS(InvTDS), ABS(INVAmt), AssPmtHdr."Posting Date");
                 InsertJnDimension(GenJnlLine); //310113
