@@ -34,6 +34,7 @@ page 50013 "Ass. Cheque Correction"
                                 BondNo := BALEntry."Document No.";
                                 ChequeNo := BALEntry."Cheque No.";
                                 PostDocNo := BALEntry."Document No.";
+                                PostingDate := BALEntry."Posting Date";
                                 TransactionNo := BALEntry."Transaction No.";
                                 IF BAccount.GET(BALEntry."Bank Account No.") THEN
                                     BankName := BAccount.Name;
@@ -153,8 +154,9 @@ page 50013 "Ass. Cheque Correction"
                             GLEntry.RESET;
                             GLEntry.SETCURRENTKEY("Document No.");
                             GLEntry.SETRANGE("Document No.", PostDocNo);
-                            GLEntry.SETRANGE(GLEntry."BBG Cheque No.", ChequeNo);
-                            GLEntry.SETRANGE("Transaction No.", TransactionNo);
+                            GLentry.SetRange("Posting Date", PostingDate);
+                            //  GLEntry.SETRANGE(GLEntry."BBG Cheque No.", ChequeNo);
+                            //GLEntry.SETRANGE("Transaction No.", TransactionNo);
                             IF GLEntry.FINDSET THEN
                                 REPEAT
                                     IF ChequeNoCorrection THEN
@@ -182,7 +184,8 @@ page 50013 "Ass. Cheque Correction"
                             VendLedgerEntry.RESET;
                             VendLedgerEntry.SETCURRENTKEY("Document No.");
                             VendLedgerEntry.SETRANGE("Document No.", PostDocNo);
-                            VendLedgerEntry.SETRANGE("Cheque No.", ChequeNo);
+                            VendLedgerEntry.SetRange("Posting Date", PostingDate);
+                            //VendLedgerEntry.SETRANGE("Cheque No.", ChequeNo);
                             IF VendLedgerEntry.FINDSET THEN
                                 REPEAT
                                     IF ChequeNoCorrection THEN
@@ -195,7 +198,8 @@ page 50013 "Ass. Cheque Correction"
                             CustLedgEntry.RESET;
                             CustLedgEntry.SETCURRENTKEY("Document No.");
                             CustLedgEntry.SETRANGE("Document No.", PostDocNo);
-                            CustLedgEntry.SETRANGE("BBG Cheque No.", ChequeNo);
+                            CustLedgEntry.SetRange("Posting Date", PostingDate);
+                            //CustLedgEntry.SETRANGE("BBG Cheque No.", ChequeNo);
                             IF CustLedgEntry.FINDSET THEN
                                 REPEAT
                                     IF ChequeNoCorrection THEN
@@ -364,6 +368,7 @@ page 50013 "Ass. Cheque Correction"
         BondNo: Code[20];
         ChequeNo: Text[20];
         PostDocNo: Code[20];
+        PostingDate: DAte;
         GLEntry: Record "G/L Entry";
         BALEntry: Record "Bank Account Ledger Entry";
         CheckLedgerEntry: Record "Check Ledger Entry";

@@ -49,6 +49,14 @@ page 50321 "Update Vendor Ledg. Entries"
 
 
                 }
+                FIELD("Cheque No."; Rec."Cheque No.")
+                {
+
+                }
+                FIELD("Cheque No.1"; Rec."Cheque No.1")
+                {
+
+                }
             }
         }
 

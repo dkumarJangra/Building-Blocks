@@ -684,14 +684,13 @@ codeunit 50013 "Create Associate / SendSMS"
             RegionwiseVendor_1.SetRange("Region Code", RegionwiseVendor."Region Code");
             RegionwiseVendor_1.SetRange("No.", RegionwiseVendor."No.");
             IF RegionwiseVendor_1.FindFirst THEN begin
-                RegionwiseVendor_1."Team Code" := OtherEventMgt.ReturnTeamCode(AssociateLoginDetails.Introducer_Code, RegionwiseVendor."Region Code", RegionwiseVendor."No.", False);
+                RegionwiseVendor_1."Team Code" := OtherEventMgt.ReturnTeamCode(RegionwiseVendor."Parent Code", RegionwiseVendor."Region Code", RegionwiseVendor."No.", False);
                 RegionwiseVendor_1.Modify;
                 Vendor_2.Reset;
                 IF Vendor_2.GET(RegionwiseVendor_1."No.") then begin
                     Vendor_2."BBG Team Code" := RegionwiseVendor_1."Team Code";
                     Vendor_2.Modify;
                 end;
-
             end;
 
 
@@ -709,38 +708,19 @@ codeunit 50013 "Create Associate / SendSMS"
             RankCodeMaster.SETRANGE("Rank Batch Code", RegionwiseVendor."Region Code");
             RankCodeMaster.SETRANGE(Code, RegionwiseVendor."Rank Code");
             IF RankCodeMaster.FINDFIRST THEN;
+
             IF Vendor."BBG Black List" THEN
                 AssStatus := 'Deactivate'
             ELSE
                 AssStatus := 'Active';
 
-            WebAppService.Post_data('', Vendor."No.", Vendor.Name, Vendor."BBG Mob. No.", Vendor."E-Mail", Vendor."BBG Team Code", Vendor."BBG Leader Code", RegionwiseVendor."Parent Code",  //060525 Code added
+            WebAppService.Post_data('', Vendor."No.", Vendor.Name, Vendor."BBG Mob. No.", Vendor."E-Mail", Vendor_2."BBG Team Code", Vendor."BBG Leader Code", RegionwiseVendor."Parent Code",  //"Vendor."BBG Team Code"" with Vendor_2."BBG Team Code"  18122025
                                        FORMAT(AssStatus), FORMAT(RegionwiseVendor."Rank Code"), RankCodeMaster.Description);   //060525 Code added
 
             //060525 Code added END                                       
 
             BondSetup.GET;
             BondSetup.TESTFIELD("TDS Nature of Deduction");
-            /*
-            NODHeader.RESET;
-            IF NOT NODHeader.GET(NODHeader.Type::Vendor, Vendor."No.") THEN BEGIN
-                NODHeader.INIT;
-                NODHeader.Type := NODHeader.Type::Vendor;
-                NODHeader."No." := Vendor."No.";
-                NODHeader."Assesse Code" := 'IND';
-                NODHeader.INSERT;
-            END;
-
-            IF NOT NODLine.GET(NODLine.Type::Vendor, Vendor."No.", BondSetup."TDS Nature of Deduction") THEN BEGIN
-                NODLine.Type := NODLine.Type::Vendor;
-                NODLine."No." := Vendor."No.";
-                NODLine.VALIDATE("NOD/NOC", BondSetup."TDS Nature of Deduction");
-                NODLine."Monthly Certificate" := TRUE;
-                NODLine."Threshold Overlook" := TRUE;
-                NODLine."Surcharge Overlook" := TRUE;
-                NODLine.INSERT;
-            END;
-            *///Need to check the code in UAT
 
             //-----------------------------
 
@@ -759,28 +739,6 @@ codeunit 50013 "Create Associate / SendSMS"
                     BondSetup.CHANGECOMPANY(CompanywiseGLAccount."Company Code");
                     BondSetup.GET;
                     BondSetup.TESTFIELD("TDS Nature of Deduction");
-                    /*
-                    NODHeader.RESET;
-                    NODHeader.CHANGECOMPANY(CompanywiseGLAccount."Company Code");
-                    IF NOT NODHeader.GET(NODHeader.Type::Vendor, Vend."No.") THEN BEGIN
-                        NODHeader.INIT;
-                        NODHeader.Type := NODHeader.Type::Vendor;
-                        NODHeader."No." := Vend."No.";
-                        NODHeader."Assesse Code" := 'IND';
-                        NODHeader.INSERT;
-                    END;
-
-                    NODLine.CHANGECOMPANY(CompanywiseGLAccount."Company Code");
-                    IF NOT NODLine.GET(NODLine.Type::Vendor, VendNo, BondSetup."TDS Nature of Deduction") THEN BEGIN
-                        NODLine.Type := NODLine.Type::Vendor;
-                        NODLine."No." := VendNo;
-                        NODLine.VALIDATE("NOD/NOC", BondSetup."TDS Nature of Deduction");
-                        NODLine."Monthly Certificate" := TRUE;
-                        NODLine."Threshold Overlook" := TRUE;
-                        NODLine."Surcharge Overlook" := TRUE;
-                        NODLine.INSERT;
-                    END;
-                    *///Need to check the code in UAT
 
                     RecVendorBankAccount.RESET;
                     RecVendorBankAccount.SETRANGE("Vendor No.", Vendor."No.");
@@ -820,19 +778,6 @@ codeunit 50013 "Create Associate / SendSMS"
             IF CompanyInformation."Send SMS" THEN BEGIN
                 CLEAR(PostPayment);
                 SMS := '';
-                // SMS := 'Your ID'+Vendor."No."+',  Login Id-'+Vendor."Mob. No."+',  Password-'+AssociateLoginDetails.Password+'.BBGIND';  //120523 comment
-
-                //SMS := 'Dear Mr/Ms:'+ FORMAT(Vendor.Name) +'. Congrats and Welcome to BBG Family. Your Business ID '+Vendor."No." + 'PWD is '+FORMAT(Vendor."Associate Password") +'. Thank you and '+
-                //'Assure you of our Best Support in Transforming Your Dreams into Reality. Please join the official BBG WhatsApp channel '+
-                //'for updates https://shorturl.at/dgDQV BGIND.';  //401023 New Code
-
-                //Comment  new Message 150224
-
-                //SMS :='Dear Mr/Ms: '+Vendor.Name+'. Congrats and Welcome to BBG Family. Your Business ID '+Vendor."No."+' PWD is ' + FORMAT(Vendor."Associate Password")+' Thank you and '+
-                //'Assure you of our Best Support in Transforming Your Dreams into Reality. Please join the official BBG WhatsApp channel '+
-                //'for updates https://shorturl.at/dgDQV BBGIND.';  //181023 code added
-
-                //ADDED new Message 150224
                 CLEAR(CheckMobileNoforSMS);
                 ExitMessage := CheckMobileNoforSMS.CheckMobileNo(Vendor."BBG Mob. No.", FALSE);
 
@@ -840,16 +785,6 @@ codeunit 50013 "Create Associate / SendSMS"
                     SMS := 'Dear Mr/Ms: ' + Vendor.Name + ' Congrats and Welcome to BBG Family. Your Business ID is ' + Vendor."No." + ' PWD is BBG@1234.' +                                         //240625 code Added
                          ' We Assure you of our Best Support in Transforming Your Dreams into Reality. Please join our BBG WhatsApp channel for updates https://whatsapp.com/channel/0029Va9v5xP6rsQkBNMHFw2V BBGIND.';  //240625 code Added
 
-
-
-
-                // SMS := 'Dear Mr/Ms: ' + Vendor.Name + ' Congrats and Welcome to BBG Family.Your Business ID ' + Vendor."No." + ' PWD is BBG@1234 Thank you and Assure' +   //240625 code Commented
-                //' you of our Best Support in Transforming Your Dreams into Reality.Please join the official BBG WhatsApp channel for updateshttps://shorturl.at/dgDQV BBG Family.';  //240625 code Commented
-
-
-                //   SMS := 'Dear Mr/Ms:'+ FORMAT(Vendor.Name) +'. Congrats and Welcome to BBG Family. Your Business ID '+Vendor."No." + 'PWD '+FORMAT(Vendor."Associate Password") +'. Thank you and '+
-                //'Assure you of our Best Support in Transforming Your Dreams into Reality. Please join the official telegram channel '+
-                //'(BBG Post Office) for updates https://t.me/BBGPostoffice BBGIND.';//120523 New code
                 PostPayment.SendSMS(Vendor."BBG Mob. No.", SMS);
                 //ALLEDK15112022 Start
                 CLEAR(SMSLogDetails);
@@ -865,20 +800,12 @@ codeunit 50013 "Create Associate / SendSMS"
                 unitsetup.GET;
                 Filename := '';
                 Filename := unitsetup."Associate Mail Image Path";
-                // /*                
-                // SMTPSetup.GET;
-                // SMTPMail.CreateMessage(SMTPSetup."Email Sender Name", SMTPSetup."Email Sender Email", Vendor."E-Mail", 'Associate Onboard',
-                //     '', TRUE);
-
                 CLEAR(smtpMail);
                 SMTPSetup.Reset();
                 SMTPSetup.SetFilter(Name, '<>%1', '');
                 if SMTPSetup.FindFirst() then;
 
                 HtmlEmailBody := '<!DOCTYPE html><html><body>';
-
-
-
                 HtmlEmailBody += '<br>';
                 HtmlEmailBody += '<br/>';
                 HtmlEmailBody += 'Dear Sir,';
@@ -916,10 +843,6 @@ codeunit 50013 "Create Associate / SendSMS"
 
 
             IF IntVender."E-Mail" <> '' THEN BEGIN
-                // /*
-                // SMTPSetup.GET;
-                // SMTPMail.CreateMessage(SMTPSetup."Email Sender Name", SMTPSetup."Email Sender Email", IntVender."E-Mail", 'Associate Onboard',
-                //     '', TRUE);
 
                 CLEAR(smtpMail);
                 SMTPSetup.Reset();

@@ -11,14 +11,12 @@ table 50200 "Region/Districts Rank Entry"
             var
                 Region_districtsRankEntry: Record "Region/Districts Rank Entry";  //18122025
             begin
-
                 //Code added 18122025 Start
-                // Region_districtsRankEntry.RESET;
-                // Region_districtsRankEntry.SetRange("Region_Districts Code", Rec."Region_Districts Code");
-                // IF Region_districtsRankEntry.Count > 1 THEN
-                //     Error('Data already Exists against =' + Rec."Region_Districts Code");
+                Region_districtsRankEntry.RESET;
+                Region_districtsRankEntry.SetRange("Region_Districts Code", Rec."Region_Districts Code");
+                IF Region_districtsRankEntry.Count > 1 THEN
+                    Error('Data already Exists against =' + Rec."Region_Districts Code");
                 //Code added 18122025 END
-
             end;
         }
         Field(2; Rank; Decimal)
@@ -31,13 +29,15 @@ table 50200 "Region/Districts Rank Entry"
                 Region_districtsRankEntry: Record "Region/Districts Rank Entry";  //18122025
             begin
                 TestField("Region/Rank Code");
+                IF "Region/Rank Code" = 'R0003' then
+                    Error('Region/Rank Code should not be R0003');
                 //Code addded 18122025 Start
-                // If Rank <> 0 THEN begin
-                //     Region_districtsRankEntry.RESET;
-                //     Region_districtsRankEntry.SetRange("Region_Districts Code", Rec."Region_Districts Code");
-                //     IF Region_districtsRankEntry.Count > 1 THEN
-                //         Error('Data already Exists against =' + Rec."Region_Districts Code");
-                // end;
+                IF Rank <> 0 THEN begin
+                    Region_districtsRankEntry.RESET;
+                    Region_districtsRankEntry.SetRange("Region_Districts Code", Rec."Region_Districts Code");
+                    IF Region_districtsRankEntry.Count > 1 THEN
+                        Error('Data already Exists against =' + Rec."Region_Districts Code");
+                end;
                 //Code addded 18122025 END
 
                 Rank_1.RESET;
@@ -70,10 +70,10 @@ table 50200 "Region/Districts Rank Entry"
 
             begin
                 //Code added 18122025 Start
-                // Region_districtsRankEntry.RESET;
-                // Region_districtsRankEntry.SetRange("Region_Districts Code", Rec."Region_Districts Code");
-                // IF Region_districtsRankEntry.Count > 1 THEN
-                //     Error('Data already Exists against =' + Rec."Region_Districts Code");
+                Region_districtsRankEntry.RESET;
+                Region_districtsRankEntry.SetRange("Region_Districts Code", Rec."Region_Districts Code");
+                IF Region_districtsRankEntry.Count > 1 THEN
+                    Error('Data already Exists against =' + Rec."Region_Districts Code");
 
 
                 //Code added 18122025 END
@@ -85,19 +85,19 @@ table 50200 "Region/Districts Rank Entry"
                     IF ClusterstateMaster.GET("State Code") then begin
                         "State Name" := ClusterstateMaster."State Name";
                         //Code commented 18122025 Start
-                        IF "State Code" = 1 then
-                            "Region/Rank Code" := 'R0001';
-                        IF "State Code" = 2 then
-                            "Region/Rank Code" := 'R0002';
-                        IF "State Code" = 3 then
-                            "Region/Rank Code" := 'R0003';
+                        //     IF "State Code" = 1 then
+                        //         "Region/Rank Code" := 'R0001';
+                        //     IF "State Code" = 2 then
+                        //         "Region/Rank Code" := 'R0002';
+                        //     IF "State Code" = 3 then
+                        //         "Region/Rank Code" := 'R0003';
 
-                    END ELSE begin
-                        "State Name" := '';
-                        "Region/Rank Code" := '';
+                        // END ELSE begin
+                        //     "State Name" := '';
+                        //     "Region/Rank Code" := '';
+                        // end;
+                        //Code commented 18122025 END
                     end;
-                    //Code commented 18122025 END
-                    // end;
 
 
                 end;

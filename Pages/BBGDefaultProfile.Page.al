@@ -3034,6 +3034,14 @@ page 80000 "BBG Profile"
                         RunObject = xmlport "District and Mandal uploader";
                     }
 
+                    action("Update GL Cheuque No.")
+                    {
+                        Caption = 'Update GL Cheuque No. XmlPort';
+                        ApplicationArea = all;
+
+                        RunObject = xmlport "Update GLEntry Cheque No.";
+                    }
+
                 }
                 group(AdminMobileApplication)
                 {
