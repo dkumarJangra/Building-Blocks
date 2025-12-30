@@ -378,6 +378,19 @@ codeunit 70000 "BBG Table Event Mgnt."
 
     end;
 
+    [EventSubscriber(ObjectType::Table, Database::"Sales header", 'OnAfterSelltoCustomerNoOnAfterValidate', '', false, false)]
+
+    local procedure OnAfterSelltoCustomerNoOnAfterValidate_SalesHeader(var SalesHeader: Record "Sales Header"; var xSalesHeader: Record "Sales Header")
+    var
+        SalesSetup: Record "Sales & Receivables Setup";
+    Begin
+        IF SalesHeader."Inter Sales Document" THEN begin
+            SalesSetup.GET;
+            SalesHeader."Posting No. Series" := SalesSetup."Posted Inter SalesNo. Sr. Code";
+            SalesHeader.modify;
+        end;
+    END;
+
 
     var
         myInt: Integer;

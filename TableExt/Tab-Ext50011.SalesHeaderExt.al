@@ -379,6 +379,12 @@ tableextension 50011 "BBG Sales Header Ext" extends "Sales Header"
             DataClassification = ToBeClassified;
             Description = 'AlleBLK';
         }
+        field(98522; "Inter Sales Document"; Boolean)
+        {
+            Caption = 'Inter Sales Document';
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
     }
 
     keys
@@ -412,6 +418,7 @@ tableextension 50011 "BBG Sales Header Ext" extends "Sales Header"
         ItemL: Record Item;
         Customer: Record Customer;
         GateEntryAttachment: Record "Gate Entry Attachment";// 16557;
+
 
 
     trigger OnAfterInsert()

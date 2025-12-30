@@ -925,9 +925,16 @@ codeunit 70002 "BBG Codeunit Event Mgnt."
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post (Yes/No)", OnBeforeConfirmSalesPost, '', false, false)]
     local procedure OnBeforeConfirmSalesPost_SalesPost(var SalesHeader: Record "Sales Header"; var IsHandled: Boolean)
+    var
+        SalesSetup: Record "Sales & Receivables Setup";
     begin
         IF SalesHeader."Client Bill Type" = SalesHeader."Client Bill Type"::Raised THEN
             ERROR('Sorry you can not post raised bill');
+        IF SalesHeader."Inter Sales Document" THEN begin
+            SalesSetup.GET;
+            SalesHeader."Posting No. Series" := SalesSetup."Posted Inter SalesNo. Sr. Code";
+            SalesHeader.Modify;
+        end;
     End;
 
 
@@ -4883,5 +4890,8 @@ codeunit 70002 "BBG Codeunit Event Mgnt."
     End;
 
 
+
     //======= Codeunit 90 Purch.-Post ========END<<
+
+
 }

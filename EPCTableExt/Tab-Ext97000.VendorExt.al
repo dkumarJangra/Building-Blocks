@@ -1561,6 +1561,12 @@ tableextension 97000 "EPC Vendor Ext" extends Vendor
             DataClassification = ToBeClassified;
             TableRelation = "Sub Team Master";
         }
+        field(50407; "Pre-Deactive"; Boolean)
+        {
+            Caption = 'Pre-Deactive';
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
 
     }
 

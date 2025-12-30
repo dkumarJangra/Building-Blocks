@@ -218,6 +218,27 @@ tableextension 50012 "BBG Sales Line Ext" extends "Sales Line"
             DataClassification = ToBeClassified;
             Description = 'ALLERP KRN0008 18-08-2010:';
         }
+        field(50025; "Ref. Gift Item No."; Code[20])   //added new field 29122025
+        {
+            DataClassification = ToBeClassified;
+
+            TableRelation = Item;
+            trigger OnValidate()
+            var
+                myInt: Integer;
+                Unitsetup: Record "Unit Setup";
+                PurchLines: Record "Purchase Line";
+            begin
+                IF Rec."Document Type" = Rec."Document Type"::Invoice THEN begin
+                    Unitsetup.GET;
+                    If Unitsetup."Gift Control A/c" <> '' THEN BEGIN
+                        TestField(rec.Type, rec.Type::"G/L Account");
+                        IF Rec."No." <> Unitsetup."Gift Control A/c" then
+                            Error('This field is use for Gift control A/C only');
+                    END;
+                end;
+            end;
+        }
     }
 
     keys

@@ -221,6 +221,10 @@ page 50106 "Vendor with Blacklist"
                 {
 
                 }
+                field("Pre-Deactive"; Rec."Pre-Deactive")
+                {
+                    Editable = false;
+                }
 
             }
             part(""; "Document Approval Details")

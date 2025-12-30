@@ -96,6 +96,7 @@ tableextension 97047 "EPC Sales Line Ext" extends "Sales Line"
             DataClassification = ToBeClassified;
             Description = 'ALLERE';
         }
+
     }
 
     keys

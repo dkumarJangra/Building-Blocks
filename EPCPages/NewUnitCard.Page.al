@@ -204,6 +204,7 @@ page 50081 "New Unit Card"
                 field("New Loan File"; Rec."New Loan File")
                 {
                     Caption = 'New Loan File';
+                    Editable = false;
                 }
             }
             part("Receipt Lines"; "NewUnit Payment Entry  Subform")

@@ -1217,6 +1217,7 @@ table 50015 "New Confirmed Order"
             DataClassification = ToBeClassified;
             OptionMembers = " ",Yes,No;
             OptionCaption = ' ,Yes,No';
+
         }
     }
 

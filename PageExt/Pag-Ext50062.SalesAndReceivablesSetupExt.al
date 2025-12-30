@@ -60,6 +60,14 @@ pageextension 50062 "BBG Sales & Receiva. Setup Ext" extends "Sales & Receivable
                 {
                     ApplicationArea = All;
                 }
+                field("Inter Sales No. Series Code"; Rec."Inter Sales No. Series Code")
+                {
+                    ApplicationArea = All;
+                }
+                field("Posted Inter SalesNo. Sr. Code"; Rec."Posted Inter SalesNo. Sr. Code")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

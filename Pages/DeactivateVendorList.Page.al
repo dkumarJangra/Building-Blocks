@@ -127,10 +127,21 @@ page 50168 "Deactivate Vendor List"
                 //RunObject = Report 50002;
 
                 trigger OnAction()
+                var
+                    Vendor_2: Record vendor;
+                    DeactiveVend: Record "De-Activate Vendors";
+
                 begin
-                    UserSetup.RESET;
-                    UserSetup.GET(USERID);
-                    IF UserSetup.FINDFIRST THEN;
+                    CurrPage.SETSELECTIONFILTER(DeactiveVend);
+                    IF DeactiveVend.FindSet() then
+                        repeat
+                            IF NOT Vendor_2.GET(DeactiveVend."No.") THEN begin
+                                Vendor_2.init;
+                                Vendor_2.TransferFields(DeactiveVend);
+                                Vendor_2.insert;
+                            end;
+                        Until DeactiveVend.Next = 0;
+                    Message('Process Done');
                 end;
             }
         }
