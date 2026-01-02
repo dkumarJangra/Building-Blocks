@@ -204,7 +204,6 @@ tableextension 50014 "BBG Purchase Line Ext" extends "Purchase Line"
         field(80020; "Ref. Gift Item No."; Code[20])
         {
             DataClassification = ToBeClassified;
-            Description = 'ALLEPG 190509';
             TableRelation = Item;
             trigger OnValidate()
             var

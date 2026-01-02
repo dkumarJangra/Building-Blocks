@@ -1,18 +1,37 @@
+namespace Microsoft.Sales.Document;
 
-page 50440 "Inter Sales Invoice List"
+using Microsoft.EServices.EDocument;
+using Microsoft.Finance.Dimension;
+using Microsoft.Foundation.Attachment;
+using Microsoft.Foundation.Reporting;
+using Microsoft.Sales.Comment;
+using Microsoft.Sales.Customer;
+using Microsoft.Sales.History;
+using Microsoft.Sales.Posting;
+using Microsoft.Sales.Reports;
+using Microsoft.Sales.Setup;
+using Microsoft.Utilities;
+using System.Automation;
+using System.Environment.Configuration;
+using System.Text;
+using System.Threading;
+using System.Security.User;
+using Microsoft.Foundation.NoSeries;
+
+page 50458 "Inter Sales Credit Memos"
 {
+    AdditionalSearchTerms = 'refund credit return refund correct cancel undo sale';
     ApplicationArea = Basic, Suite;
-    Caption = 'Inter Sales Invoices';
-    CardPageID = "Inter Sales Invoice";
+    Caption = 'Inter Sales Credit Memos';
+    CardPageID = "Inter Sales Credit Memo";
     DataCaptionFields = "Sell-to Customer No.";
     Editable = false;
     PageType = List;
-
+    QueryCategory = 'Sales Credit Memos';
     RefreshOnActivate = true;
     SourceTable = "Sales Header";
-    SourceTableView = where("Document Type" = const(Invoice), "Inter Sales Document" = const(True));
+    SourceTableView = where("Document Type" = const("Credit Memo"), "Inter Sales Document" = const(true));
     UsageCategory = Lists;
-
     layout
     {
         area(content)
@@ -22,14 +41,12 @@ page 50440 "Inter Sales Invoice List"
                 ShowCaption = false;
                 field("No."; Rec."No.")
                 {
-                    ApplicationArea = Basic, Suite;
-                    AboutTitle = 'Number (No.) is set automatically';
-                    AboutText = 'This invoice number is only used until posting. At that time, the posted sales invoice gets the final number that your customer will see.';
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the number of the involved entry or record, according to the specified number series.';
                 }
                 field("Sell-to Customer No."; Rec."Sell-to Customer No.")
                 {
-                    ApplicationArea = Basic, Suite;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the number of the customer.';
                 }
                 field("Sell-to Customer Name"; Rec."Sell-to Customer Name")
@@ -139,13 +156,7 @@ page 50440 "Inter Sales Invoice List"
                 field("Location Code"; Rec."Location Code")
                 {
                     ApplicationArea = Location;
-                    ToolTip = 'Specifies the location from where items are to be shipped. This field acts as the default location for new lines. You can update the location code for individual lines as needed.';
-                }
-                field("Quote No."; Rec."Quote No.")
-                {
-                    ApplicationArea = Basic, Suite;
-                    ToolTip = 'Specifies the number of the sales quote that the sales invoice was created from. You can track the number to sales quote documents that you have printed, saved, or emailed.';
-                    Visible = false;
+                    ToolTip = 'Specifies the location where the items are to be placed when they are received. This field acts as the default location for new lines. You can update the location code for individual lines as needed.';
                 }
                 field("Salesperson Code"; Rec."Salesperson Code")
                 {
@@ -194,40 +205,16 @@ page 50440 "Inter Sales Invoice List"
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies when the sales invoice must be paid.';
                 }
-                field("Payment Discount %"; Rec."Payment Discount %")
-                {
-                    ApplicationArea = Basic, Suite;
-                    ToolTip = 'Specifies the payment discount percentage granted if the customer pays on or before the date entered in the Pmt. Discount Date field.';
-                    Visible = false;
-                }
-                field("Shipment Method Code"; Rec."Shipment Method Code")
-                {
-                    ApplicationArea = Suite;
-                    ToolTip = 'Specifies the delivery conditions of the related shipment, such as free on board (FOB).';
-                    Visible = false;
-                }
-                field("Shipping Agent Code"; Rec."Shipping Agent Code")
-                {
-                    ApplicationArea = Suite;
-                    ToolTip = 'Specifies the code for the shipping agent who is transporting the items.';
-                    Visible = false;
-                }
-                field("Shipping Agent Service Code"; Rec."Shipping Agent Service Code")
-                {
-                    ApplicationArea = Suite;
-                    ToolTip = 'Specifies the code for the service, such as a one-day delivery, that is offered by the shipping agent.';
-                    Visible = false;
-                }
-                field("Package Tracking No."; Rec."Package Tracking No.")
-                {
-                    ApplicationArea = Suite;
-                    ToolTip = 'Specifies the shipping agent''s package number.';
-                    Visible = false;
-                }
                 field("Shipment Date"; Rec."Shipment Date")
                 {
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies when items on the document are shipped or were shipped. A shipment date is usually calculated from a requested delivery date plus lead time.';
+                    Visible = false;
+                }
+                field("Applies-to Doc. Type"; Rec."Applies-to Doc. Type")
+                {
+                    ApplicationArea = Basic, Suite;
+                    ToolTip = 'Specifies the type of the posted document that this document or journal line will be applied to when you post, for example to register payment.';
                     Visible = false;
                 }
                 field("Job Queue Status"; Rec."Job Queue Status")
@@ -235,7 +222,7 @@ page 50440 "Inter Sales Invoice List"
                     ApplicationArea = All;
                     Style = Unfavorable;
                     StyleExpr = Rec."Job Queue Status" = Rec."Job Queue Status"::ERROR;
-                    ToolTip = 'Specifies the status of a job queue entry or task that handles the posting of sales invoices.';
+                    ToolTip = 'Specifies the status of a job queue entry or task that handles the posting of sales credit memos.';
                     Visible = JobQueueActive;
 
                     trigger OnDrillDown()
@@ -256,12 +243,6 @@ page 50440 "Inter Sales Invoice List"
                 {
                     ApplicationArea = Suite;
                     ToolTip = 'Specifies additional posting information for the document. After you post the document, the description can add detail to vendor and customer ledger entries.';
-                    Visible = false;
-                }
-                field("Your Reference"; Rec."Your Reference")
-                {
-                    ApplicationArea = Basic, Suite;
-                    ToolTip = 'Specifies the customer''s reference. The content will be printed on sales documents.';
                     Visible = false;
                 }
             }
@@ -324,12 +305,10 @@ page 50440 "Inter Sales Invoice List"
     {
         area(navigation)
         {
-
-            group("&Invoice")
+            group("&Cr. Memo")
             {
-                Caption = '&Invoice';
-                Image = Invoice;
-
+                Caption = '&Cr. Memo';
+                Image = CreditMemo;
 #if not CLEAN26
                 action(Statistics)
                 {
@@ -401,7 +380,6 @@ page 50440 "Inter Sales Invoice List"
                 }
                 action(Approvals)
                 {
-                    AccessByPermission = TableData "Approval Entry" = R;
                     ApplicationArea = Suite;
                     Caption = 'Approvals';
                     Image = Approvals;
@@ -414,7 +392,51 @@ page 50440 "Inter Sales Invoice List"
                         ApprovalsMgmt.OpenApprovalsSales(Rec);
                     end;
                 }
-                action(CustomerAction)
+            }
+        }
+        area(processing)
+        {
+            group(CreditMemo)
+            {
+                Caption = 'Credit Memo';
+                Image = Invoice;
+
+                Action(CreateNewDocument)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Create New Inter Sales Credit Document';
+                    Image = New;
+
+                    trigger OnAction()
+                    var
+
+                        SalesSetup: Record "Sales & Receivables Setup";
+
+                        Nosereies: Codeunit "No. Series";
+                        InterSalesInvDoc: Page "Inter Sales Invoice";
+                        UserSetupMgt: Codeunit "User Setup Management";
+                    begin
+                        SalesSetup.get;
+                        SalesSetup.TestField("Inter Sales CrMemo No. Sr.Code");
+                        SalesSetup.TestField("Posted Inter Sales Crmemo No.");
+                        SalesHeader.init;
+                        SalesHeader."Document Type" := SalesHeader."Document Type"::"Credit Memo";
+                        SalesHeader."No." := Nosereies.GetNextNo(SalesSetup."Inter Sales CrMemo No. Sr.Code", WorkDate);
+                        SalesHeader."Posting Date" := WorkDate();
+                        SalesHeader."Document Date" := WorkDate();
+                        SalesHeader."no. series" := SalesSetup."Inter Sales CrMemo No. Sr.Code";
+                        SalesHeader."Inter Sales Document" := True;
+                        SalesHeader."Posting No. Series" := SalesSetup."Posted Inter Sales Crmemo No.";
+                        Salesheader."Responsibility Center" := UserSetupMgt.GetRespCenter(0, Salesheader."Responsibility Center");
+                        Salesheader."Location Code" := Salesheader."Responsibility Center";
+                        Salesheader."Order Date" := WorkDate();
+                        SalesHeader.insert();
+
+                        PAGE.RUN(PAGE::"Inter Sales Credit Memo", SalesHeader);
+                    end;
+
+                }
+                action(Customer)
                 {
                     ApplicationArea = Basic, Suite;
                     Caption = 'Customer';
@@ -426,60 +448,6 @@ page 50440 "Inter Sales Invoice List"
                     Scope = Repeater;
                     ShortCutKey = 'Shift+F7';
                     ToolTip = 'View or edit detailed information about the customer.';
-                }
-            }
-            action("Posted Sales Invoices")
-            {
-                ApplicationArea = Basic, Suite;
-                Caption = 'Posted Sales Invoices';
-                Image = Documents;
-                RunObject = Page "Posted Sales Invoices";
-                AboutTitle = 'Get to the posted sales invoices';
-                AboutText = 'From the list of posted sales invoices, you can overview all invoices that were finalized, and also see which of them are paid or canceled.';
-                ToolTip = 'Open the list of posted sales invoices to view details or make adjustments.';
-            }
-        }
-        area(processing)
-        {
-
-
-            group(Invoice)
-            {
-                Caption = '&Invoice';
-                Image = Invoice;
-                Action(CreateNewDocument)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Create New inter Sales Document';
-                    Image = New;
-
-                    trigger OnAction()
-                    var
-
-                        SalesSetup: Record "Sales & Receivables Setup";
-                        Nosereies: Codeunit "No. Series";
-                        InterSalesInvDoc: Page "Inter Sales Invoice";
-                        UserSetupMgt: Codeunit "User Setup Management";
-                    begin
-                        SalesSetup.get;
-                        SalesSetup.TestField("Inter Sales No. Series Code");
-                        SalesSetup.TestField("Posted Inter SalesNo. Sr. Code");
-                        SalesHeader.init;
-                        SalesHeader."Document Type" := SalesHeader."Document Type"::Invoice;
-                        SalesHeader."No." := Nosereies.GetNextNo(SalesSetup."Inter Sales No. Series Code", WorkDate);
-                        SalesHeader."Posting Date" := WorkDate();
-                        SalesHeader."Document Date" := WorkDate();
-                        SalesHeader."no. series" := SalesSetup."Inter Sales No. Series Code";
-                        SalesHeader."Inter Sales Document" := True;
-                        SalesHeader."Posting No. Series" := SalesSetup."Posted Inter SalesNo. Sr. Code";
-                        Salesheader."Responsibility Center" := UserSetupMgt.GetRespCenter(0, Salesheader."Responsibility Center");
-                        Salesheader."Location Code" := Salesheader."Responsibility Center";
-                        Salesheader."Order Date" := WorkDate();
-                        SalesHeader.insert();
-
-                        PAGE.RUN(PAGE::"Inter Sales Invoice", SalesHeader);
-                    end;
-
                 }
             }
             group(Release)
@@ -579,8 +547,6 @@ page 50440 "Inter Sales Invoice List"
                     Caption = 'P&ost';
                     Image = PostOrder;
                     ShortCutKey = 'F9';
-                    AboutTitle = 'Post an invoice';
-                    AboutText = 'You post an invoice when you''ve completed all its details. This action posts the selected invoice, and you can later send it to the customer if needed.';
                     ToolTip = 'Finalize the document or journal by posting the amounts and quantities to the related accounts in your company books.';
 
                     trigger OnAction()
@@ -589,10 +555,46 @@ page 50440 "Inter Sales Invoice List"
                         SalesBatchPostMgt: Codeunit "Sales Batch Post Mgt.";
                     begin
                         CurrPage.SetSelectionFilter(SalesHeader);
-                        if SalesHeader.Count > 1 then
-                            SalesBatchPostMgt.RunWithUI(SalesHeader, Rec.Count, ReadyToPostQst)
-                        else
+                        if SalesHeader.Count > 1 then begin
+                            SalesHeader.FindSet();
+                            repeat
+                                CheckSalesCheckAllLinesHaveQuantityAssigned(SalesHeader);
+                            until SalesHeader.Next() = 0;
+                            SalesBatchPostMgt.RunWithUI(SalesHeader, Rec.Count(), ReadyToPostQst);
+                        end else
                             PostDocument(CODEUNIT::"Sales-Post (Yes/No)");
+                    end;
+                }
+                action("Preview Posting")
+                {
+                    ApplicationArea = Basic, Suite;
+                    Caption = 'Preview Posting';
+                    Image = ViewPostedOrder;
+                    ShortCutKey = 'Ctrl+Alt+F9';
+                    ToolTip = 'Review the different types of entries that will be created when you post the document or journal.';
+
+                    trigger OnAction()
+                    var
+                        SelectedSalesHeader: Record "Sales Header";
+                        SalesPostYesNo: Codeunit "Sales-Post (Yes/No)";
+                    begin
+                        CurrPage.SetSelectionFilter(SelectedSalesHeader);
+                        SalesPostYesNo.MessageIfPostingPreviewMultipleDocuments(SelectedSalesHeader, Rec."No.");
+                        SalesPostYesNo.Preview(Rec);
+                    end;
+                }
+                action(PostAndSend)
+                {
+                    ApplicationArea = Basic, Suite;
+                    Caption = 'Post and &Send';
+                    Ellipsis = true;
+                    Image = PostSendTo;
+                    ToolTip = 'Finalize and prepare to send the document according to the customer''s sending profile, such as attached to an email. The Send document to window opens where you can confirm or select a sending profile.';
+
+                    trigger OnAction()
+                    begin
+                        CheckSalesCheckAllLinesHaveQuantityAssigned(Rec);
+                        PostDocument(CODEUNIT::"Sales-Post and Send");
                     end;
                 }
                 action("Post &Batch")
@@ -608,24 +610,11 @@ page 50440 "Inter Sales Invoice List"
                         SalesHeader: Record "Sales Header";
                         SelectionFilterManagement: Codeunit SelectionFilterManagement;
                     begin
+                        CheckSalesCheckAllLinesHaveQuantityAssigned(Rec);
                         CurrPage.SetSelectionFilter(SalesHeader);
                         SalesHeader.SetFilter("No.", SelectionFilterManagement.GetSelectionFilterForSalesHeader(SalesHeader));
-                        REPORT.RunModal(REPORT::"Batch Post Sales Invoices", true, true, SalesHeader);
+                        REPORT.RunModal(REPORT::"Batch Post Sales Credit Memos", true, true, SalesHeader);
                         CurrPage.Update(false);
-                    end;
-                }
-                action(PostAndSend)
-                {
-                    ApplicationArea = Basic, Suite;
-                    Caption = 'Post and &Send';
-                    Ellipsis = true;
-                    Image = PostSendTo;
-                    ToolTip = 'Finalize and prepare to send the document according to the customer''s sending profile, such as attached to an email. The Send document to window opens first so you can confirm or select a sending profile.';
-
-                    trigger OnAction()
-                    begin
-                        LinesInstructionMgt.SalesCheckAllLinesHaveQuantityAssigned(Rec);
-                        PostDocument(CODEUNIT::"Sales-Post and Send");
                     end;
                 }
                 action("Remove From Job Queue")
@@ -633,8 +622,6 @@ page 50440 "Inter Sales Invoice List"
                     ApplicationArea = All;
                     Caption = 'Remove From Job Queue';
                     Image = RemoveLine;
-                    //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                    //PromotedCategory = Category5;
                     ToolTip = 'Remove the scheduled processing of this record from the job queue.';
                     Visible = JobQueueActive;
 
@@ -643,27 +630,40 @@ page 50440 "Inter Sales Invoice List"
                         Rec.CancelBackgroundPosting();
                     end;
                 }
-                action(Preview)
-                {
-                    ApplicationArea = Basic, Suite;
-                    Caption = 'Preview Posting';
-                    Image = ViewPostedOrder;
-                    ShortCutKey = 'Ctrl+Alt+F9';
-                    ToolTip = 'Review the different types of entries that will be created when you post the document or journal.';
-
-                    trigger OnAction()
-                    begin
-                        ShowPreview();
-                    end;
-                }
             }
-        }
-        area(reporting)
-        {
             group(Reports)
             {
                 Caption = 'Reports';
                 Image = "Report";
+                group(SalesReports)
+                {
+                    Caption = 'Sales Reports';
+                    Image = "Report";
+                    action("Customer - Top 10 List")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'Customer - Top 10 List';
+                        Image = "Report";
+                        RunObject = Report "Customer - Top 10 List";
+                        ToolTip = 'View which customers purchase the most or owe the most in a selected period. Only customers that have either purchases during the period or a balance at the end of the period will be included.';
+                    }
+                    action("Customer - Sales List")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'Customer - Sales List';
+                        Image = "Report";
+                        RunObject = Report "Customer - Sales List";
+                        ToolTip = 'View customer sales for a period, for example, to report sales activity to customs and tax authorities. You can choose to include only customers with total sales that exceed a minimum amount. You can also specify whether you want the report to show address details for each customer.';
+                    }
+                    action("Sales Statistics")
+                    {
+                        ApplicationArea = Basic, Suite;
+                        Caption = 'Sales Statistics';
+                        Image = "Report";
+                        RunObject = Report "Sales Statistics";
+                        ToolTip = 'View the customer''s total cost, sale, and profit over time, for example, to analyze earnings trends. The report shows amounts for original and adjusted cost, sales, profit, invoice discount, payment discount, and profit percentage in three adjustable periods.';
+                    }
+                }
                 group(FinanceReports)
                 {
                     Caption = 'Finance Reports';
@@ -733,39 +733,15 @@ page 50440 "Inter Sales Invoice List"
                         ToolTip = 'View a document showing which customer ledger entries that a payment has been applied to. This report can be used as a payment receipt that you send to the customer.';
                     }
                 }
-                group(SalesReports)
-                {
-                    Caption = 'Sales Reports';
-                    Image = "Report";
-                    action("Customer - Top 10 List")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Customer - Top 10 List';
-                        Image = "Report";
-                        RunObject = Report "Customer - Top 10 List";
-                        ToolTip = 'View which customers purchase the most or owe the most in a selected period. Only customers that have either purchases during the period or a balance at the end of the period will be included.';
-                    }
-                    action("Customer - Sales List")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Customer - Sales List';
-                        Image = "Report";
-                        RunObject = Report "Customer - Sales List";
-                        ToolTip = 'View customer sales for a period, for example, to report sales activity to customs and tax authorities. You can choose to include only customers with total sales that exceed a minimum amount. You can also specify whether you want the report to show address details for each customer.';
-                    }
-                    action("Sales Statistics")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Sales Statistics';
-                        Image = "Report";
-                        RunObject = Report "Sales Statistics";
-                        ToolTip = 'View the customer''s total cost, sale, and profit over time, for example, to analyze earnings trends. The report shows amounts for original and adjusted cost, sales, profit, invoice discount, payment discount, and profit percentage in three adjustable periods.';
-                    }
-                }
             }
         }
         area(Promoted)
         {
+            group(Category_New)
+            {
+                actionref(CreateNew_Document; CreateNewDocument)
+                { }
+            }
             group(Category_Category4)
             {
                 Caption = 'Release', Comment = 'Generated from the PromotedActionCategories property index 3.';
@@ -792,7 +768,7 @@ page 50440 "Inter Sales Invoice List"
                 actionref(PostAndSend_Promoted; PostAndSend)
                 {
                 }
-                actionref(Preview_Promoted; Preview)
+                actionref("Preview Posting_Promoted"; "Preview Posting")
                 {
                 }
             }
@@ -800,14 +776,9 @@ page 50440 "Inter Sales Invoice List"
             {
                 Caption = 'Request Approval', Comment = 'Generated from the PromotedActionCategories property index 6.';
             }
-            group(Category_New)
-            {
-                actionref(CreateNew_Document; CreateNewDocument)
-                { }
-            }
             group(Category_Category6)
             {
-                Caption = 'Invoice', Comment = 'Generated from the PromotedActionCategories property index 5.';
+                Caption = 'Credit Memo', Comment = 'Generated from the PromotedActionCategories property index 5.';
 
                 actionref(Dimensions_Promoted; Dimensions)
                 {
@@ -833,10 +804,7 @@ page 50440 "Inter Sales Invoice List"
                 separator(Navigate_Separator)
                 {
                 }
-                actionref(CustomerAction_Promoted; CustomerAction)
-                {
-                }
-                actionref("Posted Sales Invoices_Promoted"; "Posted Sales Invoices")
+                actionref(Customer_Promoted; Customer)
                 {
                 }
             }
@@ -873,33 +841,21 @@ page 50440 "Inter Sales Invoice List"
     end;
 
     var
-        ApplicationAreaMgmtFacade: Codeunit "Application Area Mgmt. Facade";
-        ReportPrint: Codeunit "Test Report-Print";
         LinesInstructionMgt: Codeunit "Lines Instruction Mgt.";
+        ReportPrint: Codeunit "Test Report-Print";
         OpenApprovalEntriesExist: Boolean;
         CanCancelApprovalForRecord: Boolean;
+        CustomerSelected: Boolean;
         CanRequestApprovalForFlow: Boolean;
         CanCancelApprovalForFlow: Boolean;
-        CustomerSelected: Boolean;
         StatusStyleTxt: Text;
-        Salesheader: Record "Sales Header";
-        PG: page 143;
+        SalesHeader: Record "Sales Header";
 
-        OpenPostedSalesInvQst: Label 'The invoice is posted as number %1 and moved to the Posted Sales Invoice window.\\Do you want to open the posted invoice?', Comment = '%1 = posted document number';
-        ReadyToPostQst: Label 'The number of invoices that will be posted is %1. \Do you want to continue?', Comment = '%1 - selected count';
+        OpenPostedSalesCrMemoQst: Label 'The credit memo is posted as number %1 and moved to the Posted Sales Credit Memo window.\\Do you want to open the posted credit memo?', Comment = '%1 = posted document number';
+        ReadyToPostQst: Label 'The number of credit memos that will be posted is %1. \Do you want to continue?', Comment = '%1 - selected count';
 
     protected var
         JobQueueActive: Boolean;
-
-    procedure ShowPreview()
-    var
-        SelectedSalesHeader: Record "Sales Header";
-        SalesPostYesNo: Codeunit "Sales-Post (Yes/No)";
-    begin
-        CurrPage.SetSelectionFilter(SelectedSalesHeader);
-        SalesPostYesNo.MessageIfPostingPreviewMultipleDocuments(SelectedSalesHeader, Rec."No.");
-        SalesPostYesNo.Preview(Rec);
-    end;
 
     local procedure SetControlAppearance()
     var
@@ -909,14 +865,14 @@ page 50440 "Inter Sales Invoice List"
         OpenApprovalEntriesExist := ApprovalsMgmt.HasOpenApprovalEntries(Rec.RecordId);
 
         CanCancelApprovalForRecord := ApprovalsMgmt.CanCancelApprovalForRecord(Rec.RecordId);
+        CustomerSelected := Rec."Sell-to Customer No." <> '';
 
         WorkflowWebhookManagement.GetCanRequestAndCanCancel(Rec.RecordId, CanRequestApprovalForFlow, CanCancelApprovalForFlow);
-
-        CustomerSelected := Rec."Sell-to Customer No." <> '';
     end;
 
     protected procedure PostDocument(PostingCodeunitID: Integer)
     var
+        ApplicationAreaMgmtFacade: Codeunit "Application Area Mgmt. Facade";
         PreAssignedNo: Code[20];
         xLastPostingNo: Code[20];
         IsHandled: Boolean;
@@ -926,32 +882,40 @@ page 50440 "Inter Sales Invoice List"
         xLastPostingNo := Rec."Last Posting No.";
 
         Rec.SendToPosting(PostingCodeunitID);
+        Rec.UpdateSalesOrderLineIfExist();
 
         IsHandled := false;
         OnPostDocumentBeforeNavigateAfterPosting(Rec, PostingCodeunitID, IsHandled);
         if IsHandled then
             exit;
 
-        if ApplicationAreaMgmtFacade.IsFoundationEnabled() then
-            ShowPostedConfirmationMessage(PreAssignedNo, xLastPostingNo);
+        if Rec."Job Queue Status" = Rec."Job Queue Status"::"Scheduled for Posting" then
+            CurrPage.Close()
+        else
+            if ApplicationAreaMgmtFacade.IsFoundationEnabled() then
+                ShowPostedConfirmationMessage(PreAssignedNo, xLastPostingNo);
     end;
 
     local procedure ShowPostedConfirmationMessage(PreAssignedNo: Code[20]; xLastPostingNo: Code[20])
     var
-        SalesInvoiceHeader: Record "Sales Invoice Header";
+
+        SalesCrMemoHeader: Record "Sales Cr.Memo Header";
         InstructionMgt: Codeunit "Instruction Mgt.";
     begin
         if (Rec."Last Posting No." <> '') and (Rec."Last Posting No." <> xLastPostingNo) then
-            SalesInvoiceHeader.SetRange("No.", Rec."Last Posting No.")
-        else begin
-            SalesInvoiceHeader.SetCurrentKey("Pre-Assigned No.");
-            SalesInvoiceHeader.SetRange("Pre-Assigned No.", PreAssignedNo);
-        end;
-        if SalesInvoiceHeader.FindFirst() then
-            if InstructionMgt.ShowConfirm(StrSubstNo(OpenPostedSalesInvQst, SalesInvoiceHeader."No."),
+            SalesCrMemoHeader.SetRange("No.", Rec."Last Posting No.")
+        else
+            SalesCrMemoHeader.SetRange("Pre-Assigned No.", PreAssignedNo);
+        if SalesCrMemoHeader.FindFirst() then
+            if InstructionMgt.ShowConfirm(StrSubstNo(OpenPostedSalesCrMemoQst, SalesCrMemoHeader."No."),
                  InstructionMgt.ShowPostedConfirmationMessageCode())
             then
-                InstructionMgt.ShowPostedDocument(SalesInvoiceHeader, Page::"Sales Invoice List");
+                InstructionMgt.ShowPostedDocument(SalesCrMemoHeader, Page::"Sales Credit Memos");
+    end;
+
+    local procedure CheckSalesCheckAllLinesHaveQuantityAssigned(SalesHeader: Record "Sales Header")
+    begin
+        LinesInstructionMgt.SalesCheckAllLinesHaveQuantityAssigned(SalesHeader);
     end;
 
     [IntegrationEvent(true, false)]

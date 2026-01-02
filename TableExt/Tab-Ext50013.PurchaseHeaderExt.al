@@ -285,6 +285,11 @@ tableextension 50013 "BBG Purchase Header Ext" extends "Purchase Header"
             DataClassification = ToBeClassified;
             Editable = False;
         }
+        Field(98523; "Inter Purchase Document"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+            Editable = False;
+        }
     }
 
     keys
@@ -1065,6 +1070,7 @@ UNTIL PurchLine.NEXT = 0;
     PROCEDURE CheckDimension();
     VAR
         DimSetEntry: Record "Dimension Set Entry";
+
     BEGIN
         TESTFIELD("Shortcut Dimension 1 Code");
         //IF ClientMgmt.Dimension2CodeMandatory THEN

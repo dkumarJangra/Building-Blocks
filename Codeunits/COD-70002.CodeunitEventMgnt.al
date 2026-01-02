@@ -668,6 +668,8 @@ codeunit 70002 "BBG Codeunit Event Mgnt."
             END;
         END;
         //alleab
+
+        SalesInvoiceHeader."Inter Sales Document" := SalesHeader."Inter Sales Document";  //New code added 29122025 
     End;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", OnPostSalesLineOnBeforeTestJobNo, '', false, false)]
@@ -932,8 +934,11 @@ codeunit 70002 "BBG Codeunit Event Mgnt."
             ERROR('Sorry you can not post raised bill');
         IF SalesHeader."Inter Sales Document" THEN begin
             SalesSetup.GET;
-            SalesHeader."Posting No. Series" := SalesSetup."Posted Inter SalesNo. Sr. Code";
-            SalesHeader.Modify;
+            IF SalesHeader."Document Type" = SalesHeader."Document Type"::Invoice THEN
+                SalesHeader."Posting No. Series" := SalesSetup."Posted Inter SalesNo. Sr. Code";
+            IF SalesHeader."Document Type" = SalesHeader."Document Type"::"Credit Memo" THEN
+                SalesHeader."Posting No. Series" := SalesSetup."Posted Inter Sales Crmemo No.";
+            SalesHeader.modify;
         end;
     End;
 
@@ -4729,6 +4734,15 @@ codeunit 70002 "BBG Codeunit Event Mgnt."
             END;
         END; //ALLEDK 101212
     end;
+
+    //Added new code 29122025 Start
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post", OnAfterInsertPostedHeaders, '', false, false)]
+    local procedure OnAfterInsertPostedHeaders_PurchPost(var PurchaseHeader: Record "Purchase Header"; var PurchRcptHeader: Record "Purch. Rcpt. Header"; var PurchInvHeader: Record "Purch. Inv. Header"; var PurchCrMemoHdr: Record "Purch. Cr. Memo Hdr."; var ReturnShptHeader: Record "Return Shipment Header"; var PurchSetup: Record "Purchases & Payables Setup"; var Window: Dialog)
+
+    begin
+        PurchInvHeader."Inter Purchase Document" := PurchaseHeader."Inter Purchase Document";
+    end;
+    //Added new code 29122025 END
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post", OnAfterPostPurchaseDoc, '', false, false)]
     local procedure OnAfterPostPurchaseDoc_PurchPost(PurchCrMemoHdrNo: Code[20]; CommitIsSupressed: Boolean; PurchInvHdrNo: Code[20]; PurchRcpHdrNo: Code[20]; RetShptHdrNo: Code[20]; var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line"; var PurchaseHeader: Record "Purchase Header")

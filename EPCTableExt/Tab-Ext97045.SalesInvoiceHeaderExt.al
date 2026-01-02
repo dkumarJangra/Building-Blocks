@@ -36,6 +36,12 @@ tableextension 97045 "EPC Sales Invoice Header Ext" extends "Sales Invoice Heade
             Caption = 'Customer Order No.';
             DataClassification = ToBeClassified;
         }
+        Field(68512; "Inter Sales Document"; Boolean)
+        {
+            Caption = 'Inter Sales Document';
+            DataClassification = ToBeClassified;
+            Editable = False;
+        }
 
     }
 

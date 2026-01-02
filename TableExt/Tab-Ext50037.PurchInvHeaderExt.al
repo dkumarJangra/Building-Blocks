@@ -228,6 +228,11 @@ tableextension 50037 "BBG Purch. Inv. Header Ext" extends "Purch. Inv. Header"
         {
 
         }
+        Field(98523; "Inter Purchase Document"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+            Editable = False;
+        }
     }
 
     keys

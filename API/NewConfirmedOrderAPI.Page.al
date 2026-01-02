@@ -82,6 +82,11 @@ page 50408 "New Confirmed Order API"
                 {
                     Caption = 'IBA No.';
                 }
+                Field(Extent; Rec."Saleable Area")  //Added new field 02012026
+                {
+                    Caption = 'Extent';
+                }
+
                 field(systemId; Rec.SystemId)
                 {
                     Caption = 'SystemId';

@@ -165,6 +165,11 @@ tableextension 50039 "BBG Purch. Cr. Memo Hdr Ext" extends "Purch. Cr. Memo Hdr.
             Caption = 'BizTalk Purchase Credit Memo';
             DataClassification = ToBeClassified;
         }
+        Field(98523; "Inter Purchase Document"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+            Editable = False;
+        }
     }
 
     keys

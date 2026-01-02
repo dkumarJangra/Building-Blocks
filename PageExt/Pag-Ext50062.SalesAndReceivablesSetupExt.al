@@ -68,6 +68,15 @@ pageextension 50062 "BBG Sales & Receiva. Setup Ext" extends "Sales & Receivable
                 {
                     ApplicationArea = All;
                 }
+                field("Inter Sales CrMemo No. Sr.Code"; Rec."Inter Sales CrMemo No. Sr.Code")
+                {
+                    ApplicationArea = All;
+                }
+                field("Posted Inter Sales CrMNo.Sr.Code"; Rec."Posted Inter Sales Crmemo No.")
+                {
+                    ApplicationArea = All;
+                }
+
             }
         }
     }

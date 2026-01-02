@@ -103,6 +103,13 @@ tableextension 50034 "BBG Sales Cr. Memo Line Ext" extends "Sales Cr.Memo Line"
             DataClassification = ToBeClassified;
             Description = 'ALLERP KRN0008 18-08-2010:';
         }
+        field(50025; "Ref. Gift Item No."; Code[20])   //added new field 29122025
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = Item;
+            Editable = false;
+
+        }
     }
 
     keys

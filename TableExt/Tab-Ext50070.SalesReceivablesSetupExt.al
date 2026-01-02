@@ -167,16 +167,33 @@ tableextension 50070 "BBG Sales & Receiv. Setup Ext" extends "Sales & Receivable
         }
         Field(50032; "Inter Sales No. Series Code"; Code[20])   //29122025 Added new field
         {
+            Caption = 'Inter Sales No. Series Code';
 
             DataClassification = ToBeClassified;
             TableRelation = "No. Series";
+
         }
         Field(50033; "Posted Inter SalesNo. Sr. Code"; Code[20])   //29122025 Added new field
         {
+            Caption = 'Posted Inter Sales No. Series Code';
 
             DataClassification = ToBeClassified;
             TableRelation = "No. Series";
         }
+
+        Field(50034; "Inter Sales CrMemo No. Sr.Code"; Code[20])   //29122025 Added new field
+        {
+            Caption = 'Inter Sales Credit Memo No. Series Code';
+            DataClassification = ToBeClassified;
+            TableRelation = "No. Series";
+        }
+        Field(50035; "Posted Inter Sales Crmemo No."; Code[20])   //29122025 Added new field
+        {
+            Caption = 'Posted Inter Sales Credit Memo No. Series Code';
+            DataClassification = ToBeClassified;
+            TableRelation = "No. Series";
+        }
+
     }
 
     keys

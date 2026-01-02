@@ -112,6 +112,11 @@ tableextension 50040 "BBG Purch. cr. Memo Line Ext" extends "Purch. Cr. Memo Lin
             DataClassification = ToBeClassified;
             Description = '--JPL';
         }
+        field(80020; "Ref. Gift Item No."; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
     }
 
     keys

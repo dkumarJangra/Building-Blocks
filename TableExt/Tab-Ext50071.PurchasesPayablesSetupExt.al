@@ -144,6 +144,30 @@ tableextension 50071 "BBG Purch & Payables Setup Ext" extends "Purchases & Payab
                 END;
             end;
         }
+        field(50101; "Inter Purchase No.Seires"; Code[20])
+        {
+            Caption = 'Inter Purchase No.Series';
+            DataClassification = ToBeClassified;
+            TableRelation = "No. Series".Code;
+        }
+        field(50102; "Posted Inter Purch. No.Seires"; Code[20])
+        {
+            Caption = 'Posted Inter Purch. No.Series';
+            DataClassification = ToBeClassified;
+            TableRelation = "No. Series".Code;
+        }
+        field(50103; "Inter Purchase Cr. No.Seires"; Code[20])
+        {
+            Caption = 'Inter Purchase Cr. Memo No.Series';
+            DataClassification = ToBeClassified;
+            TableRelation = "No. Series".Code;
+        }
+        field(50104; "Posted Inter Purch CrMemo NoSr"; Code[20])
+        {
+            Caption = 'Posted Inter Purch. Cr. Memo No.Series';
+            DataClassification = ToBeClassified;
+            TableRelation = "No. Series".Code;
+        }
     }
 
     keys

@@ -386,7 +386,11 @@ codeunit 70000 "BBG Table Event Mgnt."
     Begin
         IF SalesHeader."Inter Sales Document" THEN begin
             SalesSetup.GET;
-            SalesHeader."Posting No. Series" := SalesSetup."Posted Inter SalesNo. Sr. Code";
+            IF SalesHeader."Document Type" = SalesHeader."Document Type"::Invoice THEN
+                SalesHeader."Posting No. Series" := SalesSetup."Posted Inter SalesNo. Sr. Code";
+            IF SalesHeader."Document Type" = SalesHeader."Document Type"::"Credit Memo" THEN
+                SalesHeader."Posting No. Series" := SalesSetup."Posted Inter Sales Crmemo No.";
+
             SalesHeader.modify;
         end;
     END;

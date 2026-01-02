@@ -71,6 +71,12 @@ tableextension 50033 "BBG Sales Cr. Memo Header Ext" extends "Sales Cr.Memo Head
             Caption = 'BizTalk Document Sent';
             DataClassification = ToBeClassified;
         }
+        field(98522; "Inter Sales Document"; Boolean)
+        {
+            Caption = 'Inter Sales Document';
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
     }
 
     keys
