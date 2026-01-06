@@ -157,6 +157,11 @@ page 50472 "Posted Int PurchCrMemo Subform"
                     ToolTip = 'Specifies the discount amount that is granted for the item on the line.';
                     Visible = false;
                 }
+                field("Ref. Gift Item No."; Rec."Ref. Gift Item No.")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the item number of a gift item that is given to the customer when the customer purchases a specific item or reaches a certain sales amount.';
+                }
                 field("Allow Invoice Disc."; Rec."Allow Invoice Disc.")
                 {
                     ApplicationArea = Basic, Suite;

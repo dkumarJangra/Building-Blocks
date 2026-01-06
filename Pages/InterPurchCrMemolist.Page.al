@@ -418,7 +418,7 @@ page 50464 "Inter Purchase Credit Memos"
                     PurchSetup.TestField("Inter Purchase Cr. No.Seires");
                     PurchSetup.TestField("Posted Inter Purch CrMemo NoSr");
                     PurchHeader.init;
-                    PurchHeader."Document Type" := PurchHeader."Document Type"::Invoice;
+                    PurchHeader."Document Type" := PurchHeader."Document Type"::"Credit Memo";
                     PurchHeader."No." := noseries.GetNextNo(PurchSetup."Inter Purchase Cr. No.Seires", WorkDate);
                     PurchHeader."Posting Date" := WorkDate();
                     PurchHeader."Document Date" := WorkDate();

@@ -633,7 +633,10 @@ pageextension 50030 "BBG User Setup Ext" extends "User Setup"
             {
                 ApplicationArea = all;
             }
-
+            field("Allow Posting Date Change"; Rec."Allow Posting Date Change")
+            {
+                ApplicationArea = all;
+            }
 
         }
     }

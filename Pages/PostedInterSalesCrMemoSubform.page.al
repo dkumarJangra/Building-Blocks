@@ -129,7 +129,7 @@ page 50469 "Post InterSalesCrMemo Subform"
                 }
                 field("Ref. Gift Item No."; Rec."Ref. Gift Item No.")
                 {
-                    ApplicationArea = Sales;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the item number of a gift item that is given to the customer when the customer purchases a specific item or reaches a certain sales amount.';
 
                 }

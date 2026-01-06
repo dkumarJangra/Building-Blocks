@@ -640,7 +640,7 @@ page 50466 "Inter Purch. Cr. Memo Subform"
                 {
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies the number of the item ledger entry that the document or journal line is applied -to.';
-                    Visible = false;
+
                 }
                 field("Deferral Code"; Rec."Deferral Code")
                 {

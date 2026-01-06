@@ -328,6 +328,11 @@ tableextension 50022 "BBG User Setup Ext" extends "User Setup"
             DataClassification = ToBeClassified;
             Description = 'ALLEMSN01';
         }
+        field(90101; "Allow Posting Date Change"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+
+        }
         field(90001; "Default Branch Code"; Code[20])
         {
             DataClassification = ToBeClassified;

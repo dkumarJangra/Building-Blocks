@@ -342,6 +342,7 @@ page 50462 "InterSales Cr. Memo Subform"
                         DeltaUpdateTotals();
                     end;
                 }
+
                 field("Tax Liable"; Rec."Tax Liable")
                 {
                     ApplicationArea = SalesTax;
@@ -351,7 +352,7 @@ page 50462 "InterSales Cr. Memo Subform"
                 }
                 field("Ref. Gift Item No."; Rec."Ref. Gift Item No.")
                 {
-                    ApplicationArea = Sales;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the item number of the gift item that is associated with the item on the line.';
 
                 }
@@ -532,13 +533,13 @@ page 50462 "InterSales Cr. Memo Subform"
                 {
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies the number of the item ledger entry that the document or journal line is applied from.';
-                    Visible = false;
+
                 }
                 field("Appl.-to Item Entry"; Rec."Appl.-to Item Entry")
                 {
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies the number of the item ledger entry that the document or journal line is applied -to.';
-                    Visible = false;
+
                 }
                 field("Deferral Code"; Rec."Deferral Code")
                 {

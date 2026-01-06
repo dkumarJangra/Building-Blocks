@@ -97,6 +97,10 @@ pageextension 50011 "BBG Vendor Ledger Entries Ext" extends "Vendor Ledger Entri
             {
                 ApplicationArea = All;
             }
+            field("Remarks"; Rec."Remarks")   //New field added 06012025
+            {
+                ApplicationArea = All;
+            }
 
         }
     }

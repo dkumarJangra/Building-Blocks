@@ -60,9 +60,14 @@ page 50465 "Inter Purchase Credit Memo"
                     ToolTip = 'Specifies the number of the vendor who delivers the products.';
 
                     trigger OnValidate()
+                    var
+                        purchSetup: Record "Purchases & Payables Setup";
                     begin
                         IsPurchaseLinesEditable := Rec.PurchaseLinesEditable();
                         Rec.OnAfterValidateBuyFromVendorNo(Rec, xRec);
+                        purchSetup.GET;
+                        IF Rec."Inter Purchase Document" THEN
+                            Rec."Posting No. Series" := purchSetup."Posted Inter Purch CrMemo NoSr";
                         CurrPage.Update();
                     end;
                 }
@@ -78,6 +83,7 @@ page 50465 "Inter Purchase Credit Memo"
                     trigger OnValidate()
                     var
                         ApplicationAreaMgmtFacade: Codeunit "Application Area Mgmt. Facade";
+                        PurchSetup: Record "Purchases & Payables Setup";
                     begin
                         if Rec."No." = '' then
                             Rec.InitRecord();
@@ -86,6 +92,10 @@ page 50465 "Inter Purchase Credit Memo"
 
                         if ApplicationAreaMgmtFacade.IsFoundationEnabled() then
                             PurchCalcDiscByType.ApplyDefaultInvoiceDiscount(0, Rec);
+
+                        PurchSetup.Get();
+                        IF Rec."Inter Purchase Document" then
+                            Rec."Posting No. Series" := PurchSetup."Posted Inter Purch CrMemo NoSr";
 
                         CurrPage.Update();
                     end;

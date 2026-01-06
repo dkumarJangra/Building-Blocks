@@ -188,6 +188,19 @@ tableextension 50008 "BBG Vendor Ledger Entry Ext" extends "Vendor Ledger Entry"
             DataClassification = ToBeClassified;
         }
 
+        field(70051; "Remarks"; Text[50])   //New field added 06012025 
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
+        field(70052; "Original Date"; Date)   //New field added 06012025 
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+            Caption = 'Original Posting Date';
+        }
+
+
     }
 
     keys
