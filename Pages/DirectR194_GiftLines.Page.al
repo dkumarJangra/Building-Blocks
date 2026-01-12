@@ -118,6 +118,9 @@ Page 50512 "194R_Gift Voucher Lines"
     {
     }
 
+
+
+
     trigger OnAfterGetRecord()
     begin
         BBGOnAfterGetCurrRecord;
@@ -138,10 +141,12 @@ Page 50512 "194R_Gift Voucher Lines"
         BBGOnAfterGetCurrRecord;
     end;
 
+
     var
         GatePassHeader: Record "Gate Pass Header";
         "Confirmed Order": Record "Confirmed Order";
         ApplicationNo: Code[20];
+
 
 
     procedure OpenFreeTrackingLines()

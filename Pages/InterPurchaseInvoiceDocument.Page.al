@@ -109,6 +109,12 @@ page 50447 "Inter Purchase Invoice"
                         exit(Rec.LookupBuyFromVendorName(Text));
                     end;
                 }
+                field("Order Ref. No."; Rec."Order Ref. No.")
+                {
+                    ApplicationArea = all;
+                    Importance = Additional;
+                    ToolTip = 'Specifies the purchase order number that is referenced on the purchase invoice.';
+                }
                 field("Posting Description"; Rec."Posting Description")
                 {
                     ApplicationArea = Suite;
@@ -399,6 +405,7 @@ page 50447 "Inter Purchase Invoice"
                     trigger OnAssistEdit()
                     var
                         IsHandled: Boolean;
+
                     begin
                         IsHandled := false;
                         OnBeforeCurrencyCodeOnAssistEdit(Rec, xRec, IsHandled);

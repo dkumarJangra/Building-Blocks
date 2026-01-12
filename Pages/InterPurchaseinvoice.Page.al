@@ -413,6 +413,8 @@ page 50446 "Inter Purchase Invoices"
                     ApplicationArea = All;
                     Caption = 'Create Inter Purchase Invoice Document';
                     Image = New;
+
+
                     trigger OnAction()
                     var
                         PurchSetup: Record "Purchases & Payables Setup";
@@ -425,17 +427,21 @@ page 50446 "Inter Purchase Invoices"
                         PurchHeader.init;
                         PurchHeader."Document Type" := PurchHeader."Document Type"::Invoice;
                         PurchHeader."No." := noseries.GetNextNo(PurchSetup."Inter Purchase No.Seires", WorkDate);
-                        PurchHeader."Posting Date" := WorkDate();
-                        PurchHeader."Document Date" := WorkDate();
+                        PurchHeader."Posting Date" := WorkDate;
+                        PurchHeader."Document Date" := WorkDate;
                         PurchHeader."no. series" := PurchSetup."Inter Purchase No.Seires";
                         PurchHeader."Inter Purchase Document" := True;
                         PurchHeader."Posting No. Series" := PurchSetup."Posted Inter Purch. No.Seires";
                         PurchHeader."Responsibility Center" := UserSetupMgt.GetRespCenter(0, PurchHeader."Responsibility Center");
                         PurchHeader."Location Code" := PurchHeader."Responsibility Center";
-                        PurchHeader."Order Date" := WorkDate();
-                        PurchHeader.insert();
+                        PurchHeader."Order Date" := WorkDate;
+                        PurchHeader.insert(true);
+                        Rec := PurchHeader;
+                        Commit();
+
 
                         PAGE.RUN(PAGE::"Inter Purchase Invoice", PurchHeader);
+                        //PAGE.RUN(PAGE::"Purchase Invoice", PurchHeader);
                     end;
 
                 }

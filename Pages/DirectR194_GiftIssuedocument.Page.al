@@ -43,6 +43,7 @@ page 50510 "Direct 194R Gift Issue"
                 }
                 field("R194_Application No."; Rec."R194_Application No.")
                 {
+                    Caption = '194R Application /Entry No.';
 
                 }
 
@@ -469,6 +470,8 @@ page 50510 "Direct 194R Gift Issue"
                     var
                         Tqty: Decimal;
                         unitsetup: Record "Unit Setup";
+                        R194ApplGiftData: Record "R194 Appl. wiseReport Data";
+                        NewConforder: Record "New Confirmed Order";
                     begin
                         unitsetup.get;
                         unitsetup.TestField("Gift Control A/c");
@@ -552,16 +555,39 @@ page 50510 "Direct 194R Gift Issue"
                             Rec.VALIDATE(Status, Rec.Status::Close);
                             Rec.MODIFY;
 
-                            ConfOrder.RESET;
-                            ConfOrder.SetFilter("No.", Rec."R194_Application No.");
-                            IF ConfOrder.FindSet() then
-                                repeat
-                                    ConfOrder."R194 Gift Issued" := True;
-                                    ConfOrder."App. applicable for issue R194" := False;
-                                    ConfOrder.Modify;
-                                until ConfOrder.Next = 0;
+                            R194ApplGiftData.RESET;
+                            R194ApplGiftData.SetFilter("Entry No.", Rec."R194_Application No.");
+                            IF R194ApplGiftData.FINDSET THEN BEGIN
+                                REPEAT
+                                    NewConforder.RESET;
+                                    NewConforder.SetFilter("No.", rec."R194_Application No.");
+                                    IF NewConforder.findset then
+                                        repeat
+                                            ConfOrder.RESET;
+                                            ConfOrder.ChangeCompany(NewConforder."Company Name");
+                                            IF ConfOrder.GET(NewConforder."No.") THEN BEGIN
+                                                ConfOrder."R194 Gift Issued" := True;
+                                                ConfOrder."App. applicable for issue R194" := False;
+                                                ConfOrder.Modify;
+                                            END;
+                                        until NewConforder.Next = 0;
 
+                                until R194ApplGiftData.NEXT = 0;
+                            END ELSE begin
+                                NewConforder.RESET;
+                                NewConforder.SetFilter("No.", rec."R194_Application No.");
+                                IF NewConforder.findset then
+                                    repeat
+                                        ConfOrder.RESET;
+                                        ConfOrder.ChangeCompany(NewConforder."Company Name");
+                                        IF ConfOrder.GET(NewConforder."No.") THEN BEGIN
+                                            ConfOrder."R194 Gift Issued" := True;
+                                            ConfOrder."App. applicable for issue R194" := False;
+                                            ConfOrder.Modify;
+                                        END;
+                                    until NewConforder.Next = 0;
 
+                            end;
 
                             //UpdateGoldGenerate;  //150425
                             MESSAGE('Document Successfuly Posted');

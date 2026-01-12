@@ -824,6 +824,11 @@ table 97734 "Gate Pass Line"
         {
             Editable = false;
         }
+
+        field(80051; "R194 Entry No."; Integer)
+        {
+            Editable = false;
+        }
     }
 
     keys
@@ -883,7 +888,14 @@ table 97734 "Gate Pass Line"
                 GoldCoinEligibility."Min Doc No." := '';
                 GoldCoinEligibility.MODIFY;
             UNTIL GoldCoinEligibility.NEXT = 0;
-    end;
+        //Added new code 07012026 Start
+        R194ApplEleg.RESET;
+        IF R194ApplEleg.GET("R194 Entry No.") THEN BEGIN
+            R194ApplEleg."Item Issued" := false;
+            R194ApplEleg.MODIFY;
+        END;
+        //Added new code 07012026 END
+    END;
 
     trigger OnInsert()
     begin
@@ -952,6 +964,7 @@ table 97734 "Gate Pass Line"
         Text050: Label 'Cancelled.';
         DimSetEntry: Record "Dimension Set Entry";
         ConfirmedOrder: Record "Confirmed Order";
+        R194ApplEleg: Record "R194 Appl. wiseReport Data";
 
 
     procedure Signed(Value: Decimal): Decimal

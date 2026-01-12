@@ -1449,6 +1449,14 @@ table 97793 "Confirmed Order"
             Editable = False;
         }
 
+        field(60060; "Appl. consider in 194RGift"; Boolean)           //23072025 Added new field
+        {
+            Caption = 'Application Consider in 194R Gift';
+            DataClassification = ToBeClassified;
+            Editable = False;
+        }
+
+
     }
 
     keys

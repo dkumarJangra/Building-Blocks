@@ -452,6 +452,15 @@ codeunit 70002 "BBG Codeunit Event Mgnt."
     END;
 
     //050525 added new funcation END
+    //Added new code 07012026
+    PROCEDURE GetSelectionFilterFor194RElegField(VAR Targetfieldmaster: Record "R194 Appl. wiseReport Data"): Text;
+    VAR
+        RecRef: RecordRef;
+    BEGIN
+        RecRef.GETTABLE(Targetfieldmaster);
+        EXIT(SelectionFilterManagement.GetSelectionFilter(RecRef, Targetfieldmaster.FIELDNO("Entry No.")));
+    END;
+    //Added new code 07012026
 
     PROCEDURE GetSelectionFilterForLeaderCode(VAR LeaderMaster: Record "Leader Master"): Text;
     VAR

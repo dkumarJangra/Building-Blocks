@@ -3,6 +3,13 @@ pageextension 50000 "BBG Company Information Ext" extends "Company Information"
     layout
     {
         // Add changes to page layout here
+        addafter(Name)       //Added new field 07012026
+        {
+            field("Company Name"; Rec."Company Name")
+            {
+                ApplicationArea = all;
+            }
+        }
         addafter("SWIFT Code")
         {
             field("BBG IC Partner Code"; Rec."BBG IC Partner Code")
@@ -109,6 +116,10 @@ pageextension 50000 "BBG Company Information Ext" extends "Company Information"
             }
 
             field("Stop Data Push to WebApp"; Rec."Stop Data Push to WebApp")
+            {
+                ApplicationArea = all;
+            }
+            field("Appl. Old Process(194Gift)"; Rec."Appl. Old Process(194Gift)")  //Added new field 07012026
             {
                 ApplicationArea = all;
             }

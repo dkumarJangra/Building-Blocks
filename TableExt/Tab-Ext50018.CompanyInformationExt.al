@@ -166,6 +166,24 @@ tableextension 50018 "BBG Company Information Ext" extends "Company Information"
 
         }
 
+        field(50362; "Appl. Old Process(194Gift)"; Boolean)   //Added new field 07012026
+        {
+            Caption = 'Applicable 194R Gift Old Process';
+            trigger OnValidate()
+            var
+                myInt: Integer;
+            begin
+                IF UserId <> 'BCUSER' THEN
+                    Error('You are not authorized to make this change');
+            end;
+        }
+
+        field(50363; "Company Name"; Text[250])   //Added new field 07012026
+        {
+            Caption = 'Company Name';
+
+        }
+
     }
 
     keys

@@ -668,52 +668,63 @@ table 97733 "Gate Pass Header"
                 R194Giftsetup: Record "R194 Gift Setup";
                 GatepassLines: Record "Gate Pass Line";
                 R194UnitList: Page "R194 Unit List";
+                Compinfo: Record "Company Information";
 
 
             begin
+
                 GatepassLines.RESET;
                 GatepassLines.SetRange("Document Type", "Document Type");
                 GatepassLines.SetRange("Document No.", "Document No.");
                 GatepassLines.SetFilter("Item No.", '<>%1', '');
                 If GatepassLines.FindFirst() then
                     Error('Please delete the lines');
-
-                R194Giftsetup.RESET;
-                IF R194Giftsetup.FindFirst THEN BEGIN
-                    Conforder.RESET;
-                    Conforder.SetCurrentKey("Introducer Code", "Posting Date");
-                    Conforder.SetRange("Introducer Code", "Vendor No.");
-                    Conforder.SetFilter("Posting Date", '>=%1', R194Giftsetup."Start Date");
-                    //  Conforder.SetRange("R194 Gift Issued", false);
-                    //Conforder.CalcFields(Conforder."Total Cleared Received Amount");
-                    IF Conforder.FindSet() then
-                        repeat
-                            Conforder.CalcFields(Conforder."Total Cleared Received Amount");
-                            IF Conforder."Total Cleared Received Amount" >= Conforder.Amount THEN BEGIN
-                                Conforder."App. applicable for issue R194" := True;
-                                Conforder.Modify;
-                                Commit;
-                            END;
-                        Until Conforder.Next = 0;
-                END ELSE
-                    Message('Setup is missing');
-
-
-                Clear(R194UnitList);
-
-                R194UnitList.LookupMode(True);
-                //R194UnitList.SetRecord(Conforder_2);  //140525
-                R194UnitList.SetAssociateValue(Rec."Vendor No.");
-                IF R194UnitList.RUNMODAL = ACTION::LookupOK THEN
-                    Rec."R194_Application No." := R194UnitList.GetSelectionFilter;
+                //Added new code 07012026 Start
+                Compinfo.Get;
+                if Compinfo."Appl. Old Process(194Gift)" then begin
+                    R194Giftsetup.RESET;
+                    IF R194Giftsetup.FindFirst THEN BEGIN
+                        Conforder.RESET;
+                        Conforder.SetCurrentKey("Introducer Code", "Posting Date");
+                        Conforder.SetRange("Introducer Code", "Vendor No.");
+                        Conforder.SetFilter("Posting Date", '>=%1', R194Giftsetup."Start Date");
+                        //  Conforder.SetRange("R194 Gift Issued", false);
+                        //Conforder.CalcFields(Conforder."Total Cleared Received Amount");
+                        IF Conforder.FindSet() then
+                            repeat
+                                Conforder.CalcFields(Conforder."Total Cleared Received Amount");
+                                IF Conforder."Total Cleared Received Amount" >= Conforder.Amount THEN BEGIN
+                                    Conforder."App. applicable for issue R194" := True;
+                                    Conforder.Modify;
+                                    Commit;
+                                END;
+                            Until Conforder.Next = 0;
+                    END ELSE
+                        Message('Setup is missing');
 
 
-                IF Rec."R194_Application No." <> '' THEN
-                    InsertEntriesintoGatepassline;
+                    Clear(R194UnitList);
+
+                    R194UnitList.LookupMode(True);
+                    //R194UnitList.SetRecord(Conforder_2);  //140525
+                    R194UnitList.SetAssociateValue(Rec."Vendor No.");
+                    IF R194UnitList.RUNMODAL = ACTION::LookupOK THEN
+                        Rec."R194_Application No." := R194UnitList.GetSelectionFilter;
 
 
+                    IF Rec."R194_Application No." <> '' THEN
+                        InsertEntriesintoGatepassline;
+                END ELSE BEGIN
+                    Clear(R194Giftdetails);
+                    R194Giftdetails.LookupMode(True);
+                    R194Giftdetails.SetAssociateValue(Rec."Vendor No.", True);
+                    IF R194Giftdetails.RUNMODAL = ACTION::LookupOK THEN
+                        Rec."R194_Application No." := R194Giftdetails.GetSelectionFilter;
+                    IF Rec."R194_Application No." <> '' THEN
+                        InsertGiftDetailEntries;
+                    //Added new code 07012026 END
+                END;
             end;
-
 
         }
     }
@@ -893,6 +904,7 @@ table 97733 "Gate Pass Header"
         RecUser: Record User;
         Text50111: Label 'Journal line have been successfully %1.';
         MemberOf: Record "Access Control";
+        R194Giftdetails: page "R194 Eligibility Gift Details";
 
 
     procedure ValidateShortcutDimCode(FieldNumber: Integer; var ShortcutDimCode: Code[20])
@@ -1268,5 +1280,52 @@ table 97733 "Gate Pass Header"
         END;
     END;
 
+    //Added new function 07012026 Start
+    procedure InsertGiftDetailEntries()
+    Var
+        R194ApplGiftData: Record "R194 Appl. wiseReport Data";
+        GatePassLines: Record "Gate Pass Line";
+        GatePassHeader: Record "Gate Pass Header";
+        LineNo: integer;
+        Confirmedorder_1: Record "Confirmed Order";
+        OldGatePassLine: Record "Gate Pass Line";
+        OldGatePassHeader: Record "Gate Pass Header";
+        Confirmedorder_2: Record "Confirmed Order";
+        CurrentTotalExtent: Decimal;
+        ElegTotalExtent: Decimal;
+        UpdateCurrentExt: Decimal;
+    begin
+        R194ApplGiftData.RESET;
+        R194ApplGiftData.SetRange("Company Name", CompanyName);
+        R194ApplGiftData.SetRange("Associate No.", Rec."Vendor No.");
+        //R194ApplGiftData.SetFilter("Application No.", Rec."Application No.");
+        R194ApplGiftData.SetFilter("Entry No.", rec."R194_Application No.");
+        R194ApplGiftData.SetRange("Item Issued", false);
+        IF R194ApplGiftData.FindSet() then
+            repeat
+                LineNo := LineNo + 10000;
+                GatePassLines.RESET;
+                GatePassLines.init;
+                GatePassLines."Document Type" := GatePassLines."Document Type"::MIN;
+                GatePassLines."Document No." := Rec."Document No.";
+                GatePassLines."Line No." := LineNo;
+                GatePassLines.insert;
+                GatePassLines.validate("Item No.", R194ApplGiftData."Item No.");
+                GatePassLines."Shortcut Dimension 1 Code" := Rec."Shortcut Dimension 1 Code";
+                //GatePassLines."Shortcut Dimension 2 Code" := GatePassHeader."Shortcut Dimension 2 Code";
+                GatePassLines."Location Code" := Rec."Location Code";
+                GatePassLines."R194_Application No." := R194ApplGiftData."Application No.";
+                GatePassLines.Validate("Required Qty", 1);
+                GatePassLines.Validate(Qty, 1);
+                If LineNo = 10000 then
+                    GatePassLines.Extent := UpdateCurrentExt;
+                GatePassLines."R194 Entry No." := R194ApplGiftData."Entry No.";
+                GatePassLines.modify;
+                R194ApplGiftData."Item Issued" := true;
+
+                R194ApplGiftData.Modify();
+            Until R194ApplGiftData.Next = 0;
+    END;
+    //Added new function 07012026 END
 }
 
