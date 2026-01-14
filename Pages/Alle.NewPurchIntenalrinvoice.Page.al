@@ -1,29 +1,9 @@
-namespace Microsoft.Purchases.Document;
-
-using Microsoft.EServices.EDocument;
-using Microsoft.Finance.Dimension;
-using Microsoft.Foundation.Attachment;
-using Microsoft.Foundation.Reporting;
-using Microsoft.Purchases.Comment;
-using Microsoft.Purchases.History;
-using Microsoft.Purchases.Posting;
-using Microsoft.Purchases.Setup;
-using Microsoft.Purchases.Vendor;
-using Microsoft.Utilities;
-using System.Security.User;
-using Microsoft.Foundation.NoSeries;
-using System.Automation;
-using System.Environment.Configuration;
-using System.Integration.PowerBI;
-using System.Text;
-using System.Threading;
-
-page 50446 "Inter Purchase Invoices"
+page 50446 "NewInter Purchase Invoices"
 {
     AdditionalSearchTerms = 'Vendor Invoices, Procurement Invoices, Vendor Bills, Purchase Bills, Supplier Invoices, Acquisition Bills, Buying Invoices, Supplier Bill List, Invoice Purchase Log, Merchant Invoices, Trade Invoices';
     ApplicationArea = Basic, Suite;
     Caption = 'Inter Purchase Invoices';
-    CardPageID = "Inter Purchase Invoice";
+    CardPageID = "NewInter Purchase Invoice";
     DataCaptionFields = "Buy-from Vendor No.";
     Editable = false;
     PageType = List;
@@ -440,7 +420,7 @@ page 50446 "Inter Purchase Invoices"
                         Commit();
 
 
-                        PAGE.RUN(PAGE::"Inter Purchase Invoice", PurchHeader);
+                        PAGE.RUN(PAGE::"NewInter Purchase Invoice", PurchHeader);
                         //PAGE.RUN(PAGE::"Purchase Invoice", PurchHeader);
                     end;
 

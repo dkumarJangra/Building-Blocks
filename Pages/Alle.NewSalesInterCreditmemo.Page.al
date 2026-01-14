@@ -1,29 +1,9 @@
-namespace Microsoft.Sales.Document;
-
-using Microsoft.EServices.EDocument;
-using Microsoft.Finance.Dimension;
-using Microsoft.Foundation.Attachment;
-using Microsoft.Foundation.Reporting;
-using Microsoft.Sales.Comment;
-using Microsoft.Sales.Customer;
-using Microsoft.Sales.History;
-using Microsoft.Sales.Posting;
-using Microsoft.Sales.Reports;
-using Microsoft.Sales.Setup;
-using Microsoft.Utilities;
-using System.Automation;
-using System.Environment.Configuration;
-using System.Text;
-using System.Threading;
-using System.Security.User;
-using Microsoft.Foundation.NoSeries;
-
-page 50458 "Inter Sales Credit Memos"
+page 50458 "NewInter Sales Credit Memos"
 {
     AdditionalSearchTerms = 'refund credit return refund correct cancel undo sale';
     ApplicationArea = Basic, Suite;
     Caption = 'Inter Sales Credit Memos';
-    CardPageID = "Inter Sales Credit Memo";
+    CardPageID = "NewInter Sales Credit Memo";
     DataCaptionFields = "Sell-to Customer No.";
     Editable = false;
     PageType = List;
@@ -432,7 +412,7 @@ page 50458 "Inter Sales Credit Memos"
                         Salesheader."Order Date" := WorkDate();
                         SalesHeader.insert();
 
-                        PAGE.RUN(PAGE::"Inter Sales Credit Memo", SalesHeader);
+                        PAGE.RUN(PAGE::"NewInter Sales Credit Memo", SalesHeader);
                     end;
 
                 }

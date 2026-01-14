@@ -1,36 +1,12 @@
-namespace Microsoft.Purchases.Document;
-
-using Microsoft.CRM.Contact;
-using Microsoft.CRM.Outlook;
-using Microsoft.EServices.EDocument;
-using Microsoft.Finance.Currency;
-using Microsoft.Finance.Dimension;
-using Microsoft.Finance.GeneralLedger.Setup;
-using Microsoft.Finance.VAT.Calculation;
-using Microsoft.Foundation.Address;
-using Microsoft.Foundation.Attachment;
-using Microsoft.Foundation.Enums;
-using Microsoft.Foundation.Reporting;
-using Microsoft.Purchases.Comment;
-using Microsoft.Purchases.History;
-using Microsoft.Purchases.Payables;
-using Microsoft.Purchases.Posting;
-using Microsoft.Purchases.Setup;
-using Microsoft.Purchases.Vendor;
-using Microsoft.Utilities;
-using System.Automation;
-using System.Environment;
-using System.Environment.Configuration;
-using System.Privacy;
-using System.Security.User;
-
-page 50465 "Inter Purchase Credit Memo"
+page 50447 "NewInter Purchase Invoice"
 {
-    Caption = 'Inter Purchase Credit Memo';
+    Caption = 'Purchase Invoice';
     PageType = Document;
     RefreshOnActivate = true;
     SourceTable = "Purchase Header";
-    SourceTableView = where("Document Type" = filter("Credit Memo"), "Inter purchase document" = const(true));
+    SourceTableView = where("Document Type" = filter(Invoice));
+    AdditionalSearchTerms = 'Vendor Invoice, Procurement Invoice, Vendor Bill, Purchase Bill, Supplier Invoice, Acquisition Bill, Buying Invoice, Supplier Bill, Invoice Purchase, Merchant Invoice, Trade Invoice';
+
     layout
     {
         area(content)
@@ -53,7 +29,7 @@ page 50465 "Inter Purchase Credit Memo"
                 }
                 field("Buy-from Vendor No."; Rec."Buy-from Vendor No.")
                 {
-                    ApplicationArea = Basic, Suite;
+                    ApplicationArea = All;
                     Caption = 'Vendor No.';
                     Importance = Additional;
                     NotBlank = true;
@@ -61,22 +37,25 @@ page 50465 "Inter Purchase Credit Memo"
 
                     trigger OnValidate()
                     var
-                        purchSetup: Record "Purchases & Payables Setup";
+                        PurchSetup: Record "Purchases & Payables Setup";
                     begin
                         IsPurchaseLinesEditable := Rec.PurchaseLinesEditable();
                         Rec.OnAfterValidateBuyFromVendorNo(Rec, xRec);
-                        purchSetup.GET;
-                        IF Rec."Inter Purchase Document" THEN
-                            Rec."Posting No. Series" := purchSetup."Posted Inter Purch CrMemo NoSr";
+
+                        PurchSetup.Get();
+                        IF Rec."Inter Purchase Document" then
+                            Rec."Posting No. Series" := PurchSetup."Posted Inter Purch. No.Seires";
+
                         CurrPage.Update();
+
+
                     end;
                 }
                 field("Buy-from Vendor Name"; Rec."Buy-from Vendor Name")
                 {
-                    ApplicationArea = Basic, Suite;
+                    ApplicationArea = All;
                     Caption = 'Vendor Name';
                     Importance = Promoted;
-                    QuickEntry = false;
                     ShowMandatory = true;
                     ToolTip = 'Specifies the name of the vendor who delivers the products.';
 
@@ -85,9 +64,6 @@ page 50465 "Inter Purchase Credit Memo"
                         ApplicationAreaMgmtFacade: Codeunit "Application Area Mgmt. Facade";
                         PurchSetup: Record "Purchases & Payables Setup";
                     begin
-                        if Rec."No." = '' then
-                            Rec.InitRecord();
-
                         Rec.OnAfterValidateBuyFromVendorNo(Rec, xRec);
 
                         if ApplicationAreaMgmtFacade.IsFoundationEnabled() then
@@ -95,8 +71,7 @@ page 50465 "Inter Purchase Credit Memo"
 
                         PurchSetup.Get();
                         IF Rec."Inter Purchase Document" then
-                            Rec."Posting No. Series" := PurchSetup."Posted Inter Purch CrMemo NoSr";
-
+                            Rec."Posting No. Series" := PurchSetup."Posted Inter Purch. No.Seires";
                         CurrPage.Update();
                     end;
 
@@ -104,6 +79,12 @@ page 50465 "Inter Purchase Credit Memo"
                     begin
                         exit(Rec.LookupBuyFromVendorName(Text));
                     end;
+                }
+                field("Order Ref. No."; Rec."Order Ref. No.")
+                {
+                    ApplicationArea = all;
+                    Importance = Additional;
+                    ToolTip = 'Specifies the purchase order number that is referenced on the purchase invoice.';
                 }
                 field("Posting Description"; Rec."Posting Description")
                 {
@@ -138,7 +119,7 @@ page 50465 "Inter Purchase Credit Memo"
                         QuickEntry = false;
                         ToolTip = 'Specifies the city of the vendor on the purchase document.';
                     }
-                    group(Control88)
+                    group(Control93)
                     {
                         ShowCaption = false;
                         Visible = IsBuyFromCountyVisible;
@@ -148,7 +129,7 @@ page 50465 "Inter Purchase Credit Memo"
                             CaptionClass = '5,1,' + Rec."Buy-from Country/Region Code";
                             Importance = Additional;
                             QuickEntry = false;
-                            ToolTip = 'Specifies the state, province or county as a part of the address.';
+                            ToolTip = 'Specifies the state, province or county of the address.';
                         }
                     }
                     field("Buy-from Post Code"; Rec."Buy-from Post Code")
@@ -165,7 +146,7 @@ page 50465 "Inter Purchase Credit Memo"
                         Caption = 'Country/Region';
                         Importance = Additional;
                         QuickEntry = false;
-                        ToolTip = 'Specifies the country or region of the vendor on the purchase document.';
+                        ToolTip = 'Specifies the country or region of the address.';
 
                         trigger OnValidate()
                         begin
@@ -177,7 +158,6 @@ page 50465 "Inter Purchase Credit Memo"
                         ApplicationArea = Basic, Suite;
                         Caption = 'Contact No.';
                         Importance = Additional;
-                        QuickEntry = false;
                         ToolTip = 'Specifies the number of your contact at the vendor.';
 
                         trigger OnLookup(var Text: Text): Boolean
@@ -236,11 +216,22 @@ page 50465 "Inter Purchase Credit Memo"
                         CurrPage.Update();
                     end;
                 }
-                field("Posting Date"; Rec."Posting Date")
+                field("Document Date"; Rec."Document Date")
+                {
+                    ApplicationArea = Basic, Suite;
+                    Importance = Promoted;
+                    ToolTip = 'Specifies the date when the related document was created.';
+                }
+                field("Invoice Received Date"; Rec."Invoice Received Date")
                 {
                     ApplicationArea = Basic, Suite;
                     Importance = Additional;
-                    QuickEntry = false;
+                    ToolTip = 'Specifies the date when the related document was received.';
+                }
+                field("Posting Date"; Rec."Posting Date")
+                {
+                    ApplicationArea = Basic, Suite;
+                    Importance = Promoted;
                     ToolTip = 'Specifies the date when the posting of the purchase document will be recorded.';
 
                     trigger OnValidate()
@@ -251,18 +242,9 @@ page 50465 "Inter Purchase Credit Memo"
                 field("VAT Reporting Date"; Rec."VAT Reporting Date")
                 {
                     ApplicationArea = VAT;
-                    Importance = Additional;
                     Editable = VATDateEnabled;
                     Visible = VATDateEnabled;
-                    QuickEntry = false;
                     ToolTip = 'Specifies the date used to include entries on VAT reports in a VAT period. This is either the date that the document was created or posted, depending on your setting on the General Ledger Setup page.';
-                }
-                field("Document Date"; Rec."Document Date")
-                {
-                    ApplicationArea = Basic, Suite;
-                    Importance = Additional;
-                    QuickEntry = false;
-                    ToolTip = 'Specifies the date when the related document was created.';
                 }
                 field("Due Date"; Rec."Due Date")
                 {
@@ -270,26 +252,17 @@ page 50465 "Inter Purchase Credit Memo"
                     Importance = Promoted;
                     ToolTip = 'Specifies when the invoice is due. The program calculates the date using the Payment Terms Code and Document Date fields.';
                 }
-                field("Expected Receipt Date"; Rec."Expected Receipt Date")
-                {
-                    ApplicationArea = Basic, Suite;
-                    ToolTip = 'Specifies the date you expect to receive the items on the purchase document.';
-                }
-                field("Vendor Authorization No."; Rec."Vendor Authorization No.")
-                {
-                    ApplicationArea = Basic, Suite;
-                    ToolTip = 'Specifies the identification number of a compensation agreement.';
-                }
                 field("Incoming Document Entry No."; Rec."Incoming Document Entry No.")
                 {
                     ApplicationArea = Basic, Suite;
+                    Importance = Additional;
                     ToolTip = 'Specifies the number of the incoming document that this purchase document is created for.';
                     Visible = false;
                 }
-                field("Vendor Cr. Memo No."; Rec."Vendor Cr. Memo No.")
+                field("Vendor Invoice No."; Rec."Vendor Invoice No.")
                 {
                     ApplicationArea = Basic, Suite;
-                    ShowMandatory = VendorCreditMemoNoMandatory;
+                    ShowMandatory = VendorInvoiceNoMandatory;
                     ToolTip = 'Specifies the document number of the original document you received from the vendor. You can require the document number for posting, or let it be optional. By default, it''s required, so that this document references the original. Making document numbers optional removes a step from the posting process. For example, if you attach the original invoice as a PDF, you might not need to enter the document number. To specify whether document numbers are required, in the Purchases & Payables Setup window, select or clear the Ext. Doc. No. Mandatory field.';
                 }
                 field("Purchaser Code"; Rec."Purchaser Code")
@@ -303,11 +276,26 @@ page 50465 "Inter Purchase Credit Memo"
                         PurchaserCodeOnAfterValidate();
                     end;
                 }
+                field("Vendor Order No."; Rec."Vendor Order No.")
+                {
+                    ApplicationArea = Suite;
+                    Importance = Additional;
+                    ToolTip = 'Specifies the vendor''s order number.';
+                    Visible = false;
+                }
                 field("Campaign No."; Rec."Campaign No.")
                 {
                     ApplicationArea = RelationshipMgmt;
                     Importance = Additional;
                     ToolTip = 'Specifies the campaign number the document is linked to.';
+                }
+                field("Order Address Code"; Rec."Order Address Code")
+                {
+                    ApplicationArea = Basic, Suite;
+                    Caption = 'Alternate Vendor Address Code';
+                    Importance = Additional;
+                    ToolTip = 'Specifies the order address of the related vendor.';
+                    Enabled = Rec."Buy-from Vendor No." <> '';
                 }
                 field("Responsibility Center"; Rec."Responsibility Center")
                 {
@@ -319,35 +307,18 @@ page 50465 "Inter Purchase Credit Memo"
                 {
                     ApplicationArea = Basic, Suite;
                     Importance = Additional;
-                    QuickEntry = false;
                     ToolTip = 'Specifies the ID of the user who is responsible for the document.';
                 }
-                field("Job Queue Status"; Rec."Job Queue Status")
+                field("Received Invoice Amount"; Rec."Received Invoice Amount")
                 {
-                    ApplicationArea = All;
-                    Importance = Additional;
-                    ToolTip = 'Specifies the status of a job queue entry that handles the posting of purchase credit memos.';
-                    Visible = JobQueueUsed;
+                    ApplicationArea = Basic, Suite;
                 }
                 field(Status; Rec.Status)
                 {
                     ApplicationArea = Suite;
                     Importance = Promoted;
                     StyleExpr = StatusStyleTxt;
-                    QuickEntry = false;
-                    ToolTip = 'Specifies whether the record is open, is waiting to be approved, has been invoiced for prepayment, or has been released to the next stage of processing.';
-                }
-                field("Language Code"; Rec."Language Code")
-                {
-                    ApplicationArea = Basic, Suite;
-                    ToolTip = 'Specifies the language to be used on printouts for this document.';
-                    Visible = false;
-                }
-                field("Format Region"; Rec."Format Region")
-                {
-                    ApplicationArea = Basic, Suite;
-                    ToolTip = 'Specifies the format to be used on printouts for this document.';
-                    Visible = false;
+                    ToolTip = 'Specifies whether the record is open, waiting to be approved, invoiced for prepayment, or released to the next stage of processing.';
                 }
                 field(DocAmount; Rec."Doc. Amount Incl. VAT")
                 {
@@ -362,11 +333,30 @@ page 50465 "Inter Purchase Credit Memo"
                 {
                     ApplicationArea = Basic, Suite;
                     Enabled = DocAmountEnable;
-                    Editable = DocAmountsEditable;
                     Visible = DocAmountEnable;
+                    Editable = DocAmountsEditable;
+                }
+                field("Job Queue Status"; Rec."Job Queue Status")
+                {
+                    ApplicationArea = All;
+                    Importance = Additional;
+                    ToolTip = 'Specifies the status of a job queue entry that handles the posting of purchase invoices.';
+                    Visible = JobQueuesUsed;
+                }
+                field("Language Code"; Rec."Language Code")
+                {
+                    ApplicationArea = Basic, Suite;
+                    ToolTip = 'Specifies the language to be used on printouts for this document.';
+                    Visible = false;
+                }
+                field("Format Region"; Rec."Format Region")
+                {
+                    ApplicationArea = Basic, Suite;
+                    ToolTip = 'Specifies the format to be used on printouts for this document.';
+                    Visible = false;
                 }
             }
-            part(PurchLines; "Inter Purch. Cr. Memo Subform")
+            part(PurchLines; "NewInter Purch. InvoiceSubform")
             {
                 ApplicationArea = Basic, Suite;
                 Editable = IsPurchaseLinesEditable;
@@ -376,7 +366,7 @@ page 50465 "Inter Purchase Credit Memo"
             }
             group("Invoice Details")
             {
-                Caption = 'Credit Memo Details';
+                Caption = 'Invoice Details';
                 field("Currency Code"; Rec."Currency Code")
                 {
                     ApplicationArea = Suite;
@@ -386,6 +376,7 @@ page 50465 "Inter Purchase Credit Memo"
                     trigger OnAssistEdit()
                     var
                         IsHandled: Boolean;
+
                     begin
                         IsHandled := false;
                         OnBeforeCurrencyCodeOnAssistEdit(Rec, xRec, IsHandled);
@@ -410,6 +401,12 @@ page 50465 "Inter Purchase Credit Memo"
                         PurchCalcDiscByType.ApplyDefaultInvoiceDiscount(0, Rec);
                     end;
                 }
+                field("Expected Receipt Date"; Rec."Expected Receipt Date")
+                {
+                    ApplicationArea = Basic, Suite;
+                    Importance = Promoted;
+                    ToolTip = 'Specifies the date you expect to receive the items on the purchase document.';
+                }
                 field("Prices Including VAT"; Rec."Prices Including VAT")
                 {
                     ApplicationArea = VAT;
@@ -429,6 +426,8 @@ page 50465 "Inter Purchase Credit Memo"
                     var
                         ApplicationAreaMgmtFacade: Codeunit "Application Area Mgmt. Facade";
                     begin
+                        CurrPage.SaveRecord();
+
                         if ApplicationAreaMgmtFacade.IsFoundationEnabled() then
                             PurchCalcDiscByType.ApplyDefaultInvoiceDiscount(0, Rec);
                     end;
@@ -512,270 +511,420 @@ page 50465 "Inter Purchase Credit Memo"
                         CurrPage.PurchLines.PAGE.RedistributeTotalsOnAfterValidate();
                     end;
                 }
-                field("Location Code"; Rec."Location Code")
+                field("Shipment Method Code"; Rec."Shipment Method Code")
                 {
-                    ApplicationArea = Location;
+                    ApplicationArea = Suite;
                     Importance = Additional;
-                    ToolTip = 'Specifies the location where the items are to be shipped. This field acts as the default location for new lines. You can update the location code for individual lines as needed.';
+                    ToolTip = 'Specifies the delivery conditions of the related shipment, such as free on board (FOB).';
                 }
-                field(Correction; Rec.Correction)
+                field("Payment Reference"; Rec."Payment Reference")
                 {
                     ApplicationArea = Basic, Suite;
-                    ToolTip = 'Specifies the entry as a corrective entry. You can use the field if you need to post a corrective entry to a vendor account. If you place a check mark in this field when posting a corrective entry, the system will post a negative debit instead of a credit or a negative credit instead of a debit. Correction flag does not affect how inventory reconciled with general ledger.';
+                    Importance = Additional;
+                    ToolTip = 'Specifies the payment of the purchase invoice.';
+                }
+                field("Creditor No."; Rec."Creditor No.")
+                {
+                    ApplicationArea = Basic, Suite;
+                    Importance = Additional;
+                    ToolTip = 'Specifies the vendor who sent the purchase invoice.';
+                }
+                field("On Hold"; Rec."On Hold")
+                {
+                    ApplicationArea = Basic, Suite;
+                    Importance = Additional;
+                    ToolTip = 'Specifies that the related entry represents an unpaid invoice for which either a payment suggestion, a reminder, or a finance charge memo exists.';
                 }
             }
             group("Shipping and Payment")
             {
                 Caption = 'Shipping and Payment';
-                group(Control71)
+                group(Control53)
                 {
                     ShowCaption = false;
-                    field(ShipToOptions; ShipToOptions)
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Ship-to';
-                        OptionCaption = 'Default (Vendor Address),Alternate Vendor Address,Custom Address';
-                        ToolTip = 'Specifies the address that the products on the purchase document are shipped to. Default (Company Address): The same as the company address specified in the Company Information window. Location: One of the company''s location addresses. Custom Address: Any ship-to address that you specify in the fields below.';
-
-                        trigger OnValidate()
-                        begin
-                            ValidateShippingOption();
-                        end;
-                    }
-                }
-                group(Control69)
-                {
-                    ShowCaption = false;
-                    Visible = ShipToOptions = ShipToOptions::"Alternate Vendor Address";
-                    field("Order Address Code"; Rec."Order Address Code")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        ToolTip = 'Specifies the order address of the related vendor.';
-                    }
-                }
-                group("Ship-to")
-                {
-                    Caption = 'Ship-to';
-                    field("Ship-to Name"; Rec."Ship-to Name")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Name';
-                        Editable = ShipToOptions = ShipToOptions::"Custom Address";
-                        Importance = Additional;
-                        ToolTip = 'Specifies the name of the company at the address to which you want the items in the purchase order to be shipped.';
-                    }
-                    field("Ship-to Name 2"; Rec."Ship-to Name 2")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Name 2';
-                        Editable = ShipToOptions = ShipToOptions::"Custom Address";
-                        Importance = Additional;
-                        ToolTip = 'Specifies an additional part of the name for the order address of the vendor.';
-                        QuickEntry = false;
-                        Visible = false;
-                    }
-                    field("Ship-to Address"; Rec."Ship-to Address")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Address';
-                        Editable = ShipToOptions = ShipToOptions::"Custom Address";
-                        Importance = Additional;
-                        QuickEntry = false;
-                        ToolTip = 'Specifies the address that you want the items in the purchase order to be shipped to.';
-                    }
-                    field("Ship-to Address 2"; Rec."Ship-to Address 2")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Address 2';
-                        Editable = ShipToOptions = ShipToOptions::"Custom Address";
-                        Importance = Additional;
-                        QuickEntry = false;
-                        ToolTip = 'Specifies additional address information.';
-                    }
-                    field("Ship-to City"; Rec."Ship-to City")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'City';
-                        Editable = ShipToOptions = ShipToOptions::"Custom Address";
-                        Importance = Additional;
-                        QuickEntry = false;
-                        ToolTip = 'Specifies the city of the vendor on the purchase document.';
-                    }
-                    group(Control86)
+                    group(Control78)
                     {
                         ShowCaption = false;
-                        Visible = IsShipToCountyVisible;
-                        field("Ship-to County"; Rec."Ship-to County")
+                        field(ShippingOptionWithLocation; ShipToOptions)
                         {
                             ApplicationArea = Basic, Suite;
-                            CaptionClass = '5,1,' + Rec."Ship-to Country/Region Code";
-                            Editable = ShipToOptions = ShipToOptions::"Custom Address";
-                            Importance = Additional;
-                            QuickEntry = false;
-                            ToolTip = 'Specifies the state, province or county as a part of the address.';
+                            Caption = 'Ship-to';
+                            HideValue = not ShowShippingOptionsWithLocation and (ShipToOptions = ShipToOptions::Location);
+                            OptionCaption = 'Default (Company Address),Location,Custom Address';
+                            ToolTip = 'Specifies the address that the products on the purchase document are shipped to. Default (Company Address): The same as the company address specified in the Company Information window. Location: One of the company''s location addresses. Custom Address: Any ship-to address that you specify in the fields below.';
+
+                            trigger OnValidate()
+                            begin
+                                ValidateShippingOption();
+                            end;
+                        }
+                        group(Control79)
+                        {
+                            ShowCaption = false;
+                            group(Control81)
+                            {
+                                ShowCaption = false;
+                                Visible = ShipToOptions = ShipToOptions::Location;
+                                field("Location Code"; Rec."Location Code")
+                                {
+                                    ApplicationArea = Location;
+                                    ToolTip = 'Specifies the location where the items are to be placed when they are received. This field acts as the default location for new lines. You can update the location code for individual lines as needed.';
+                                }
+                            }
+                            field("Ship-to Name"; Rec."Ship-to Name")
+                            {
+                                ApplicationArea = Basic, Suite;
+                                Caption = 'Name';
+                                Editable = ShipToOptions = ShipToOptions::"Custom Address";
+                                Importance = Additional;
+                                ToolTip = 'Specifies the name of the company at the address that you want the items on the purchase document to be shipped to.';
+                            }
+                            field("Ship-to Name 2"; Rec."Ship-to Name 2")
+                            {
+                                ApplicationArea = Basic, Suite;
+                                Caption = 'Name 2';
+                                Editable = ShipToOptions = ShipToOptions::"Custom Address";
+                                Importance = Additional;
+                                ToolTip = 'Specifies an additional part of the name of the company at the address that you want the items on the purchase document to be shipped to.';
+                                QuickEntry = false;
+                                Visible = false;
+                            }
+                            field("Ship-to Address"; Rec."Ship-to Address")
+                            {
+                                ApplicationArea = Basic, Suite;
+                                Caption = 'Address';
+                                Editable = ShipToOptions = ShipToOptions::"Custom Address";
+                                Importance = Additional;
+                                QuickEntry = false;
+                                ToolTip = 'Specifies the address that you want the items on the purchase document to be shipped to.';
+                            }
+                            field("Ship-to Address 2"; Rec."Ship-to Address 2")
+                            {
+                                ApplicationArea = Basic, Suite;
+                                Caption = 'Address 2';
+                                Editable = ShipToOptions = ShipToOptions::"Custom Address";
+                                Importance = Additional;
+                                QuickEntry = false;
+                                ToolTip = 'Specifies additional address information.';
+                            }
+                            field("Ship-to City"; Rec."Ship-to City")
+                            {
+                                ApplicationArea = Basic, Suite;
+                                Caption = 'City';
+                                Editable = ShipToOptions = ShipToOptions::"Custom Address";
+                                Importance = Additional;
+                                QuickEntry = false;
+                                ToolTip = 'Specifies the city of the address that you want the items on the purchase document to be shipped to.';
+                            }
+                            group(Control199)
+                            {
+                                ShowCaption = false;
+                                Visible = IsShipToCountyVisible;
+                                field("Ship-to County"; Rec."Ship-to County")
+                                {
+                                    ApplicationArea = Basic, Suite;
+                                    CaptionClass = '5,1,' + Rec."Ship-to Country/Region Code";
+                                    Editable = ShipToOptions = ShipToOptions::"Custom Address";
+                                    Importance = Additional;
+                                    QuickEntry = false;
+                                    ToolTip = 'Specifies the state, province or county of the address.';
+                                }
+                            }
+                            field("Ship-to Post Code"; Rec."Ship-to Post Code")
+                            {
+                                ApplicationArea = Basic, Suite;
+                                Caption = 'Post Code';
+                                Editable = ShipToOptions = ShipToOptions::"Custom Address";
+                                Importance = Additional;
+                                QuickEntry = false;
+                                ToolTip = 'Specifies the postal code of the address that you want the items on the purchase document to be shipped to.';
+                            }
+                            field("Ship-to Country/Region Code"; Rec."Ship-to Country/Region Code")
+                            {
+                                ApplicationArea = Basic, Suite;
+                                Caption = 'Country/Region';
+                                Editable = ShipToOptions = ShipToOptions::"Custom Address";
+                                Importance = Additional;
+                                QuickEntry = false;
+                                ToolTip = 'Specifies the country/region code of the address that you want the items on the purchase document to be shipped to.';
+                            }
+                            field("Ship-to Phone No."; Rec."Ship-to Phone No.")
+                            {
+                                ApplicationArea = Basic, Suite;
+                                Caption = 'Phone No.';
+                                Editable = ShipToOptions = ShipToOptions::"Custom Address";
+                                Importance = Additional;
+                                QuickEntry = false;
+                                ToolTip = 'Specifies the telephone number of the company''s shipping address.';
+                            }
+                            field("Ship-to Contact"; Rec."Ship-to Contact")
+                            {
+                                ApplicationArea = Basic, Suite;
+                                Caption = 'Contact';
+                                Editable = ShipToOptions = ShipToOptions::"Custom Address";
+                                Importance = Additional;
+                                ToolTip = 'Specifies the name of a contact person for the address of the address that you want the items on the purchase document to be shipped to.';
+                            }
                         }
                     }
-                    field("Ship-to Post Code"; Rec."Ship-to Post Code")
+                }
+                group(Control56)
+                {
+                    ShowCaption = false;
+                    field(PayToOptions; PayToOptions)
                     {
                         ApplicationArea = Basic, Suite;
-                        Caption = 'Post Code';
-                        Editable = ShipToOptions = ShipToOptions::"Custom Address";
-                        Importance = Additional;
-                        QuickEntry = false;
-                        ToolTip = 'Specifies the postal code.';
-                    }
-                    field("Ship-to Country/Region Code"; Rec."Ship-to Country/Region Code")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Country/Region';
-                        Importance = Additional;
-                        QuickEntry = false;
-                        ToolTip = 'Specifies the vendor''s country/region.';
+                        Caption = 'Pay-to';
+                        OptionCaption = 'Default (Vendor),Another Vendor,Custom Address';
+                        ToolTip = 'Specifies the vendor that the purchase document will be paid to. Default (Vendor): The same as the vendor on the purchase document. Another Vendor: Any vendor that you specify in the fields below.';
 
                         trigger OnValidate()
                         begin
-                            IsShipToCountyVisible := FormatAddress.UseCounty(Rec."Ship-to Country/Region Code");
+                            if PayToOptions = PayToOptions::"Default (Vendor)" then
+                                Rec.Validate("Pay-to Vendor No.", Rec."Buy-from Vendor No.");
                         end;
                     }
-                    field("Ship-to Phone No."; Rec."Ship-to Phone No.")
+                    group(Control88)
                     {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Phone No.';
-                        Editable = ShipToOptions = ShipToOptions::"Custom Address";
-                        Importance = Additional;
-                        ToolTip = 'Specifies the telephone number of the company''s shipping address.';
-                    }
-                    field("Ship-to Contact"; Rec."Ship-to Contact")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Contact';
-                        Editable = ShipToOptions = ShipToOptions::"Custom Address";
-                        Importance = Additional;
-                        ToolTip = 'Specifies the name of a contact person for the address where the items in the purchase order should be shipped.';
+                        ShowCaption = false;
+                        Visible = not (PayToOptions = PayToOptions::"Default (Vendor)");
+                        field("Pay-to Name"; Rec."Pay-to Name")
+                        {
+                            ApplicationArea = Basic, Suite;
+                            Caption = 'Name';
+                            Editable = PayToOptions = PayToOptions::"Another Vendor";
+                            Enabled = PayToOptions = PayToOptions::"Another Vendor";
+                            Importance = Promoted;
+                            NotBlank = true;
+                            ToolTip = 'Specifies the name of the vendor sending the invoice.';
+
+                            trigger OnValidate()
+                            var
+                                ApplicationAreaMgmtFacade: Codeunit "Application Area Mgmt. Facade";
+                            begin
+                                if Rec.GetFilter("Pay-to Vendor No.") = xRec."Pay-to Vendor No." then
+                                    if Rec."Pay-to Vendor No." <> xRec."Pay-to Vendor No." then
+                                        Rec.SetRange("Pay-to Vendor No.");
+
+                                CurrPage.SaveRecord();
+                                if ApplicationAreaMgmtFacade.IsFoundationEnabled() then
+                                    PurchCalcDiscByType.ApplyDefaultInvoiceDiscount(0, Rec);
+
+                                CurrPage.Update(false);
+                            end;
+                        }
+                        field("Pay-to Address"; Rec."Pay-to Address")
+                        {
+                            ApplicationArea = Basic, Suite;
+                            Caption = 'Address';
+                            Editable = (PayToOptions = PayToOptions::"Custom Address") or (Rec."Buy-from Vendor No." <> Rec."Pay-to Vendor No.");
+                            Enabled = (PayToOptions = PayToOptions::"Custom Address") or (Rec."Buy-from Vendor No." <> Rec."Pay-to Vendor No.");
+                            Importance = Additional;
+                            QuickEntry = false;
+                            ToolTip = 'Specifies the address of the vendor sending the invoice.';
+                        }
+                        field("Pay-to Address 2"; Rec."Pay-to Address 2")
+                        {
+                            ApplicationArea = Basic, Suite;
+                            Caption = 'Address 2';
+                            Editable = (PayToOptions = PayToOptions::"Custom Address") or (Rec."Buy-from Vendor No." <> Rec."Pay-to Vendor No.");
+                            Enabled = (PayToOptions = PayToOptions::"Custom Address") or (Rec."Buy-from Vendor No." <> Rec."Pay-to Vendor No.");
+                            Importance = Additional;
+                            QuickEntry = false;
+                            ToolTip = 'Specifies additional address information.';
+                        }
+                        field("Pay-to City"; Rec."Pay-to City")
+                        {
+                            ApplicationArea = Basic, Suite;
+                            Caption = 'City';
+                            Editable = (PayToOptions = PayToOptions::"Custom Address") or (Rec."Buy-from Vendor No." <> Rec."Pay-to Vendor No.");
+                            Enabled = (PayToOptions = PayToOptions::"Custom Address") or (Rec."Buy-from Vendor No." <> Rec."Pay-to Vendor No.");
+                            Importance = Additional;
+                            QuickEntry = false;
+                            ToolTip = 'Specifies the city of the vendor on the purchase document.';
+                        }
+                        group(Control103)
+                        {
+                            ShowCaption = false;
+                            Visible = IsPayToCountyVisible;
+                            field("Pay-to County"; Rec."Pay-to County")
+                            {
+                                ApplicationArea = Basic, Suite;
+                                CaptionClass = '5,1,' + Rec."Pay-to Country/Region Code";
+                                Editable = (PayToOptions = PayToOptions::"Custom Address") or (Rec."Buy-from Vendor No." <> Rec."Pay-to Vendor No.");
+                                Enabled = (PayToOptions = PayToOptions::"Custom Address") or (Rec."Buy-from Vendor No." <> Rec."Pay-to Vendor No.");
+                                Importance = Additional;
+                                QuickEntry = false;
+                                ToolTip = 'Specifies the state, province or county of the address.';
+                            }
+                        }
+                        field("Pay-to Post Code"; Rec."Pay-to Post Code")
+                        {
+                            ApplicationArea = Basic, Suite;
+                            Caption = 'Post Code';
+                            Editable = (PayToOptions = PayToOptions::"Custom Address") or (Rec."Buy-from Vendor No." <> Rec."Pay-to Vendor No.");
+                            Enabled = (PayToOptions = PayToOptions::"Custom Address") or (Rec."Buy-from Vendor No." <> Rec."Pay-to Vendor No.");
+                            Importance = Additional;
+                            QuickEntry = false;
+                            ToolTip = 'Specifies the postal code.';
+                        }
+                        field("Pay-to Country/Region Code"; Rec."Pay-to Country/Region Code")
+                        {
+                            ApplicationArea = Basic, Suite;
+                            Caption = 'Country/Region';
+                            Editable = (PayToOptions = PayToOptions::"Custom Address") or (Rec."Buy-from Vendor No." <> Rec."Pay-to Vendor No.");
+                            Enabled = (PayToOptions = PayToOptions::"Custom Address") or (Rec."Buy-from Vendor No." <> Rec."Pay-to Vendor No.");
+                            Importance = Additional;
+                            QuickEntry = false;
+                            ToolTip = 'Specifies the country or region of the address.';
+
+                            trigger OnValidate()
+                            begin
+                                IsPayToCountyVisible := FormatAddress.UseCounty(Rec."Pay-to Country/Region Code");
+                            end;
+                        }
+                        field("Pay-to Contact No."; Rec."Pay-to Contact No.")
+                        {
+                            ApplicationArea = Basic, Suite;
+                            Caption = 'Contact No.';
+                            Editable = (PayToOptions = PayToOptions::"Custom Address") or (Rec."Buy-from Vendor No." <> Rec."Pay-to Vendor No.");
+                            Enabled = (PayToOptions = PayToOptions::"Custom Address") or (Rec."Buy-from Vendor No." <> Rec."Pay-to Vendor No.");
+                            Importance = Additional;
+                            ToolTip = 'Specifies the number of the contact who sends the invoice.';
+                        }
+                        field(PayToContactPhoneNo; PayToContact."Phone No.")
+                        {
+                            ApplicationArea = Basic, Suite;
+                            Caption = 'Phone No.';
+                            Editable = false;
+                            Importance = Additional;
+                            ExtendedDatatype = PhoneNo;
+                            ToolTip = 'Specifies the telephone number of the vendor contact person.';
+                        }
+                        field(PayToContactMobilePhoneNo; PayToContact."Mobile Phone No.")
+                        {
+                            ApplicationArea = Basic, Suite;
+                            Caption = 'Mobile Phone No.';
+                            Editable = false;
+                            Importance = Additional;
+                            ExtendedDatatype = PhoneNo;
+                            ToolTip = 'Specifies the mobile telephone number of the vendor contact person.';
+                        }
+                        field(PayToContactEmail; PayToContact."E-Mail")
+                        {
+                            ApplicationArea = Basic, Suite;
+                            Caption = 'Email';
+                            Editable = false;
+                            Importance = Additional;
+                            ExtendedDatatype = Email;
+                            ToolTip = 'Specifies the email address of the vendor contact person.';
+                        }
+                        field("Pay-to Contact"; Rec."Pay-to Contact")
+                        {
+                            ApplicationArea = Basic, Suite;
+                            Caption = 'Contact';
+                            Editable = (PayToOptions = PayToOptions::"Custom Address") or (Rec."Buy-from Vendor No." <> Rec."Pay-to Vendor No.");
+                            Enabled = (PayToOptions = PayToOptions::"Custom Address") or (Rec."Buy-from Vendor No." <> Rec."Pay-to Vendor No.");
+                            ToolTip = 'Specifies the name of the person to contact about an invoice from this vendor.';
+                        }
                     }
                 }
-                group("Pay-to")
+                group("Remit-to")
                 {
-                    Caption = 'Pay-to';
-                    field("Pay-to Name"; Rec."Pay-to Name")
+                    ShowCaption = false;
+                    field("Remit-to Code"; Rec."Remit-to Code")
                     {
+                        Editable = Rec."Buy-from Vendor No." <> '';
                         ApplicationArea = Basic, Suite;
-                        Caption = 'Name';
                         Importance = Promoted;
-                        ToolTip = 'Specifies the vendor who is sending the invoice.';
+                        ToolTip = 'Specifies the code for the vendor''s remit address for this invoice.';
 
                         trigger OnValidate()
-                        var
-                            ApplicationAreaMgmtFacade: Codeunit "Application Area Mgmt. Facade";
                         begin
-                            if Rec.GetFilter("Pay-to Vendor No.") = xRec."Pay-to Vendor No." then
-                                if Rec."Pay-to Vendor No." <> xRec."Pay-to Vendor No." then
-                                    Rec.SetRange("Pay-to Vendor No.");
-
-                            CurrPage.SaveRecord();
-                            if ApplicationAreaMgmtFacade.IsFoundationEnabled() then
-                                PurchCalcDiscByType.ApplyDefaultInvoiceDiscount(0, Rec);
-
-                            CurrPage.Update(false);
+                            FillRemitToFields();
                         end;
                     }
-                    field("Pay-to Address"; Rec."Pay-to Address")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Address';
-                        Importance = Additional;
-                        QuickEntry = false;
-                        ToolTip = 'Specifies the address of the vendor sending the invoice.';
-                    }
-                    field("Pay-to Address 2"; Rec."Pay-to Address 2")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Address 2';
-                        Importance = Additional;
-                        QuickEntry = false;
-                        ToolTip = 'Specifies additional address information.';
-                    }
-                    field("Pay-to City"; Rec."Pay-to City")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'City';
-                        Importance = Additional;
-                        QuickEntry = false;
-                        ToolTip = 'Specifies the city of the vendor on the purchase document.';
-                    }
-                    group(Control84)
+                    group("Remit-to information")
                     {
                         ShowCaption = false;
-                        Visible = IsPayToCountyVisible;
-                        field("Pay-to County"; Rec."Pay-to County")
+                        Visible = Rec."Remit-to Code" <> '';
+                        field("Remit-to Name"; RemitAddressBuffer.Name)
                         {
                             ApplicationArea = Basic, Suite;
-                            CaptionClass = '5,1,' + Rec."Pay-to Country/Region Code";
+                            Caption = 'Name';
+                            Editable = false;
                             Importance = Additional;
                             QuickEntry = false;
-                            ToolTip = 'Specifies the state, province or county as a part of the address.';
+                            ToolTip = 'Specifies the name of the company at the address that you want the invoice to be remitted to.';
                         }
-                    }
-                    field("Pay-to Post Code"; Rec."Pay-to Post Code")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Post Code';
-                        Importance = Additional;
-                        QuickEntry = false;
-                        ToolTip = 'Specifies the postal code.';
-                    }
-                    field("Pay-to Country/Region Code"; Rec."Pay-to Country/Region Code")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Country/Region';
-                        Importance = Additional;
-                        QuickEntry = false;
-                        ToolTip = 'Specifies the country or region of the vendor on the purchase document.';
-
-                        trigger OnValidate()
-                        begin
-                            IsPayToCountyVisible := FormatAddress.UseCounty(Rec."Pay-to Country/Region Code");
-                        end;
-                    }
-                    field("Pay-to Contact No."; Rec."Pay-to Contact No.")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Contact No.';
-                        Importance = Additional;
-                        ToolTip = 'Specifies the number of the contact who sends the invoice.';
-                    }
-                    field(PayToContactPhoneNo; PayToContact."Phone No.")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Phone No.';
-                        Editable = false;
-                        Importance = Additional;
-                        ExtendedDatatype = PhoneNo;
-                        ToolTip = 'Specifies the telephone number of the vendor contact person.';
-                    }
-                    field(PayToContactMobilePhoneNo; PayToContact."Mobile Phone No.")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Mobile Phone No.';
-                        Editable = false;
-                        Importance = Additional;
-                        ExtendedDatatype = PhoneNo;
-                        ToolTip = 'Specifies the mobile telephone number of the vendor contact person.';
-                    }
-                    field(PayToContactEmail; PayToContact."E-Mail")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Email';
-                        Editable = false;
-                        Importance = Additional;
-                        ExtendedDatatype = Email;
-                        ToolTip = 'Specifies the email address of the vendor contact person.';
-                    }
-                    field("Pay-to Contact"; Rec."Pay-to Contact")
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Contact';
-                        ToolTip = 'Specifies the name of the person to contact about an invoice from this vendor.';
+                        field("Remit-to Address"; RemitAddressBuffer.Address)
+                        {
+                            ApplicationArea = Basic, Suite;
+                            Caption = 'Address';
+                            Editable = false;
+                            Importance = Additional;
+                            QuickEntry = false;
+                            ToolTip = 'Specifies the address that you want the items on the purchase document to be remitted to.';
+                        }
+                        field("Remit-to Address 2"; RemitAddressBuffer."Address 2")
+                        {
+                            ApplicationArea = Basic, Suite;
+                            Caption = 'Address 2';
+                            Editable = false;
+                            Importance = Additional;
+                            QuickEntry = false;
+                            ToolTip = 'Specifies additional address information.';
+                        }
+                        field("Remit-to City"; RemitAddressBuffer.City)
+                        {
+                            ApplicationArea = Basic, Suite;
+                            Caption = 'City';
+                            Editable = false;
+                            Importance = Additional;
+                            QuickEntry = false;
+                            ToolTip = 'Specifies the city of the address that you want the items on the purchase document to be remitted to.';
+                        }
+                        group("Remit-to County group")
+                        {
+                            ShowCaption = false;
+                            Visible = IsRemitToCountyVisible;
+                            field("Remit-to County"; RemitAddressBuffer.County)
+                            {
+                                ApplicationArea = Basic, Suite;
+                                Caption = 'County';
+                                Editable = false;
+                                Importance = Additional;
+                                QuickEntry = false;
+                                ToolTip = 'Specifies the state, province or county of the address.';
+                            }
+                        }
+                        field("Remit-to Post Code"; RemitAddressBuffer."Post Code")
+                        {
+                            ApplicationArea = Basic, Suite;
+                            Caption = 'Post Code';
+                            Editable = false;
+                            Importance = Additional;
+                            QuickEntry = false;
+                            ToolTip = 'Specifies the postal code of the address that you want the items on the purchase document to be remitted to.';
+                        }
+                        field("Remit-to Country/Region Code"; RemitAddressBuffer."Country/Region Code")
+                        {
+                            ApplicationArea = Basic, Suite;
+                            Caption = 'Country/Region';
+                            Editable = false;
+                            Importance = Additional;
+                            QuickEntry = false;
+                            ToolTip = 'Specifies the country/region code of the address that you want the items on the purchase document to be remitted to.';
+                        }
+                        field("Remit-to Contact"; RemitAddressBuffer.Contact)
+                        {
+                            ApplicationArea = Basic, Suite;
+                            Caption = 'Contact';
+                            Editable = false;
+                            Importance = Additional;
+                            QuickEntry = false;
+                            ToolTip = 'Specifies the name of a contact person for the address that you want the items on the purchase document to be remitted to.';
+                        }
                     }
                 }
             }
@@ -784,47 +933,28 @@ page 50465 "Inter Purchase Credit Memo"
                 Caption = 'Foreign Trade';
                 field("Transaction Specification"; Rec."Transaction Specification")
                 {
-                    ApplicationArea = BasicEU, BasicNO;
+                    ApplicationArea = BasicEU;
                     ToolTip = 'Specifies a specification of the document''s transaction, for the purpose of reporting to INTRASTAT.';
                 }
                 field("Transaction Type"; Rec."Transaction Type")
                 {
-                    ApplicationArea = BasicEU, BasicNO;
+                    ApplicationArea = BasicEU;
                     ToolTip = 'Specifies the type of transaction that the document represents, for the purpose of reporting to INTRASTAT.';
                 }
                 field("Transport Method"; Rec."Transport Method")
                 {
-                    ApplicationArea = BasicEU, BasicNO;
+                    ApplicationArea = BasicEU;
                     ToolTip = 'Specifies the transport method, for the purpose of reporting to INTRASTAT.';
                 }
                 field("Entry Point"; Rec."Entry Point")
                 {
-                    ApplicationArea = BasicEU, BasicNO;
+                    ApplicationArea = BasicEU;
                     ToolTip = 'Specifies the code of the port of entry where the items pass into your country/region, for reporting to Intrastat.';
                 }
                 field("Area"; Rec.Area)
                 {
-                    ApplicationArea = BasicEU, BasicNO;
+                    ApplicationArea = BasicEU;
                     ToolTip = 'Specifies the destination country or region for the purpose of Intrastat reporting.';
-                }
-            }
-            group(Application)
-            {
-                Caption = 'Application';
-                field("Applies-to Doc. Type"; Rec."Applies-to Doc. Type")
-                {
-                    ApplicationArea = Basic, Suite;
-                    ToolTip = 'Specifies the type of the posted document that this document or journal line will be applied to when you post, for example to register payment.';
-                }
-                field("Applies-to Doc. No."; Rec."Applies-to Doc. No.")
-                {
-                    ApplicationArea = Basic, Suite;
-                    ToolTip = 'Specifies the number of the posted document that this document or journal line will be applied to when you post, for example to register payment.';
-                }
-                field("Applies-to ID"; Rec."Applies-to ID")
-                {
-                    ApplicationArea = Basic, Suite;
-                    ToolTip = 'Specifies the ID of entries that will be applied to when you choose the Apply Entries action.';
                 }
             }
         }
@@ -838,6 +968,7 @@ page 50465 "Inter Purchase Credit Memo"
                 SubPageLink = "No." = field("No."),
                               "Document Type" = field("Document Type");
             }
+
 #if not CLEAN25
             part("Attached Documents"; "Document Attachment Factbox")
             {
@@ -848,8 +979,8 @@ page 50465 "Inter Purchase Credit Memo"
                 Visible = false;
                 Caption = 'Attachments';
                 SubPageLink = "Table ID" = const(Database::"Purchase Header"),
-                              "No." = field("No."),
-                              "Document Type" = field("Document Type");
+                              "Document Type" = field("Document Type"),
+                              "No." = field("No.");
             }
 #endif
             part("Attached Documents List"; "Doc. Attachment List Factbox")
@@ -858,10 +989,10 @@ page 50465 "Inter Purchase Credit Memo"
                 Caption = 'Documents';
                 UpdatePropagation = Both;
                 SubPageLink = "Table ID" = const(Database::"Purchase Header"),
-                              "No." = field("No."),
-                              "Document Type" = field("Document Type");
+                              "Document Type" = field("Document Type"),
+                              "No." = field("No.");
             }
-            part(Control15; "Pending Approval FactBox")
+            part(Control27; "Pending Approval FactBox")
             {
                 ApplicationArea = All;
                 SubPageLink = "Table ID" = const(38),
@@ -872,7 +1003,7 @@ page 50465 "Inter Purchase Credit Memo"
             }
             part(ApprovalFactBox; "Approval FactBox")
             {
-                ApplicationArea = Suite;
+                ApplicationArea = Basic, Suite;
                 Visible = false;
             }
             part(Control1901138007; "Vendor Details FactBox")
@@ -881,6 +1012,12 @@ page 50465 "Inter Purchase Credit Memo"
                 SubPageLink = "No." = field("Buy-from Vendor No."),
                               "Date Filter" = field("Date Filter");
                 Visible = false;
+            }
+            part(IncomingDocAttachFactBox; "Incoming Doc. Attach. FactBox")
+            {
+                ApplicationArea = Basic, Suite;
+                ShowFilter = false;
+                Visible = not IsOfficeAddin;
             }
             part(Control1904651607; "Vendor Statistics FactBox")
             {
@@ -893,6 +1030,7 @@ page 50465 "Inter Purchase Credit Memo"
                 ApplicationArea = Basic, Suite;
                 SubPageLink = "No." = field("Buy-from Vendor No."),
                               "Date Filter" = field("Date Filter");
+                Visible = false;
             }
             part(Control1906949207; "Vendor Hist. Pay-to FactBox")
             {
@@ -901,13 +1039,7 @@ page 50465 "Inter Purchase Credit Memo"
                               "Date Filter" = field("Date Filter");
                 Visible = false;
             }
-            part(IncomingDocAttachFactBox; "Incoming Doc. Attach. FactBox")
-            {
-                ApplicationArea = Basic, Suite;
-                ShowFilter = false;
-                Visible = not IsOfficeAddin;
-            }
-            part(Control5; "Purchase Line FactBox")
+            part(Control3; "Purchase Line FactBox")
             {
                 ApplicationArea = Basic, Suite;
                 Provider = PurchLines;
@@ -940,10 +1072,10 @@ page 50465 "Inter Purchase Credit Memo"
     {
         area(navigation)
         {
-            group("&Credit Memo")
+            group("&Invoice")
             {
-                Caption = '&Credit Memo';
-                Image = CreditMemo;
+                Caption = '&Invoice';
+                Image = Invoice;
 #if not CLEAN26
                 action(Statistics)
                 {
@@ -1002,6 +1134,17 @@ page 50465 "Inter Purchase Credit Memo"
                                   "Date Filter" = field("Date Filter");
                     ToolTip = 'View statistical information, such as the value of posted entries, for the buy-from vendor on the purchase document.';
                 }
+                action("Co&mments")
+                {
+                    ApplicationArea = Comments;
+                    Caption = 'Co&mments';
+                    Image = ViewComments;
+                    RunObject = Page "Purch. Comment Sheet";
+                    RunPageLink = "Document Type" = field("Document Type"),
+                                  "No." = field("No."),
+                                  "Document Line No." = const(0);
+                    ToolTip = 'View or add comments for the record.';
+                }
                 action(Dimensions)
                 {
                     AccessByPermission = TableData Dimension = R;
@@ -1017,32 +1160,6 @@ page 50465 "Inter Purchase Credit Memo"
                         Rec.ShowDocDim();
                         CurrPage.SaveRecord();
                     end;
-                }
-                action(Approvals)
-                {
-                    AccessByPermission = TableData "Approval Entry" = R;
-                    ApplicationArea = Suite;
-                    Caption = 'Approvals';
-                    Image = Approvals;
-                    ToolTip = 'View a list of the records that are waiting to be approved. For example, you can see who requested the record to be approved, when it was sent, and when it is due to be approved.';
-
-                    trigger OnAction()
-                    var
-                        ApprovalsMgmt: Codeunit "Approvals Mgmt.";
-                    begin
-                        ApprovalsMgmt.OpenApprovalsPurchase(Rec);
-                    end;
-                }
-                action("Co&mments")
-                {
-                    ApplicationArea = Basic, Suite;
-                    Caption = 'Co&mments';
-                    Image = ViewComments;
-                    RunObject = Page "Purch. Comment Sheet";
-                    RunPageLink = "Document Type" = field("Document Type"),
-                                  "No." = field("No."),
-                                  "Document Line No." = const(0);
-                    ToolTip = 'View or add comments for the record.';
                 }
                 action(DocAttach)
                 {
@@ -1065,6 +1182,91 @@ page 50465 "Inter Purchase Credit Memo"
         }
         area(processing)
         {
+            group(IncomingDocument)
+            {
+                Caption = 'Incoming Document';
+                action(IncomingDocCard)
+                {
+                    ApplicationArea = Basic, Suite;
+                    Caption = 'View';
+                    Enabled = HasIncomingDocument;
+                    Image = ViewOrder;
+                    ToolTip = 'View any incoming document records and file attachments that exist for the entry or document.';
+
+                    trigger OnAction()
+                    var
+                        IncomingDocument: Record "Incoming Document";
+                    begin
+                        IncomingDocument.ShowCardFromEntryNo(Rec."Incoming Document Entry No.");
+                    end;
+                }
+                action(SelectIncomingDoc)
+                {
+                    AccessByPermission = TableData "Incoming Document" = R;
+                    ApplicationArea = Basic, Suite;
+                    Caption = 'Select';
+                    Image = SelectLineToApply;
+                    ToolTip = 'Select an incoming document record and file attachment that you want to link to the entry or document.';
+
+                    trigger OnAction()
+                    var
+                        IncomingDocument: Record "Incoming Document";
+                    begin
+                        Rec.Validate("Incoming Document Entry No.", IncomingDocument.SelectIncomingDocument(Rec."Incoming Document Entry No.", Rec.RecordId));
+                    end;
+                }
+                action(IncomingDocAttachFile)
+                {
+                    ApplicationArea = Basic, Suite;
+                    Caption = 'Create from File';
+                    Ellipsis = true;
+                    Enabled = (Rec."Incoming Document Entry No." = 0) and (Rec."No." <> '');
+                    Image = Attach;
+                    ToolTip = 'Create an incoming document record by selecting a file to attach, and then link the incoming document record to the entry or document.';
+                    Visible = CreateIncomingDocumentVisible;
+
+                    trigger OnAction()
+                    var
+                        IncomingDocumentAttachment: Record "Incoming Document Attachment";
+                    begin
+                        IncomingDocumentAttachment.NewAttachmentFromPurchaseDocument(Rec);
+                    end;
+                }
+                action(IncomingDocEmailAttachment)
+                {
+                    ApplicationArea = Basic, Suite;
+                    Caption = 'Create from Attachment';
+                    Ellipsis = true;
+                    Enabled = IncomingDocEmailAttachmentEnabled;
+                    Image = SendElectronicDocument;
+                    ToolTip = 'Create an incoming document record by selecting an attachment from outlook email, and then link the incoming document record to the entry or document.';
+                    Visible = CreateIncomingDocFromEmailAttachment;
+
+                    trigger OnAction()
+                    begin
+                        CurrPage.SaveRecord();
+                        OfficeMgt.InitiateSendToIncomingDocumentsWithPurchaseHeaderLink(Rec, Rec."Buy-from Vendor No.");
+                    end;
+                }
+                action(RemoveIncomingDoc)
+                {
+                    ApplicationArea = Basic, Suite;
+                    Caption = 'Remove';
+                    Enabled = HasIncomingDocument;
+                    Image = RemoveLine;
+                    ToolTip = 'Remove an external document that has been recorded, manually or automatically, and attached as a file to a document or ledger entry.';
+
+                    trigger OnAction()
+                    var
+                        IncomingDocument: Record "Incoming Document";
+                    begin
+                        if IncomingDocument.Get(Rec."Incoming Document Entry No.") then
+                            IncomingDocument.RemoveLinkToRelatedRecord();
+                        Rec."Incoming Document Entry No." := 0;
+                        Rec.Modify(true);
+                    end;
+                }
+            }
             group(Approval)
             {
                 Caption = 'Approval';
@@ -1080,7 +1282,7 @@ page 50465 "Inter Purchase Credit Memo"
                     var
                         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
                     begin
-                        ApprovalsMgmt.ApproveRecordApprovalRequest(Rec.RecordId);
+                        ApprovalsMgmt.ApproveRecordApprovalRequest(Rec.RecordId)
                     end;
                 }
                 action(Reject)
@@ -1095,7 +1297,7 @@ page 50465 "Inter Purchase Credit Memo"
                     var
                         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
                     begin
-                        ApprovalsMgmt.RejectRecordApprovalRequest(Rec.RecordId);
+                        ApprovalsMgmt.RejectRecordApprovalRequest(Rec.RecordId)
                     end;
                 }
                 action(Delegate)
@@ -1110,7 +1312,7 @@ page 50465 "Inter Purchase Credit Memo"
                     var
                         ApprovalsMgmt: Codeunit "Approvals Mgmt.";
                     begin
-                        ApprovalsMgmt.DelegateRecordApprovalRequest(Rec.RecordId);
+                        ApprovalsMgmt.DelegateRecordApprovalRequest(Rec.RecordId)
                     end;
                 }
                 action(Comment)
@@ -1129,11 +1331,10 @@ page 50465 "Inter Purchase Credit Memo"
                     end;
                 }
             }
-            group(Action9)
+            group(Release)
             {
                 Caption = 'Release';
-                Image = ReleaseDoc;
-                action(Release)
+                action("Re&lease")
                 {
                     ApplicationArea = Suite;
                     Caption = 'Re&lease';
@@ -1166,18 +1367,38 @@ page 50465 "Inter Purchase Credit Memo"
                         CurrPage.PurchLines.PAGE.ClearTotalPurchaseHeader();
                     end;
                 }
+                action("Reject IC Purchase Invoice")
+                {
+                    ApplicationArea = Intercompany;
+                    Caption = 'Reject IC Purchase Invoice';
+                    Enabled = RejectICPurchaseInvoiceEnabled;
+                    Image = Cancel;
+                    ToolTip = 'Deletes the invoice and sends the rejection to the company that created it.';
+
+                    trigger OnAction()
+                    var
+                        ICInboxOutboxMgt: Codeunit ICInboxOutboxMgt;
+                    begin
+                        if not ICInboxOutboxMgt.IsPurchaseHeaderFromIncomingIC(Rec) then
+                            exit;
+                        if Confirm(SureToRejectMsg) then
+                            ICInboxOutboxMgt.RejectAcceptedPurchaseHeader(Rec);
+                    end;
+                }
             }
             group("F&unctions")
             {
                 Caption = 'F&unctions';
                 Image = "Action";
-                action("Get St&d. Vend. Purchase Codes")
+                action(GetRecurringPurchaseLines)
                 {
-                    ApplicationArea = Basic, Suite;
-                    Caption = 'Get St&d. Vend. Purchase Codes';
+                    ApplicationArea = Suite;
+                    Caption = 'Get Recurring Purchase Lines';
                     Ellipsis = true;
                     Image = VendorCode;
-                    ToolTip = 'View a list of the standard purchase lines that have been assigned to the vendor to be used for recurring purchases.';
+                    //The property 'PromotedIsBig' can only be set if the property 'Promoted' is set to 'true'
+                    //PromotedIsBig = true;
+                    ToolTip = 'Insert purchase document lines that you have set up for the vendor as recurring. Recurring purchase lines could be for a monthly replenishment order or a fixed freight expense.';
 
                     trigger OnAction()
                     var
@@ -1186,73 +1407,15 @@ page 50465 "Inter Purchase Credit Memo"
                         StdVendPurchCode.InsertPurchLines(Rec);
                     end;
                 }
-                action(CalculateInvoiceDiscount)
+                action(CopyDocument)
                 {
-                    AccessByPermission = TableData "Vendor Invoice Disc." = R;
-                    ApplicationArea = Basic, Suite;
-                    Caption = 'Calculate &Invoice Discount';
-                    Image = CalculateInvoiceDiscount;
-                    ToolTip = 'Calculate the invoice discount for the entire document.';
-
-                    trigger OnAction()
-                    begin
-                        ApproveCalcInvDisc();
-                        PurchCalcDiscByType.ResetRecalculateInvoiceDisc(Rec);
-                    end;
-                }
-                separator(Action128)
-                {
-                }
-                action(ApplyEntries)
-                {
-                    ApplicationArea = Basic, Suite;
-                    Caption = 'Apply Entries';
-                    Ellipsis = true;
-                    Image = ApplyEntries;
-                    ShortCutKey = 'Shift+F11';
-                    ToolTip = 'Apply open entries for the relevant account type.';
-
-                    trigger OnAction()
-                    begin
-                        CODEUNIT.Run(CODEUNIT::"Purchase Header Apply", Rec);
-                    end;
-                }
-                separator(Action129)
-                {
-                }
-                action(GetPostedDocumentLinesToReverse)
-                {
-                    ApplicationArea = Basic, Suite;
-                    Caption = 'Get Posted Doc&ument Lines to Reverse';
-                    Ellipsis = true;
-                    Image = ReverseLines;
-                    ToolTip = 'Copy one or more posted purchase document lines in order to reverse the original order.';
-
-                    trigger OnAction()
-                    begin
-                        Rec.GetPstdDocLinesToReverse();
-                    end;
-                }
-                action("Get Return &Shipment Lines")
-                {
-                    ApplicationArea = Basic, Suite;
-                    Caption = 'Get Return &Shipment Lines';
-                    Ellipsis = true;
-                    Image = CalculateShipment;
-                    ToolTip = 'Select a posted return shipment for the item that you want to assign the item charge to, for example, if you received an invoice for the item charge after you posted the original return shipment.';
-
-                    trigger OnAction()
-                    begin
-                        CurrPage.PurchLines.PAGE.GetReturnShipment();
-                    end;
-                }
-                action("Copy Document")
-                {
-                    ApplicationArea = Basic, Suite;
+                    ApplicationArea = Suite;
                     Caption = 'Copy Document';
                     Ellipsis = true;
                     Enabled = Rec."No." <> '';
                     Image = CopyDocument;
+                    //The property 'PromotedIsBig' can only be set if the property 'Promoted' is set to 'true'
+                    //PromotedIsBig = true;
                     ToolTip = 'Copy document lines and header information from another purchase document to this document. You can copy a posted purchase invoice into a new purchase invoice to quickly create a similar document.';
 
                     trigger OnAction()
@@ -1263,10 +1426,35 @@ page 50465 "Inter Purchase Credit Memo"
                         CurrPage.Update();
                     end;
                 }
-                separator(Action131)
+                action(CalculateInvoiceDiscount)
                 {
+                    AccessByPermission = TableData "Vendor Invoice Disc." = R;
+                    ApplicationArea = Basic, Suite;
+                    Caption = 'Calculate &Invoice Discount';
+                    Image = CalculateInvoiceDiscount;
+                    ToolTip = 'Calculate the invoice discount for the entire purchase invoice.';
+
+                    trigger OnAction()
+                    begin
+                        ApproveCalcInvDisc();
+                        PurchCalcDiscByType.ResetRecalculateInvoiceDisc(Rec);
+                    end;
                 }
-                action("Move Negative Lines")
+                action("Create Tracking Information")
+                {
+                    ApplicationArea = Basic, Suite;
+                    Caption = 'Create Tracking Information';
+                    Image = ItemTracking;
+                    ToolTip = 'Create item tracking information for the entire purchase invoice.';
+
+                    trigger OnAction()
+                    var
+                        ItemTrackingDocMgt: Codeunit "Item Tracking Doc. Management";
+                    begin
+                        ItemTrackingDocMgt.CreateTrackingInfo(DATABASE::"Purchase Header", Rec."Document Type".AsInteger(), Rec."No.");
+                    end;
+                }
+                action(MoveNegativeLines)
                 {
                     ApplicationArea = Basic, Suite;
                     Caption = 'Move Negative Lines';
@@ -1282,83 +1470,25 @@ page 50465 "Inter Purchase Credit Memo"
                         MoveNegPurchLines.ShowDocument();
                     end;
                 }
-                separator(Action132)
-                {
-                }
-                group(IncomingDocument)
-                {
-                    Caption = 'Incoming Document';
-                    Image = Documents;
-                    action(IncomingDocCard)
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'View Incoming Document';
-                        Enabled = HasIncomingDocument;
-                        Image = ViewOrder;
-                        ToolTip = 'View any incoming document records and file attachments that exist for the entry or document.';
-
-                        trigger OnAction()
-                        var
-                            IncomingDocument: Record "Incoming Document";
-                        begin
-                            IncomingDocument.ShowCardFromEntryNo(Rec."Incoming Document Entry No.");
-                        end;
-                    }
-                    action(SelectIncomingDoc)
-                    {
-                        AccessByPermission = TableData "Incoming Document" = R;
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Select Incoming Document';
-                        Image = SelectLineToApply;
-                        ToolTip = 'Select an incoming document record and file attachment that you want to link to the entry or document.';
-
-                        trigger OnAction()
-                        var
-                            IncomingDocument: Record "Incoming Document";
-                        begin
-                            Rec.Validate("Incoming Document Entry No.", IncomingDocument.SelectIncomingDocument(Rec."Incoming Document Entry No.", Rec.RecordId));
-                        end;
-                    }
-                    action(IncomingDocAttachFile)
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Create Incoming Document from File';
-                        Ellipsis = true;
-                        Enabled = (Rec."Incoming Document Entry No." = 0) and (Rec."No." <> '');
-                        Image = Attach;
-                        ToolTip = 'Create an incoming document record by selecting a file to attach, and then link the incoming document record to the entry or document.';
-
-                        trigger OnAction()
-                        var
-                            IncomingDocumentAttachment: Record "Incoming Document Attachment";
-                        begin
-                            IncomingDocumentAttachment.NewAttachmentFromPurchaseDocument(Rec);
-                        end;
-                    }
-                    action(RemoveIncomingDoc)
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Remove Incoming Document';
-                        Enabled = HasIncomingDocument;
-                        Image = RemoveLine;
-                        ToolTip = 'Remove any incoming document records and file attachments.';
-
-                        trigger OnAction()
-                        var
-                            IncomingDocument: Record "Incoming Document";
-                        begin
-                            if IncomingDocument.Get(Rec."Incoming Document Entry No.") then
-                                IncomingDocument.RemoveLinkToRelatedRecord();
-                            Rec."Incoming Document Entry No." := 0;
-                            Rec.Modify(true);
-                        end;
-                    }
-                }
             }
             group("Request Approval")
             {
                 Caption = 'Request Approval';
-                Image = Approval;
+                action(Approvals)
+                {
+                    AccessByPermission = TableData "Approval Entry" = R;
+                    ApplicationArea = Suite;
+                    Caption = 'Approvals';
+                    Image = Approvals;
+                    ToolTip = 'View a list of the records that are waiting to be approved. For example, you can see who requested the record to be approved, when it was sent, and when it is due to be approved.';
+
+                    trigger OnAction()
+                    var
+                        ApprovalsMgmt: Codeunit "Approvals Mgmt.";
+                    begin
+                        ApprovalsMgmt.OpenApprovalsPurchase(Rec);
+                    end;
+                }
                 action(SendApprovalRequest)
                 {
                     ApplicationArea = Basic, Suite;
@@ -1392,23 +1522,20 @@ page 50465 "Inter Purchase Credit Memo"
                         WorkflowWebhookMgt.FindAndCancel(Rec.RecordId);
                     end;
                 }
-                separator(Action144)
-                {
-                }
-                group(Flow)
-                {
-                    Caption = 'Power Automate';
-                    Image = Flow;
+            }
+            group(Flow)
+            {
+                Caption = 'Power Automate';
+                Image = Flow;
 
-                    customaction(CreateFlowFromTemplate)
-                    {
-                        ApplicationArea = Basic, Suite;
-                        Caption = 'Create approval flow';
-                        ToolTip = 'Create a new flow in Power Automate from a list of relevant flow templates.';
-                        Visible = IsSaaS and IsPowerAutomatePrivacyNoticeApproved;
-                        CustomActionType = FlowTemplateGallery;
-                        FlowTemplateCategoryName = 'd365bc_approval_purchaseCreditMemo';
-                    }
+                customaction(CreateFlowFromTemplate)
+                {
+                    ApplicationArea = Basic, Suite;
+                    Caption = 'Create approval flow';
+                    ToolTip = 'Create a new flow in Power Automate from a list of relevant flow templates.';
+                    Visible = IsSaaS and IsPowerAutomatePrivacyNoticeApproved;
+                    CustomActionType = FlowTemplateGallery;
+                    FlowTemplateCategoryName = 'd365bc_approval_purchaseInvoice';
                 }
             }
             group("P&osting")
@@ -1425,6 +1552,7 @@ page 50465 "Inter Purchase Credit Memo"
 
                     trigger OnAction()
                     begin
+                        VerifyTotal();
                         PostDocument(CODEUNIT::"Purch.-Post (Yes/No)", Enum::"Navigate After Posting"::"Posted Document");
                     end;
                 }
@@ -1467,6 +1595,7 @@ page 50465 "Inter Purchase Credit Memo"
 
                     trigger OnAction()
                     begin
+                        VerifyTotal();
                         PostDocument(CODEUNIT::"Purch.-Post + Print", Enum::"Navigate After Posting"::"Do Nothing");
                     end;
                 }
@@ -1484,13 +1613,28 @@ page 50465 "Inter Purchase Credit Memo"
                         PostDocument(CODEUNIT::"Purch.-Post (Yes/No)", Enum::"Navigate After Posting"::"New Document");
                     end;
                 }
-                action("Remove From Job Queue")
+                action(PostBatch)
+                {
+                    ApplicationArea = Basic, Suite;
+                    Caption = 'Post &Batch';
+                    Ellipsis = true;
+                    Image = PostBatch;
+                    ToolTip = 'Post several documents at once. A report request window opens where you can specify which documents to post.';
+
+                    trigger OnAction()
+                    begin
+                        VerifyTotal();
+                        REPORT.RunModal(REPORT::"Batch Post Purchase Invoices", true, true, Rec);
+                        CurrPage.Update(false);
+                    end;
+                }
+                action(RemoveFromJobQueue)
                 {
                     ApplicationArea = All;
                     Caption = 'Remove From Job Queue';
                     Image = RemoveLine;
                     ToolTip = 'Remove the scheduled processing of this record from the job queue.';
-                    Visible = JobQueueVisible;
+                    Visible = Rec."Job Queue Status" = Rec."Job Queue Status"::"Scheduled For Posting";
 
                     trigger OnAction()
                     begin
@@ -1505,9 +1649,9 @@ page 50465 "Inter Purchase Credit Memo"
             {
                 Caption = 'Process', Comment = 'Generated from the PromotedActionCategories property index 1.';
 
-                group(Category_Category8)
+                group(Category_Category6)
                 {
-                    Caption = 'Posting', Comment = 'Generated from the PromotedActionCategories property index 7.';
+                    Caption = 'Posting', Comment = 'Generated from the PromotedActionCategories property index 5.';
                     ShowAs = SplitButton;
 
                     actionref(Post_Promoted; Post)
@@ -1516,38 +1660,37 @@ page 50465 "Inter Purchase Credit Memo"
                     actionref(Preview_Promoted; Preview)
                     {
                     }
-                    actionref(PostAndPrint_Promoted; PostAndPrint)
-                    {
-                    }
                     actionref(PostAndNew_Promoted; PostAndNew)
                     {
                     }
+                    actionref(PostAndPrint_Promoted; PostAndPrint)
+                    {
+                    }
+                    actionref(PostBatch_Promoted; PostBatch)
+                    {
+                    }
                 }
-                group(Category_Category7)
+                group(Category_Category10)
                 {
-                    Caption = 'Release', Comment = 'Generated from the PromotedActionCategories property index 6.';
+                    Caption = 'Release', Comment = 'Generated from the PromotedActionCategories property index 9.';
                     ShowAs = SplitButton;
 
-                    actionref(Release_Promoted; Release)
+                    actionref("Re&lease_Promoted"; "Re&lease")
                     {
                     }
                     actionref(Reopen_Promoted; Reopen)
                     {
                     }
                 }
-                actionref(ApplyEntries_Promoted; ApplyEntries)
-                {
-                }
-
             }
             group(Category_Prepare)
             {
                 Caption = 'Prepare';
 
-                actionref("Copy Document_Promoted"; "Copy Document")
+                actionref(CopyDocument_Promoted; CopyDocument)
                 {
                 }
-                actionref(GetPostedDocumentLinesToReverse_Promoted; GetPostedDocumentLinesToReverse)
+                actionref(GetRecurringPurchaseLines_Promoted; GetRecurringPurchaseLines)
                 {
                 }
                 group("Category_Incoming Document")
@@ -1566,14 +1709,14 @@ page 50465 "Inter Purchase Credit Memo"
                     actionref(RemoveIncomingDoc_Promoted; RemoveIncomingDoc)
                     {
                     }
-                }
-                actionref("Get St&d. Vend. Purchase Codes_Promoted"; "Get St&d. Vend. Purchase Codes")
-                {
+                    actionref(IncomingDocEmailAttachment_Promoted; IncomingDocEmailAttachment)
+                    {
+                    }
                 }
                 actionref(CalculateInvoiceDiscount_Promoted; CalculateInvoiceDiscount)
                 {
                 }
-                actionref("Move Negative Lines_Promoted"; "Move Negative Lines")
+                actionref(MoveNegativeLines_Promoted; MoveNegativeLines)
                 {
                 }
             }
@@ -1594,9 +1737,9 @@ page 50465 "Inter Purchase Credit Memo"
                 {
                 }
             }
-            group(Category_Category5)
+            group(Category_Category8)
             {
-                Caption = 'Request Approval', Comment = 'Generated from the PromotedActionCategories property index 4.';
+                Caption = 'Request Approval', Comment = 'Generated from the PromotedActionCategories property index 7.';
 
                 actionref(SendApprovalRequest_Promoted; SendApprovalRequest)
                 {
@@ -1605,10 +1748,13 @@ page 50465 "Inter Purchase Credit Memo"
                 {
                 }
             }
-            group(Category_Category6)
+            group(Category_Category5)
             {
-                Caption = 'Credit Memo', Comment = 'Generated from the PromotedActionCategories property index 5.';
+                Caption = 'Invoice', Comment = 'Generated from the PromotedActionCategories property index 4.';
 
+                actionref(Dimensions_Promoted; Dimensions)
+                {
+                }
 #if not CLEAN26
                 actionref(Statistics_Promoted; Statistics)
                 {
@@ -1621,7 +1767,7 @@ page 50465 "Inter Purchase Credit Memo"
                 {
                 }
 #endif
-                actionref(Dimensions_Promoted; Dimensions)
+                actionref("Co&mments_Promoted"; "Co&mments")
                 {
                 }
                 actionref(DocAttach_Promoted; DocAttach)
@@ -1630,21 +1776,25 @@ page 50465 "Inter Purchase Credit Memo"
                 actionref(Approvals_Promoted; Approvals)
                 {
                 }
-                actionref("Co&mments_Promoted"; "Co&mments")
-                {
-                }
-
                 separator(Navigate_Separator)
                 {
                 }
-
                 actionref(Vendor_Promoted; Vendor)
                 {
                 }
             }
+            group(Category_Category7)
+            {
+                Caption = 'View', Comment = 'Generated from the PromotedActionCategories property index 6.';
+            }
             group(Category_Category9)
             {
-                Caption = 'Navigate', Comment = 'Generated from the PromotedActionCategories property index 8.';
+                Caption = 'Incoming Document', Comment = 'Generated from the PromotedActionCategories property index 8.';
+
+            }
+            group(Category_Category11)
+            {
+                Caption = 'Navigate', Comment = 'Generated from the PromotedActionCategories property index 10.';
             }
             group(Category_Report)
             {
@@ -1663,8 +1813,11 @@ page 50465 "Inter Purchase Credit Memo"
     end;
 
     trigger OnAfterGetRecord()
+    var
+        ICInboxOutboxMgt: Codeunit ICInboxOutboxMgt;
     begin
-        CalculateCurrentShippingOption();
+        RejectICPurchaseInvoiceEnabled := ICInboxOutboxMgt.IsPurchaseHeaderFromIncomingIC(Rec);
+        CalculateCurrentShippingAndPayToOption();
         BuyFromContact.GetOrClear(Rec."Buy-from Contact No.");
         PayToContact.GetOrClear(Rec."Pay-to Contact No.");
         CurrPage.IncomingDocAttachFactBox.Page.SetCurrentRecordID(Rec.RecordId);
@@ -1680,8 +1833,9 @@ page 50465 "Inter Purchase Credit Memo"
 
     trigger OnInit()
     begin
-        JobQueueUsed := PurchSetup.JobQueueActive();
+        JobQueuesUsed := PurchSetup.JobQueueActive();
         SetExtDocNoMandatoryCondition();
+        ShowShippingOptionsWithLocation := ApplicationAreaMgmtFacade.IsLocationEnabled() or ApplicationAreaMgmtFacade.IsAllDisabled();
         IsPowerAutomatePrivacyNoticeApproved := PrivacyNotice.GetPrivacyNoticeApprovalState(PrivacyNoticeRegistrations.GetPowerAutomatePrivacyNoticeId()) = "Privacy Notice Approval State"::Agreed;
     end;
 
@@ -1689,8 +1843,12 @@ page 50465 "Inter Purchase Credit Memo"
     begin
         Rec."Responsibility Center" := UserMgt.GetPurchasesFilter();
 
-        if (not DocNoVisible) and (Rec."No." = '') then
+        if (not DocNoVisible) and (Rec."No." = '') then begin
             Rec.SetBuyFromVendorFromFilter();
+            Rec.SelectDefaultRemitAddress(Rec);
+        end;
+
+        CalculateCurrentShippingAndPayToOption();
     end;
 
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean
@@ -1700,14 +1858,17 @@ page 50465 "Inter Purchase Credit Memo"
 
     trigger OnOpenPage()
     var
-        OfficeMgt: Codeunit "Office Management";
+        PurchaseHeader: Record "Purchase Header";
         EnvironmentInfo: Codeunit "Environment Information";
+        ICInboxOutboxMgt: Codeunit ICInboxOutboxMgt;
         VATReportingDateMgt: Codeunit "VAT Reporting Date Mgt";
     begin
         DocAmountEnable := PurchSetup.ShouldDocumentTotalAmountsBeChecked(Rec);
         DocAmountsEditable := PurchSetup.CanDocumentTotalAmountsBeEdited(Rec);
         SetDocNoVisible();
         IsOfficeAddin := OfficeMgt.IsAvailable();
+        CreateIncomingDocFromEmailAttachment := OfficeMgt.OCRAvailable();
+        CreateIncomingDocumentVisible := not OfficeMgt.IsOutlookMobileApp();
         IsSaaS := EnvironmentInfo.IsSaaS();
 
         Rec.SetSecurityFilterOnRespCenter();
@@ -1720,6 +1881,22 @@ page 50465 "Inter Purchase Credit Memo"
         ActivateFields();
 
         CheckShowBackgrValidationNotification();
+        FillRemitToFields();
+        RejectICPurchaseInvoiceEnabled := ICInboxOutboxMgt.IsPurchaseHeaderFromIncomingIC(Rec);
+        if RejectICPurchaseInvoiceEnabled then begin
+            PurchaseHeader.SetRange("IC Direction", PurchaseHeader."IC Direction"::Incoming);
+            PurchaseHeader.SetRange("IC Reference Document No.", Rec."Vendor Order No.");
+            PurchaseHeader.SetRange("Buy-from IC Partner Code", Rec."Buy-from IC Partner Code");
+            PurchaseHeader.SetRange("Document Type", PurchaseHeader."Document Type"::Order);
+            if PurchaseHeader.FindFirst() then
+                ICInboxOutboxMgt.ShowDuplicateICDocumentWarning(PurchaseHeader);
+            PurchaseHeader.Reset();
+            if PurchaseHeader.Get(PurchaseHeader."Document Type"::Order, CopyStr(Rec."Your Reference", 1, MaxStrLen(Rec."No."))) then
+                if (PurchaseHeader."IC Direction" = PurchaseHeader."IC Direction"::Outgoing) and
+                   (PurchaseHeader."Buy-from IC Partner Code" = Rec."Buy-from IC Partner Code") and
+                   (PurchaseHeader."IC Status" = PurchaseHeader."IC Status"::Sent) then
+                    ICInboxOutboxMgt.ShowDuplicateICDocumentWarning(PurchaseHeader, ICIncomingInvoiceFromOriginalOrderMsg);
+        end;
         VATDateEnabled := VATReportingDateMgt.IsVATDateEnabled();
     end;
 
@@ -1738,45 +1915,56 @@ page 50465 "Inter Purchase Credit Memo"
         PayToContact: Record Contact;
         PurchSetup: Record "Purchases & Payables Setup";
         GLSetup: Record "General Ledger Setup";
+        RemitAddressBuffer: Record "Remit Address Buffer";
         MoveNegPurchLines: Report "Move Negative Purchase Lines";
+        ApplicationAreaMgmtFacade: Codeunit "Application Area Mgmt. Facade";
         ReportPrint: Codeunit "Test Report-Print";
         UserMgt: Codeunit "User Setup Management";
         PurchCalcDiscByType: Codeunit "Purch - Calc Disc. By Type";
-        LinesInstructionMgt: Codeunit "Lines Instruction Mgt.";
+        OfficeMgt: Codeunit "Office Management";
         FormatAddress: Codeunit "Format Address";
         PrivacyNotice: Codeunit "Privacy Notice";
         PrivacyNoticeRegistrations: Codeunit "Privacy Notice Registrations";
         ChangeExchangeRate: Page "Change Exchange Rate";
-        JobQueueVisible: Boolean;
-        JobQueueUsed: Boolean;
         StatusStyleTxt: Text;
         HasIncomingDocument: Boolean;
         DocNoVisible: Boolean;
-        VendorCreditMemoNoMandatory: Boolean;
+        VendorInvoiceNoMandatory: Boolean;
         OpenApprovalEntriesExist: Boolean;
         OpenApprovalEntriesExistForCurrUser: Boolean;
         IsPowerAutomatePrivacyNoticeApproved: Boolean;
         ShowWorkflowStatus: Boolean;
+        JobQueuesUsed: Boolean;
+        ICIncomingInvoiceFromOriginalOrderMsg: Label 'This invoice was received through intercompany and it''s related to the purchase %1 with no. %2. You can delete that order and post this invoice.', Comment = '%1 - either "order", "invoice", or "posted invoice", %2 - a code';
+        SureToRejectMsg: Label 'Rejecting this invoice will remove it from your company and send it back to the partner company.\\ Do you want to continue?';
+        OpenPostedPurchaseInvQst: Label 'The invoice is posted as number %1 and moved to the Posted Purchase Invoices window.\\Do you want to open the posted invoice?', Comment = '%1 = posted document number';
         IsOfficeAddin: Boolean;
         CanCancelApprovalForRecord: Boolean;
         DocumentIsPosted: Boolean;
-        OpenPostedPurchCrMemoQst: Label 'The credit memo is posted as number %1 and moved to the Posted Purchase Credit Memos window.\\Do you want to open the posted credit memo?', Comment = '%1 = posted document number';
+        CreateIncomingDocumentVisible: Boolean;
+        CreateIncomingDocFromEmailAttachment: Boolean;
+        TotalsMismatchErr: Label 'The invoice cannot be posted because the total is different from the total on the related incoming document.';
+        IncomingDocEmailAttachmentEnabled: Boolean;
         CanRequestApprovalForFlow: Boolean;
         CanCancelApprovalForFlow: Boolean;
+        ShowShippingOptionsWithLocation: Boolean;
         IsSaaS: Boolean;
         IsBuyFromCountyVisible: Boolean;
         IsPayToCountyVisible: Boolean;
         IsShipToCountyVisible: Boolean;
+        IsRemitToCountyVisible: Boolean;
         PurchaseDocCheckFactboxVisible: Boolean;
         IsJournalTemplNameVisible: Boolean;
         IsPaymentMethodCodeVisible: Boolean;
         IsPostingGroupEditable: Boolean;
         IsPurchaseLinesEditable: Boolean;
+        RejectICPurchaseInvoiceEnabled: Boolean;
         VATDateEnabled: Boolean;
         DocAmountEnable, DocAmountsEditable : Boolean;
 
     protected var
-        ShipToOptions: Option "Default (Vendor Address)","Alternate Vendor Address","Custom Address";
+        ShipToOptions: Option "Default (Company Address)",Location,"Custom Address";
+        PayToOptions: Option "Default (Vendor)","Another Vendor","Custom Address";
 
     local procedure ActivateFields()
     begin
@@ -1789,6 +1977,10 @@ page 50465 "Inter Purchase Credit Memo"
         IsPurchaseLinesEditable := Rec.PurchaseLinesEditable();
     end;
 
+    procedure LineModified()
+    begin
+    end;
+
     procedure CallPostDocument(PostingCodeunitID: Integer; Navigate: Enum "Navigate After Posting")
     begin
         PostDocument(PostingCodeunitID, Navigate);
@@ -1797,13 +1989,19 @@ page 50465 "Inter Purchase Credit Memo"
     local procedure PostDocument(PostingCodeunitID: Integer; Navigate: Enum "Navigate After Posting")
     var
         PurchaseHeader: Record "Purchase Header";
-        PurchCrMemoHdr: Record "Purch. Cr. Memo Hdr.";
+        PurchInvHeader: Record "Purch. Inv. Header";
+        LinesInstructionMgt: Codeunit "Lines Instruction Mgt.";
         InstructionMgt: Codeunit "Instruction Mgt.";
         PreAssignedNo: Code[20];
         xLastPostingNo: Code[20];
         DocumentIsScheduledForPosting: Boolean;
         IsHandled: Boolean;
     begin
+        IsHandled := false;
+        OnBeforePostDocument(Rec, xRec, PostingCodeunitID, IsHandled);
+        if IsHandled then
+            exit;
+
         LinesInstructionMgt.PurchaseCheckAllLinesHaveQuantityAssigned(Rec);
         PreAssignedNo := Rec."No.";
         xLastPostingNo := Rec."Last Posting No.";
@@ -1832,17 +2030,16 @@ page 50465 "Inter Purchase Credit Memo"
         if PostingCodeunitID <> CODEUNIT::"Purch.-Post (Yes/No)" then
             exit;
 
-        Rec.UpdatePurchaseOrderLineIfExist();
-
         case Navigate of
             Enum::"Navigate After Posting"::"Posted Document":
                 if IsOfficeAddin then begin
                     if (Rec."Last Posting No." <> '') and (Rec."Last Posting No." <> xLastPostingNo) then
-                        PurchCrMemoHdr.SetRange("No.", Rec."Last Posting No.")
+                        PurchInvHeader.SetRange("No.", Rec."Last Posting No.")
                     else
-                        PurchCrMemoHdr.SetRange("Pre-Assigned No.", PreAssignedNo);
-                    if PurchCrMemoHdr.FindFirst() then
-                        PAGE.Run(PAGE::"Posted Purchase Credit Memo", PurchCrMemoHdr);
+                        PurchInvHeader.SetRange("Pre-Assigned No.", PreAssignedNo);
+                    PurchInvHeader.SetRange("Order No.", '');
+                    if PurchInvHeader.FindFirst() then
+                        PAGE.Run(PAGE::"Posted Purchase Invoice", PurchInvHeader);
                 end else
                     if InstructionMgt.IsEnabled(InstructionMgt.ShowPostedConfirmationMessageCode()) then
                         ShowPostedConfirmationMessage(PreAssignedNo, xLastPostingNo);
@@ -1850,12 +2047,25 @@ page 50465 "Inter Purchase Credit Memo"
                 if DocumentIsPosted then begin
                     Clear(PurchaseHeader);
                     PurchaseHeader.Init();
-                    PurchaseHeader.Validate("Document Type", PurchaseHeader."Document Type"::"Credit Memo");
+                    PurchaseHeader.Validate("Document Type", PurchaseHeader."Document Type"::Invoice);
                     OnPostDocumentOnBeforePurchaseHeaderInsert(PurchaseHeader);
                     PurchaseHeader.Insert(true);
-                    PAGE.Run(PAGE::"Purchase Credit Memo", PurchaseHeader);
+                    PAGE.Run(PAGE::"Purchase Invoice", PurchaseHeader);
                 end;
         end;
+    end;
+
+    protected procedure VerifyTotal()
+    var
+        IsHandled: Boolean;
+    begin
+        IsHandled := false;
+        OnBeforeVerifyTotal(Rec, IsHandled);
+        if IsHandled then
+            exit;
+
+        if not Rec.IsTotalValid() then
+            Error(TotalsMismatchErr);
     end;
 
     local procedure ApproveCalcInvDisc()
@@ -1891,6 +2101,7 @@ page 50465 "Inter Purchase Credit Memo"
     begin
         CurrPage.PurchLines.Page.ForceTotalsCalculation();
         CurrPage.Update();
+        Rec.CalcFields("Invoice Discount Amount");
     end;
 
     local procedure SetDocNoVisible()
@@ -1898,13 +2109,13 @@ page 50465 "Inter Purchase Credit Memo"
         DocumentNoVisibility: Codeunit DocumentNoVisibility;
         DocType: Option Quote,"Order",Invoice,"Credit Memo","Blanket Order","Return Order",Reminder,FinChMemo;
     begin
-        DocNoVisible := DocumentNoVisibility.PurchaseDocumentNoIsVisible(DocType::"Credit Memo", Rec."No.");
+        DocNoVisible := DocumentNoVisibility.PurchaseDocumentNoIsVisible(DocType::Invoice, Rec."No.");
     end;
 
     local procedure SetExtDocNoMandatoryCondition()
     begin
         PurchSetup.GetRecordOnce();
-        VendorCreditMemoNoMandatory := PurchSetup."Ext. Doc. No. Mandatory";
+        VendorInvoiceNoMandatory := PurchSetup."Ext. Doc. No. Mandatory";
     end;
 
     local procedure SetControlAppearance()
@@ -1913,13 +2124,13 @@ page 50465 "Inter Purchase Credit Memo"
         DocumentErrorsMgt: Codeunit "Document Errors Mgt.";
         WorkflowWebhookMgt: Codeunit "Workflow Webhook Management";
     begin
-        JobQueueVisible := Rec."Job Queue Status" = Rec."Job Queue Status"::"Scheduled for Posting";
         HasIncomingDocument := Rec."Incoming Document Entry No." <> 0;
         DocAmountEnable := PurchSetup.ShouldDocumentTotalAmountsBeChecked(Rec);
         DocAmountsEditable := PurchSetup.CanDocumentTotalAmountsBeEdited(Rec);
         SetExtDocNoMandatoryCondition();
         SetPostingGroupEditable();
 
+        IncomingDocEmailAttachmentEnabled := OfficeMgt.EmailHasAttachments();
         OpenApprovalEntriesExistForCurrUser := ApprovalsMgmt.HasOpenApprovalEntriesForCurrentUser(Rec.RecordId);
         OpenApprovalEntriesExist := ApprovalsMgmt.HasOpenApprovalEntries(Rec.RecordId);
 
@@ -1954,18 +2165,19 @@ page 50465 "Inter Purchase Credit Memo"
 
     local procedure ShowPostedConfirmationMessage(PreAssignedNo: Code[20]; xLastPostingNo: Code[20])
     var
-        PurchCrMemoHdr: Record "Purch. Cr. Memo Hdr.";
+        PurchInvHeader: Record "Purch. Inv. Header";
         InstructionMgt: Codeunit "Instruction Mgt.";
     begin
         if (Rec."Last Posting No." <> '') and (Rec."Last Posting No." <> xLastPostingNo) then
-            PurchCrMemoHdr.SetRange("No.", Rec."Last Posting No.")
+            PurchInvHeader.SetRange("No.", Rec."Last Posting No.")
         else
-            PurchCrMemoHdr.SetRange("Pre-Assigned No.", PreAssignedNo);
-        if PurchCrMemoHdr.FindFirst() then
-            if InstructionMgt.ShowConfirm(StrSubstNo(OpenPostedPurchCrMemoQst, PurchCrMemoHdr."No."),
+            PurchInvHeader.SetRange("Pre-Assigned No.", PreAssignedNo);
+
+        if PurchInvHeader.FindFirst() then
+            if InstructionMgt.ShowConfirm(StrSubstNo(OpenPostedPurchaseInvQst, PurchInvHeader."No."),
                  InstructionMgt.ShowPostedConfirmationMessageCode())
             then
-                InstructionMgt.ShowPostedDocument(PurchCrMemoHdr, Page::"Purchase Credit Memo");
+                InstructionMgt.ShowPostedDocument(PurchInvHeader, Page::"Purchase Invoice");
     end;
 
     local procedure ValidateShippingOption()
@@ -1973,32 +2185,58 @@ page 50465 "Inter Purchase Credit Memo"
         OnBeforeValidateShipToOptions(Rec, ShipToOptions);
 
         case ShipToOptions of
-            ShipToOptions::"Default (Vendor Address)":
-                begin
-                    Rec.Validate("Order Address Code", '');
-                    Rec.Validate("Buy-from Vendor No.");
-                end;
-            ShipToOptions::"Alternate Vendor Address":
-                Rec.Validate("Order Address Code", '');
+            ShipToOptions::"Default (Company Address)",
+          ShipToOptions::"Custom Address":
+                Rec.Validate("Location Code", '');
+            ShipToOptions::Location:
+                Rec.Validate("Location Code");
         end;
 
         OnAfterValidateShipToOptions(Rec, ShipToOptions);
     end;
 
-    local procedure CalculateCurrentShippingOption()
+    local procedure CalculateCurrentShippingAndPayToOption()
     begin
-        case true of
-            Rec."Order Address Code" <> '':
-                ShipToOptions := ShipToOptions::"Alternate Vendor Address";
-            Rec.BuyFromAddressEqualsShipToAddress():
-                ShipToOptions := ShipToOptions::"Default (Vendor Address)";
+        if Rec."Location Code" <> '' then
+            ShipToOptions := ShipToOptions::Location
+        else
+            if Rec.ShipToAddressEqualsCompanyShipToAddress() then
+                ShipToOptions := ShipToOptions::"Default (Company Address)"
             else
                 ShipToOptions := ShipToOptions::"Custom Address";
+
+        case true of
+            (Rec."Pay-to Vendor No." = Rec."Buy-from Vendor No.") and Rec.BuyFromAddressEqualsPayToAddress():
+                PayToOptions := PayToOptions::"Default (Vendor)";
+            (Rec."Pay-to Vendor No." = Rec."Buy-from Vendor No.") and (not Rec.BuyFromAddressEqualsPayToAddress()):
+                PayToOptions := PayToOptions::"Custom Address";
+            Rec."Pay-to Vendor No." <> Rec."Buy-from Vendor No.":
+                PayToOptions := PayToOptions::"Another Vendor";
+        end;
+
+        OnAfterCalculateCurrentShippingAndPayToOption(ShipToOptions, PayToOptions, Rec);
+    end;
+
+    local procedure FillRemitToFields()
+    var
+        RemitAddress: Record "Remit Address";
+    begin
+        RemitAddress.SetRange("Vendor No.", Rec."Buy-from Vendor No.");
+        RemitAddress.SetRange(Code, Rec."Remit-to Code");
+        if not RemitAddress.IsEmpty() then begin
+            RemitAddress.FindFirst();
+            FormatAddress.VendorRemitToAddress(RemitAddress, RemitAddressBuffer);
+            CurrPage.Update();
         end;
     end;
 
     [IntegrationEvent(true, false)]
     local procedure OnAfterOnAfterGetRecord(var PurchaseHeader: Record "Purchase Header")
+    begin
+    end;
+
+    [IntegrationEvent(false, false)]
+    local procedure OnAfterCalculateCurrentShippingAndPayToOption(var ShipToOptions: Option "Default (Company Address)",Location,"Custom Address"; var PayToOptions: Option "Default (Vendor)","Another Vendor","Custom Address"; PurchaseHeader: Record "Purchase Header")
     begin
     end;
 
@@ -2009,6 +2247,16 @@ page 50465 "Inter Purchase Credit Memo"
 
     [IntegrationEvent(false, false)]
     local procedure OnBeforeValidateShipToOptions(var PurchaseHeader: Record "Purchase Header"; ShipToOptions: Option)
+    begin
+    end;
+
+    [IntegrationEvent(true, false)]
+    local procedure OnBeforePostDocument(var PurchaseHeader: Record "Purchase Header"; xPurchaseHeader: Record "Purchase Header"; PostingCodeunitID: Integer; var IsHandled: Boolean)
+    begin
+    end;
+
+    [IntegrationEvent(true, false)]
+    local procedure OnBeforeVerifyTotal(var PurchaseHeader: Record "Purchase Header"; var IsHandled: Boolean)
     begin
     end;
 

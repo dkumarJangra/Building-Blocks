@@ -1,28 +1,8 @@
-namespace Microsoft.Purchases.Document;
-
-using Microsoft.CRM.Outlook;
-using Microsoft.EServices.EDocument;
-using Microsoft.Finance.Dimension;
-using Microsoft.Foundation.Attachment;
-using Microsoft.Foundation.Reporting;
-using Microsoft.Purchases.Comment;
-using Microsoft.Purchases.History;
-using Microsoft.Purchases.Posting;
-using Microsoft.Purchases.Reports;
-using Microsoft.Purchases.Setup;
-using Microsoft.Purchases.Vendor;
-using System.Security.User;
-using Microsoft.Foundation.NoSeries;
-using Microsoft.Utilities;
-using System.Automation;
-using System.Text;
-using System.Threading;
-
-page 50464 "Inter Purchase Credit Memos"
+page 50464 "NewInter Purchase Credit Memos"
 {
     ApplicationArea = Basic, Suite;
     Caption = 'Inter Purchase Credit Memos';
-    CardPageID = "Inter Purchase Credit Memo";
+    CardPageID = "NewInter Purchase Credit Memo";
     DataCaptionFields = "Buy-from Vendor No.";
     Editable = false;
     PageType = List;
@@ -430,7 +410,7 @@ page 50464 "Inter Purchase Credit Memos"
                     PurchHeader."Order Date" := WorkDate();
                     PurchHeader.insert();
 
-                    PAGE.RUN(PAGE::"Inter Purchase Credit Memo", PurchHeader);
+                    PAGE.RUN(PAGE::"NewInter Purchase Credit Memo", PurchHeader);
                 end;
 
             }

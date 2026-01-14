@@ -228,11 +228,16 @@ page 50021 "Cust. Refund Cheque Correction"
                                 BALEntry.RESET;
                                 BALEntry.SETCURRENTKEY("Document No.");
                                 BALEntry.SETRANGE("Document No.", PostDocNo);
-                                BALEntry.SETRANGE("Cheque No.", ApplicationPaymentEntry."Cheque No./ Transaction No.");
+                                IF StrLen(ApplicationPaymentEntry."Cheque No./ Transaction No.") > 10 then
+                                    BALEntry.SETRANGE("Cheque No.1", ApplicationPaymentEntry."Cheque No./ Transaction No.")
+                                else
+                                    BALEntry.SETRANGE("Cheque No.", ApplicationPaymentEntry."Cheque No./ Transaction No.");
                                 IF BALEntry.FINDSET THEN
                                     REPEAT
-                                        IF ChequeNoCorrection THEN
-                                            BALEntry."Cheque No." := CorrectChequeNo;
+                                        IF ChequeNoCorrection THEN BEGIN
+                                            BALEntry."Cheque No." := copystr(CorrectChequeNo, 1, 10);
+                                            BALEntry."Cheque No.1" := CorrectChequeNo;
+                                        END;
                                         IF ChequeDateCorrection THEN
                                             BALEntry."Cheque Date" := ChequeDate;
                                         BALEntry.MODIFY;
@@ -312,11 +317,16 @@ page 50021 "Cust. Refund Cheque Correction"
                                             BALEntry.CHANGECOMPANY(CompanyWise."Company Code");
                                             BALEntry.SETCURRENTKEY("Document No.");
                                             BALEntry.SETRANGE("Document No.", ApplicationPaymentEntry."MSC Post Doc. No.");
-                                            BALEntry.SETRANGE("Cheque No.", ApplicationPaymentEntry."Cheque No./ Transaction No.");
+                                            IF StrLen(ApplicationPaymentEntry."Cheque No./ Transaction No.") > 10 then
+                                                BALEntry.SETRANGE("Cheque No.1", ApplicationPaymentEntry."Cheque No./ Transaction No.")
+                                            else
+                                                BALEntry.SETRANGE("Cheque No.", ApplicationPaymentEntry."Cheque No./ Transaction No.");
                                             IF BALEntry.FINDSET THEN
                                                 REPEAT
-                                                    IF ChequeNoCorrection THEN
-                                                        BALEntry."Cheque No." := CorrectChequeNo;
+                                                    IF ChequeNoCorrection THEN BEGIN
+                                                        BALEntry."Cheque No." := copystr(CorrectChequeNo, 1, 10);
+                                                        BALEntry."Cheque No.1" := CorrectChequeNo;
+                                                    END;
                                                     IF ChequeDateCorrection THEN
                                                         BALEntry."Cheque Date" := ChequeDate;
                                                     BALEntry.MODIFY;
