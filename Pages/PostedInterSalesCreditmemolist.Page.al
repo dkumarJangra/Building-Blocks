@@ -1,13 +1,3 @@
-namespace Microsoft.Sales.History;
-
-using Microsoft.CRM.Outlook;
-using Microsoft.EServices.EDocument;
-using Microsoft.Finance.Dimension;
-using Microsoft.Finance.GeneralLedger.Ledger;
-using Microsoft.Foundation.Attachment;
-using Microsoft.Sales.Comment;
-using Microsoft.Sales.Customer;
-
 page 50467 "Posted InterSales Cr. Memos"
 {
     ApplicationArea = Basic, Suite;

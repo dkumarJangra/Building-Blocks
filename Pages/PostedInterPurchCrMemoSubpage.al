@@ -1,12 +1,3 @@
-namespace Microsoft.Purchases.History;
-
-using Microsoft.Finance.Dimension;
-using Microsoft.Foundation.Attachment;
-using Microsoft.Foundation.Navigate;
-using Microsoft.Inventory.Item.Catalog;
-using Microsoft.Utilities;
-using System.Environment.Configuration;
-
 page 50472 "Posted Int PurchCrMemo Subform"
 {
     AutoSplitKey = true;

@@ -1,21 +1,3 @@
-namespace Microsoft.Sales.History;
-
-using Microsoft.Bank.Setup;
-using Microsoft.CRM.Contact;
-using Microsoft.CRM.Outlook;
-using Microsoft.EServices.EDocument;
-using Microsoft.Finance.Currency;
-using Microsoft.Finance.Dimension;
-using Microsoft.Finance.VAT.Calculation;
-using Microsoft.Foundation.Address;
-using Microsoft.Foundation.Attachment;
-using Microsoft.Integration.Dataverse;
-using Microsoft.Inventory.Location;
-using Microsoft.Sales.Comment;
-using Microsoft.Sales.Customer;
-using Microsoft.Sales.Document;
-using System.Automation;
-
 page 50444 "Posted Inter Sales Invoices"
 {
     Caption = 'Posted Inter Sales Invoice';

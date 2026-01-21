@@ -1,13 +1,3 @@
-namespace Microsoft.Purchases.History;
-
-using Microsoft.Finance.Dimension;
-using Microsoft.Finance.VAT.Calculation;
-using Microsoft.Foundation.Attachment;
-using Microsoft.Foundation.Navigate;
-using Microsoft.Inventory.Item.Catalog;
-using Microsoft.Utilities;
-using System.Environment.Configuration;
-
 page 50453 "Posted Inter PurchInv. Subform"
 {
     AutoSplitKey = true;

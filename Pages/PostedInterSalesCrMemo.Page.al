@@ -1,17 +1,3 @@
-namespace Microsoft.Sales.History;
-
-using Microsoft.CRM.Contact;
-using Microsoft.CRM.Outlook;
-using Microsoft.EServices.EDocument;
-using Microsoft.Finance.Currency;
-using Microsoft.Finance.Dimension;
-using Microsoft.Finance.VAT.Calculation;
-using Microsoft.Foundation.Address;
-using Microsoft.Foundation.Attachment;
-using Microsoft.Sales.Comment;
-using Microsoft.Sales.Customer;
-using System.Automation;
-
 page 50468 "Posted Inter Sales Credit Memo"
 {
     Caption = 'Posted Inter Sales Credit Memo';

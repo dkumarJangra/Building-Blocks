@@ -181,10 +181,14 @@ codeunit 97738 "SMS Features"
                         IF AppPayEntry.FINDLAST THEN BEGIN
                             CustSMSText := '';
                             CustSMSText :=
-                                  'Dear Associate,your Id No ' + '' + Vendor."No." + ' ' + 'is credited Rs.' +
-                                        ' ' + FORMAT(ABS(AppPayEntry.Amount)) +
-                                        ' ' + 'on' + ' ' + FORMAT(AppPayEntry."Posting date") + ' ' + '(Dt) towards AppNo.: ' +
-                                        '' + ConfirmedOrder."No.";
+                            'Dear Associate,your Id No ' + '' + Vendor."No." + ' ' + 'is credited Rs.' + ' ' +   //Code added 21012026
+                            FORMAT(ABS(AppPayEntry.Amount)) + 'on' + FORMAT(AppPayEntry."Posting date") + 'towards AppNo.: ' +
+                             ConfirmedOrder."No." + ' BBGIND';
+
+                            //   'Dear Associate,your Id No ' + '' + Vendor."No." + ' ' + 'is credited Rs.' +   //Code commented 21012026
+                            //         ' ' + FORMAT(ABS(AppPayEntry.Amount)) +
+                            //         ' ' + 'on' + ' ' + FORMAT(AppPayEntry."Posting date") + ' ' + '(Dt) towards AppNo.: ' +
+                            //         '' + ConfirmedOrder."No.";
 
                             MESSAGE('%1', CustSMSText);
                             //210224 Added new code
@@ -266,14 +270,17 @@ codeunit 97738 "SMS Features"
                             IF ConfirmedOrder1.GET(AppPayEntry."Order Ref No.") THEN;
                             CustSMSText := '';
                             CustSMSText :=
+                            'Dear ' + Customer.Name + 'for Application: ' + AppPayEntry."Order Ref No." + 'Project: ' +
+                            GetDescription.GetDimensionName(ConfirmedOrder1."Shortcut Dimension 1 Code", 1) + 'Rs' + FORMAT(AppPayEntry.Amount) + 'is transferred to Application :' + ApplicationCode + 'Project: ' + GetDescription.GetDimensionName(ConfirmedOrder."Shortcut Dimension 1 Code", 1) + 'BBGIND';  //Code added 21012026
 
-                                  'Mr/Mrs/Ms:' + Customer.Name + ' ' + 'for App. No. :' + AppPayEntry."Order Ref No." +
-                                        ' ' + 'Project: ' + GetDescription.GetDimensionName(ConfirmedOrder."Shortcut Dimension 1 Code", 1) + ' ' +
-                                       'Rs' + FORMAT(AppPayEntry.Amount) +
-                  ' is transfered to ApplNo :' +
-                                        ApplicationCode + ' Project: ' +
-                                        GetDescription.GetDimensionName(ConfirmedOrder."Shortcut Dimension 1 Code", 1) + ','
-                                        + ConfirmedOrder1."Unit Code" + 'Team BBG.';
+
+                            //                   'Mr/Mrs/Ms:' + Customer.Name + ' ' + 'for App. No. :' + AppPayEntry."Order Ref No." +           //Code commented 21012026
+                            //                         ' ' + 'Project: ' + GetDescription.GetDimensionName(ConfirmedOrder."Shortcut Dimension 1 Code", 1) + ' ' +
+                            //                        'Rs' + FORMAT(AppPayEntry.Amount) +
+                            //   ' is transfered to ApplNo :' +
+                            //                         ApplicationCode + ' Project: ' +
+                            //                         GetDescription.GetDimensionName(ConfirmedOrder."Shortcut Dimension 1 Code", 1) + ','
+                            //                         + ConfirmedOrder1."Unit Code" + 'Team BBG.';
 
                             MESSAGE('%1', CustSMSText);
                             //210224 Added new code
@@ -281,51 +288,53 @@ codeunit 97738 "SMS Features"
                             ExitMessage := CheckMobileNoforSMS.CheckMobileNo(CustMobileNo, FALSE);
                             IF ExitMessage THEN
                                 PostPayment.SendSMS(CustMobileNo, CustSMSText);
+                            //Code commented 21012026 Start
                             //ALLEDK15112022 Start
-                            CLEAR(SMSLogDetails);
-                            SmsMessage := '';
-                            SmsMessage1 := '';
-                            SmsMessage := COPYSTR(CustSMSText, 1, 250);
-                            SmsMessage1 := COPYSTR(CustSMSText, 251, 250);
-                            SMSLogDetails.SMSValue(SmsMessage, SmsMessage1, 'Customer', Customer."No.", Customer.Name, 'MJV', ConfirmedOrder."Shortcut Dimension 1 Code", GetDescription.GetDimensionName(ConfirmedOrder."Shortcut Dimension 1 Code", 1), ConfirmedOrder."No.");
+                            //     CLEAR(SMSLogDetails);
+                            //     SmsMessage := '';
+                            //     SmsMessage1 := '';
+                            //     SmsMessage := COPYSTR(CustSMSText, 1, 250);
+                            //     SmsMessage1 := COPYSTR(CustSMSText, 251, 250);
+                            //     SMSLogDetails.SMSValue(SmsMessage, SmsMessage1, 'Customer', Customer."No.", Customer.Name, 'MJV', ConfirmedOrder."Shortcut Dimension 1 Code", GetDescription.GetDimensionName(ConfirmedOrder."Shortcut Dimension 1 Code", 1), ConfirmedOrder."No.");
+                            //     //ALLEDK15112022 END
+                            //     CLEAR(Customer);
+                            //     CLEAR(CustMobileNo);
+                            //     IF Customer.GET(ConfirmedOrder1."Customer No.") THEN
+                            //         IF Customer."BBG Mobile No." <> '' THEN BEGIN
+                            //             CustMobileNo := Customer."BBG Mobile No.";
+                            //             CustSMSText := '';
+                            //             CustSMSText :=
+                            //                   'Mr/Mrs/Ms:' + Customer.Name + ' ' + 'for App. No. :' + AppPayEntry."Order Ref No." +
+                            //                         ' ' + 'Project: ' + GetDescription.GetDimensionName(ConfirmedOrder1."Shortcut Dimension 1 Code", 1) + ' ' +
+                            //                        'Rs' + FORMAT(AppPayEntry.Amount) +
+                            //   ' is transfered to ApplNo :' +
+                            //                         ApplicationCode + ' Project: ' +
+                            //                         GetDescription.GetDimensionName(ConfirmedOrder1."Shortcut Dimension 1 Code", 1) + ','
+                            //                         + ConfirmedOrder1."Unit Code" + 'Team BBG.';
+
+                            //             MESSAGE('%1', CustSMSText);
+                            //             //210224 Added new code
+                            //             CLEAR(CheckMobileNoforSMS);
+                            //             ExitMessage := CheckMobileNoforSMS.CheckMobileNo(CustMobileNo, FALSE);
+                            //             IF ExitMessage THEN
+                            //                 PostPayment.SendSMS(CustMobileNo, CustSMSText);
+                            //             CLEAR(SMSLogDetails);
+                            //             SmsMessage := '';
+                            //             SmsMessage1 := '';
+                            //             SmsMessage := COPYSTR(CustSMSText, 1, 250);
+                            //             SmsMessage1 := COPYSTR(CustSMSText, 251, 250);
+                            //             SMSLogDetails.SMSValue(SmsMessage, SmsMessage1, 'Customer', Customer."No.", Customer.Name, 'MJV', ConfirmedOrder1."Shortcut Dimension 1 Code", GetDescription.GetDimensionName(ConfirmedOrder1."Shortcut Dimension 1 Code", 1), ConfirmedOrder1."No."
+                            //   );
                             //ALLEDK15112022 END
-                            CLEAR(Customer);
-                            CLEAR(CustMobileNo);
-                            IF Customer.GET(ConfirmedOrder1."Customer No.") THEN
-                                IF Customer."BBG Mobile No." <> '' THEN BEGIN
-                                    CustMobileNo := Customer."BBG Mobile No.";
-                                    CustSMSText := '';
-                                    CustSMSText :=
-                                          'Mr/Mrs/Ms:' + Customer.Name + ' ' + 'for App. No. :' + AppPayEntry."Order Ref No." +
-                                                ' ' + 'Project: ' + GetDescription.GetDimensionName(ConfirmedOrder1."Shortcut Dimension 1 Code", 1) + ' ' +
-                                               'Rs' + FORMAT(AppPayEntry.Amount) +
-                          ' is transfered to ApplNo :' +
-                                                ApplicationCode + ' Project: ' +
-                                                GetDescription.GetDimensionName(ConfirmedOrder1."Shortcut Dimension 1 Code", 1) + ','
-                                                + ConfirmedOrder1."Unit Code" + 'Team BBG.';
+                            //Code commented 21012026 END
 
-                                    MESSAGE('%1', CustSMSText);
-                                    //210224 Added new code
-                                    CLEAR(CheckMobileNoforSMS);
-                                    ExitMessage := CheckMobileNoforSMS.CheckMobileNo(CustMobileNo, FALSE);
-                                    IF ExitMessage THEN
-                                        PostPayment.SendSMS(CustMobileNo, CustSMSText);
-                                    CLEAR(SMSLogDetails);
-                                    SmsMessage := '';
-                                    SmsMessage1 := '';
-                                    SmsMessage := COPYSTR(CustSMSText, 1, 250);
-                                    SmsMessage1 := COPYSTR(CustSMSText, 251, 250);
-                                    SMSLogDetails.SMSValue(SmsMessage, SmsMessage1, 'Customer', Customer."No.", Customer.Name, 'MJV', ConfirmedOrder1."Shortcut Dimension 1 Code", GetDescription.GetDimensionName(ConfirmedOrder1."Shortcut Dimension 1 Code", 1), ConfirmedOrder1."No."
-                          );
-                                    //ALLEDK15112022 END
-
-                                END;
                         END;
-                    END ELSE
-                        MESSAGE('%1', 'Mobile No. not Found');
-            END;
+                    END;
+            END ELSE
+                MESSAGE('%1', 'Mobile No. not Found');
         END;
-    end;
+    END;
+
 
 
     procedure SmsonCommissionRelease(VoucherCode: Code[20])

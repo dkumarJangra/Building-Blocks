@@ -1,14 +1,3 @@
-namespace Microsoft.Purchases.History;
-
-using Microsoft.CRM.Outlook;
-using Microsoft.EServices.EDocument;
-using Microsoft.Finance.Dimension;
-using Microsoft.Finance.GeneralLedger.Ledger;
-using Microsoft.Foundation.Attachment;
-using Microsoft.Purchases.Comment;
-using Microsoft.Purchases.Document;
-using Microsoft.Purchases.Vendor;
-
 page 50449 "Posted Inter Purchase Invoices"
 {
     ApplicationArea = Basic, Suite;

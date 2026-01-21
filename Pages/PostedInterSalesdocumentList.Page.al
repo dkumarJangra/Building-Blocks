@@ -1,16 +1,3 @@
-namespace Microsoft.Sales.History;
-
-using Microsoft.CRM.Outlook;
-using Microsoft.EServices.EDocument;
-using Microsoft.Finance.Dimension;
-using Microsoft.Finance.GeneralLedger.Ledger;
-using Microsoft.Foundation.Attachment;
-using Microsoft.Integration.Dataverse;
-using Microsoft.Sales.Comment;
-using Microsoft.Sales.Customer;
-using Microsoft.Sales.Document;
-using Microsoft.Utilities;
-
 page 50443 "Posted Inter Sales Invoice"
 {
     AdditionalSearchTerms = 'posted bill';

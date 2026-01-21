@@ -1,12 +1,3 @@
-namespace Microsoft.Sales.History;
-
-using Microsoft.Finance.Dimension;
-using Microsoft.Foundation.Attachment;
-using Microsoft.Foundation.Navigate;
-using Microsoft.Inventory.Item.Catalog;
-using Microsoft.Utilities;
-using System.Environment.Configuration;
-
 page 50445 "Posted Inter Sales Inv.Subform"
 {
     AutoSplitKey = true;
