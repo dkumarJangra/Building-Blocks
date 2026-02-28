@@ -422,9 +422,9 @@ report 50075 "New Associate Bottom To Top_1"
                     CustMobileNo := '';
                     CustSMSText := '';
                     CustMobileNo := SMSVendor."BBG Mob. No.";
-                    CustSMSText := 'Dear Customer, Your PLOT REFUND is Completed. Name: Mr/Ms ' + VCustName + ', Appl No: ' + VAppNo +
+                    CustSMSText := 'Dear Customer, Your PLOT REFUND is Completed. Name: ' + VCustName + ', Appl No: ' + VAppNo +
                      ', Project: ' + VProjName + ', Amount: Rs.' + FORMAT(ABS(VRefundAmt)) +
-                     ', Date: ' + FORMAT(VPostDate) + ', *Thank you & Look Forward for your Next Plot Purchase with Building Blocks Group.';
+                     ', Date: ' + FORMAT(VPostDate) + '. Thank you & Look Forward for your Next Plot Purchase with Building Blocks Group.';
                     MESSAGE('%1', CustSMSText);
 
                     CLEAR(PostPayment);
@@ -447,9 +447,9 @@ report 50075 "New Associate Bottom To Top_1"
             CustMobileNo := '';
             CustSMSText := '';
             CustMobileNo := VCustMbNo;
-            CustSMSText := 'Dear Customer, Your PLOT REFUND is Completed. Name: Mr/Ms ' + VCustName + ', Appl No: ' + VAppNo +
+            CustSMSText := 'Dear Customer, Your PLOT REFUND is Completed. Name: ' + VCustName + ', Appl No: ' + VAppNo +
                   ', Project: ' + VProjName + ', Amount: Rs.' + FORMAT(ABS(VRefundAmt)) +
-                  ', Date: ' + FORMAT(VPostDate) + ', *Thank you & Look Forward for your Next Plot Purchase with Building Blocks Group.';
+                  ', Date: ' + FORMAT(VPostDate) + '. Thank you & Look Forward for your Next Plot Purchase with Building Blocks Group.';
             MESSAGE('%1', CustSMSText);
             CLEAR(PostPayment);
             PostPayment.SendSMS(CustMobileNo, CustSMSText);

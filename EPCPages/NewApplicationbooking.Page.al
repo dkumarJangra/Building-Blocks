@@ -887,7 +887,7 @@ page 50079 "New Application booking"
                                                             'Mr/Mrs/Ms:' + Customer.Name + 'Welcome to BBG Family. Appl No:' + Rec."Application No." + ' ' +
                                                             'Recvd Rs.' + FORMAT(AppPayEntry.Amount) +
                                                             ' ' + 'Project: ' + GetDescription.GetDimensionName(Rec."Shortcut Dimension 1 Code", 1) + ' ' + 'Date: ' +
-                                                            FORMAT(AppPayEntry."Posting date") + '.BBGIND'
+                                                            FORMAT(AppPayEntry."Posting date") + 'BBGIND.'  //'.BBGIND'  //02022026 Added code
                                                         ELSE
                                                             CustSMSText :=
                                                             'Mr/Mrs/Ms:' + Customer.Name + 'Welcome to BBG Family. Appl No:' + Rec."Application No." +

@@ -571,8 +571,11 @@ table 97814 "Assoc Pmt Voucher Header"
         {
             DataClassification = ToBeClassified;
         }
+        field(50023; "Narration"; Text[150])   //New field added 27022026
+        {
+            DataClassification = ToBeClassified;
+        }
     }
-
     keys
     {
         key(Key1; "Document No.")

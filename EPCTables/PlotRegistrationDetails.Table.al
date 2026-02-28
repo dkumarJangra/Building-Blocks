@@ -1580,7 +1580,7 @@ table 60675 "Plot Registration Details"
                                 IF ResponsibilityCenter.GET("Shortcut Dimension 1 Code") THEN;
                                 SmsText := '';
                                 SmsText := 'Dear Customer, Your Application is out for Registration to SRO office, for the Appl No: ' + FORMAT("No.") +
-                                ', Name: ' + Customer.Name + 'Project:' + FORMAT(ResponsibilityCenter.Name) + ', Date: ' + FORMAT(TODAY) + '.Thank you.BBGIND';
+                                ', Name: ' + Customer.Name + ', Project:' + FORMAT(ResponsibilityCenter.Name) + ', Date: ' + FORMAT(TODAY) + '.Thank you.BBGIND';
                                 PostPayment.SendSMS(Customer."BBG Mobile No.", SmsText);
                                 "Send SMS Doc SRO Reg. DateTime" := CURRENTDATETIME;
                                 //ALLEDK15112022 Start
@@ -1954,6 +1954,14 @@ table 60675 "Plot Registration Details"
             DataClassification = ToBeClassified;
             OptionCaption = ' ,Approved,Rejected';
             OptionMembers = " ",Approved,Rejected;
+        }
+        field(90313; "Customer User ID "; Code[50])  //Added new field 27022026
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(90314; Password; Text[50])   //Added new field 27022026
+        {
+            DataClassification = ToBeClassified;
         }
     }
 

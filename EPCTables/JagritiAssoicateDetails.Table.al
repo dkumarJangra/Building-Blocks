@@ -85,8 +85,8 @@ table 60701 "Jagriti Assoicate Details"
         field(20; "Site Code"; Option)
         {
             DataClassification = ToBeClassified;
-            OptionCaption = ' ,South-HYD,East-HYD,West-HYD,VIZAG,Amaravati,Warangal,Khammam,Karimnagar,Kurnool,Nellore,Mahabub Nagar';
-            OptionMembers = " ","South-HYD","East-HYD","West-HYD",VIZAG,Amaravati,Warangal,Khammam,Karimnagar,Kurnool,Nellore,"Mahabub Nagar";
+            OptionCaption = ' ,South-HYD,East-HYD,West-HYD,VIZAG,Amaravati,Warangal,Khammam,Karimnagar,Kurnool,Nellore,Mahabub Nagar';
+            OptionMembers = " ","South-HYD","East-HYD","West-HYD",VIZAG,Amaravati,Warangal,Khammam,Karimnagar,Kurnool,Nellore,"Mahabub Nagar";
         }
         field(21; "Request Date"; Date)
         {

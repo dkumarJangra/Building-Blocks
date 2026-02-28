@@ -181,8 +181,8 @@ codeunit 97738 "SMS Features"
                         IF AppPayEntry.FINDLAST THEN BEGIN
                             CustSMSText := '';
                             CustSMSText :=
-                            'Dear Associate,your Id No ' + '' + Vendor."No." + ' ' + 'is credited Rs.' + ' ' +   //Code added 21012026
-                            FORMAT(ABS(AppPayEntry.Amount)) + 'on' + FORMAT(AppPayEntry."Posting date") + 'towards AppNo.: ' +
+                            'Dear Associate,your Id No ' + '' + Vendor."No." + ' is credited Rs.' + ' ' +   //Code added 21012026
+                            FORMAT(ABS(AppPayEntry.Amount)) + ' on ' + FORMAT(AppPayEntry."Posting date") + ' towards AppNo.: ' +
                              ConfirmedOrder."No." + ' BBGIND';
 
                             //   'Dear Associate,your Id No ' + '' + Vendor."No." + ' ' + 'is credited Rs.' +   //Code commented 21012026
@@ -219,9 +219,12 @@ codeunit 97738 "SMS Features"
                         IF AppPayEntry.FINDLAST THEN BEGIN
                             CustSMSText := '';
                             CustSMSText :=
-                            'Mr/Mrs/Ms: ' + '' + Cust.Name + ' Appl No.: ' + ConfirmedOrder."No." + ', Recvd Rs.' + FORMAT(ABS(AppPayEntry.Amount)) +
+
+                            'Dear ' + '' + Cust.Name + ' Appl No.: ' + ConfirmedOrder."No." + ', Recvd Rs.' + FORMAT(ABS(AppPayEntry.Amount)) +  //Changes in 21012026
                               ', Project:' + GetDescription.GetDimensionName(ConfirmedOrder."Shortcut Dimension 1 Code", 1) +
-                              ', Date' + FORMAT(AppPayEntry."Posting date");
+                              ', Date: ' + FORMAT(AppPayEntry."Posting date") + ' BBGIND.';
+
+
 
                             MESSAGE('%1', CustSMSText);
                             //210224 Added new code

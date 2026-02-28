@@ -1000,6 +1000,7 @@ pageextension 50009 "BBG Vendor Card Ext" extends "Vendor Card"
                                     Vend.TRANSFERFIELDS(Rec);
                                     Vend.INSERT;
                                 END;
+
                                 BondSetup.CHANGECOMPANY(Comp.Name);
                                 BondSetup.GET;
                                 BondSetup.TESTFIELD("TDS Nature of Deduction");
@@ -1058,6 +1059,7 @@ pageextension 50009 "BBG Vendor Card Ext" extends "Vendor Card"
                                 Vend.CHANGECOMPANY(Comp.Name);
                                 Vend.SETRANGE("No.", Rec."No.");
                                 IF Vend.FINDFIRST THEN BEGIN
+                                    Vend.Name := Rec.Name;
                                     Vend."Vendor Posting Group" := Rec."Vendor Posting Group";
                                     Vend."BBG Status" := Rec."BBG Status";
                                     Vend."BBG Date of Birth" := Rec."BBG Date of Birth";
@@ -1072,6 +1074,20 @@ pageextension 50009 "BBG Vendor Card Ext" extends "Vendor Card"
                                     Vend."Gen. Bus. Posting Group" := Rec."Gen. Bus. Posting Group";
                                     vend."Assessee Code" := Rec."Assessee Code";
                                     Vend.Blocked := Rec.Blocked;
+                                    Vend."BBG Mob. No." := Rec."BBG Mob. No.";
+                                    Vend."State Code" := Rec."State Code";
+                                    Vend."District Code" := Rec."District Code";
+                                    Vend."Mandal Code" := Rec."Mandal Code";
+                                    Vend."Village Code" := Rec."Village Code";
+                                    Vend."BBG Sex" := Rec."BBG Sex";
+                                    Vend."BBG Nominee Age" := rec."BBG Nominee Age";
+                                    Vend."Post code" := rec."Post code";
+                                    Vend.City := rec.City;
+                                    Vend."E-mail" := Rec."E-Mail";
+                                    Vend."BBG Designation" := rec."BBG Designation";
+                                    Vend."BBG Age" := Rec."BBG Age";
+                                    Vend."BBG Father Name" := Rec."BBG Father Name";
+                                    Vend."BBG Date of Birth" := Rec."BBG Date of Birth";
                                     Vend.MODIFY;
                                 END;
                             UNTIL CompanyWiseGL.NEXT = 0;

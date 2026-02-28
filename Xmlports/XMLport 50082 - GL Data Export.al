@@ -126,6 +126,15 @@ xmlport 50082 "G/L Data Export"
                         CreditAmt_ := 'Credit Amount';
                     end;
                 }
+
+                textelement(Balance_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        Balance_ := 'Balance';
+                    end;
+                }
                 textelement(DocDate_)
                 {
 
@@ -271,6 +280,160 @@ xmlport 50082 "G/L Data Export"
                     end;
                 }
             }
+            tableelement(Integer2; Integer)
+            {
+                XmlName = 'Integers';
+                SourceTableView = SORTING(Number)
+                                  WHERE(Number = CONST(1));
+                textelement(EntryNo1_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        EntryNo1_ := '';
+                    end;
+                }
+                textelement(GLCode1_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        GLCode1_ := '';
+                    end;
+                }
+                textelement(PostingDate1_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        PostingDate1_ := '';
+                    end;
+                }
+                textelement(docType1_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        docType1_ := '';
+                    end;
+                }
+                textelement(DocNo1_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        DocNo1_ := '';
+                    end;
+                }
+                textelement(BalAccType1_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        BalAccType1_ := '';
+                    end;
+                }
+                textelement(BalAccNo1_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        BalAccNo1_ := '';
+                    end;
+                }
+                textelement(Amt1_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        Amt1_ := '';
+                    end;
+                }
+                textelement(GD11_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        GD11_ := '';
+                    end;
+                }
+                textelement(UserID1_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        UserID1_ := '';
+                    end;
+                }
+                textelement(SourceCode1_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        SourceCode1_ := '';
+                    end;
+                }
+                textelement(OpeningAmt_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        OpeningAmt_ := 'Opening Date: ' + format(PreviousDate);
+                    end;
+                }
+                textelement(DebitAmt1_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        DebitAmt1_ := Format(DRBalAmt);
+                    end;
+                }
+                textelement(CreditAmt1_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        CreditAmt1_ := Format(CRBalAmt);
+                    end;
+                }
+                textelement(BalAmt_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        BalAmt_ := Format(BalAmt);
+                    end;
+                }
+                trigger OnAfterGetRecord()
+
+                begin
+                    FilterDate := 0D;
+                    PreviousDate := 0D;
+                    FilterGLAccount := '';
+
+                    FilterDate := "G/L Entry".GETRANGEMIN("Posting Date");
+                    FilterClosingDate := "G/L Entry".GETRANGEMAX("Posting Date");
+                    FilterGLAccount := "G/L Entry".GetRangeMin("G/L Account No.");
+                    If FilterDate <> 0D then
+                        PreviousDate := CalcDate('-1D', FilterDate);
+
+                    IF PreviousDate <> 0D THEN BEGIN
+                        GLEntry.RESET;
+                        GLEntry.SETCURRENTKEY("Posting Date", "G/L Account No.");
+                        GLEntry.SETRANGE("Posting Date", 0D, PreviousDate);
+                        IF FilterGLAccount <> '' THEN
+                            GLEntry.SETFILTER("G/L Account No.", FilterGLAccount);
+                        IF GLEntry.FindSet() THEN BEGIN
+                            GLEntry.CalcSums("Debit Amount", "Credit Amount", Amount);
+                            CRBalAmt := GLEntry."Credit Amount";
+                            DRBalAmt := GLEntry."Debit Amount";
+                            BalAmt := GLEntry.Amount;
+                        END;
+                    END;
+                END;
+            }
+
             tableelement("G/L Entry"; "G/L Entry")
             {
                 RequestFilterFields = "Posting Date";
@@ -317,6 +480,14 @@ xmlport 50082 "G/L Data Export"
                 fieldelement(CreditAmt; "G/L Entry"."Credit Amount")
                 {
                 }
+                textelement(balamount1)
+                {
+                    trigger OnBeforePassVariable()
+                    begin
+                        balamount1 := Format(BalAmt + "G/L Entry".Amount);
+                    end;
+                }
+
                 fieldelement(DocDate; "G/L Entry"."Document Date")
                 {
                 }
@@ -393,6 +564,135 @@ xmlport 50082 "G/L Data Export"
                     END;
                 end;
             }
+            tableelement(Integer3; Integer)
+            {
+                XmlName = 'Integers';
+                SourceTableView = SORTING(Number)
+                                  WHERE(Number = CONST(1));
+                textelement(EntryNo2_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        EntryNo2_ := '';
+                    end;
+                }
+                textelement(GLCode2_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        GLCode2_ := '';
+                    end;
+                }
+                textelement(PostingDate2_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        PostingDate2_ := '';
+                    end;
+                }
+                textelement(docType2_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        docType2_ := '';
+                    end;
+                }
+                textelement(DocNo2_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        DocNo2_ := '';
+                    end;
+                }
+                textelement(BalAccType2_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        BalAccType2_ := '';
+                    end;
+                }
+                textelement(BalAccNo2_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        BalAccNo2_ := '';
+                    end;
+                }
+                textelement(Amt2_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        Amt2_ := '';
+                    end;
+                }
+                textelement(GD12_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        GD12_ := '';
+                    end;
+                }
+                textelement(UserID2_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        UserID2_ := '';
+                    end;
+                }
+                textelement(SourceCode2_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        SourceCode2_ := '';
+                    end;
+                }
+                textelement(CloseAmt_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        CloseAmt_ := 'Closing Balance as on Date: ' + format(FilterClosingDate);
+                    end;
+                }
+                textelement(DebitAmt12_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        DebitAmt12_ := '';
+                    end;
+                }
+                textelement(CreditAmt12_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        CreditAmt12_ := '';
+                    end;
+                }
+                textelement(BalAmt2_)
+                {
+
+                    trigger OnBeforePassVariable()
+                    begin
+                        BalAmt2_ := Format(BalAmt);
+                    end;
+                }
+
+
+            }
+
         }
     }
 
@@ -411,5 +711,15 @@ xmlport 50082 "G/L Data Export"
     var
         VendorLedgerEntry: Record "Vendor ledger Entry";
         CustLedgerEntry: Record "Cust. Ledger Entry";
+        OpeningDate: date;
+        BalAmount: Decimal;
+        GLEntry: Record "G/L Entry";
+        BalAmt: Decimal;
+        CRBalAmt: Decimal;
+        DRBalAmt: Decimal;
+        FilterDate: Date;
+        PreviousDate: Date;
+        FilterGLAccount: TExt;
+        FilterClosingDate: date;
 }
 

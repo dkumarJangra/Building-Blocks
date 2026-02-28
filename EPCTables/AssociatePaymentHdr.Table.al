@@ -655,6 +655,9 @@ table 50018 "Associate Payment Hdr"
             DataClassification = ToBeClassified;
             Editable = false;
         }
+        field(50012; "Narration 2"; Text[100])
+        {
+        }
     }
 
     keys

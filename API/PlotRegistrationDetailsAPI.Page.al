@@ -78,6 +78,14 @@ page 50405 "Plot Registration Details API"
                 {
                     Caption = 'Shortcut Dimension 1 Code';
                 }
+                field(ApplicationStatus; Rec."Application Status")
+                {
+                    caption = 'Application Status';
+                }
+                field(Status; Rec."Open Stage")
+                {
+                    Caption = 'Status';
+                }
 
                 field(systemId; Rec.SystemId)
                 {

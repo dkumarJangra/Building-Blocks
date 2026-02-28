@@ -109,6 +109,10 @@ page 50083 "Confirm Order List (POC)"
                 field("Unit Plan Name"; Rec."Unit Plan Name")
                 {
                 }
+                field("Registration Bonus Hold(BSP2)"; Rec."Registration Bonus Hold(BSP2)")  //Added field 27022026
+                {
+
+                }
             }
         }
     }

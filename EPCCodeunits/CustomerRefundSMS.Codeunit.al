@@ -233,7 +233,7 @@ codeunit 50058 "Customer Refund SMS"
             //  CustMobileNo := '9818076832';
             IF CustMobileNo <> '' THEN BEGIN
                 CustSMSText1 := '';
-                CustSMSText1 := 'Dear Customer, Your PLOT REFUND Request Received at CRM Desk. Name: Mr /Ms ' + Customer.Name + ', Appl No:' + NewConfirmedOrder_P."No." + ', Project:' +
+                CustSMSText1 := 'Dear Customer, Your PLOT REFUND Request Received at CRM Desk. Name: ' + Customer.Name + ', Appl No:' + NewConfirmedOrder_P."No." + ', Project:' +
                                 GetDescription.GetDimensionName(NewConfirmedOrder_P."Shortcut Dimension 1 Code", 1) + ', Amount: ' + FORMAT(NewConfirmedOrder_P."Refund Initiate Amount") + ', Date: ' + FORMAT(TODAY) +
                                 ' *Thank you & Look Forward for your Next Plot Purchase with Building Blocks Group.';
                 //210224 Added new code
@@ -293,9 +293,9 @@ codeunit 50058 "Customer Refund SMS"
             CustMobileNo := Customer."BBG Mobile No.";
             IF CustMobileNo <> '' THEN BEGIN
                 CustSMSText1 := '';
-                CustSMSText1 := 'Dear Customer, Your PLOT REFUND Process is Initiated. Name: Mr /Ms ' + Customer.Name + ', Appl No:' + NewConfirmedOrder_P."No." + ', Project:' +
+                CustSMSText1 := 'Dear Customer, Your PLOT REFUND Process is Initiated. Name: ' + Customer.Name + ', Appl No:' + NewConfirmedOrder_P."No." + ', Project:' +
                                 GetDescription.GetDimensionName(NewConfirmedOrder_P."Shortcut Dimension 1 Code", 1) + ', Amount: ' + FORMAT(NewConfirmedOrder_P."Refund Initiate Amount") + ', Date: ' + FORMAT(TODAY) +
-                                ' *Thank you & Look Forward for your Next Plot Purchase with Building Blocks Group.';
+                                '. *Thank you & Look Forward for your Next Plot Purchase with Building Blocks Group.';
 
                 //210224 Added new code
                 CLEAR(CheckMobileNoforSMS);
@@ -360,9 +360,9 @@ codeunit 50058 "Customer Refund SMS"
             CustMobileNo := Customer."BBG Mobile No.";
             IF CustMobileNo <> '' THEN BEGIN
                 CustSMSText1 := '';
-                CustSMSText1 := 'Dear Customer, Your PLOT REFUND Request Is Verified. Name: Mr /Ms ' + Customer.Name + ', Appl No:' + NewConfirmedOrder_P."No." + ', Project:' +
+                CustSMSText1 := 'Dear Customer, Your PLOT REFUND Request Is Verified. Name: ' + Customer.Name + ', Appl No:' + NewConfirmedOrder_P."No." + ', Project:' +
                                 GetDescription.GetDimensionName(NewConfirmedOrder_P."Shortcut Dimension 1 Code", 1) + ', Amount: ' + FORMAT(NewConfirmedOrder_P."Refund Initiate Amount") +
-                                ', Date: ' + FORMAT(TODAY) + ' *Thank you & Look Forward for your Next Plot Purchase with Building Blocks Group.';
+                                ', Date: ' + FORMAT(TODAY) + '. *Thank you & Look Forward for your Next Plot Purchase with Building Blocks Group.';
                 //210224 Added new code
                 CLEAR(CheckMobileNoforSMS);
                 ExitMessage := CheckMobileNoforSMS.CheckMobileNo(CustMobileNo, FALSE);
@@ -426,7 +426,7 @@ codeunit 50058 "Customer Refund SMS"
             CustMobileNo := Customer."BBG Mobile No.";
             IF CustMobileNo <> '' THEN BEGIN
                 CustSMSText1 := '';
-                CustSMSText1 := 'Dear Customer, Your PLOT REFUND Request Is Approved. Name: Mr /Ms ' + Customer.Name + ', Appl No:' + NewConfirmedOrder_P."No." + ', Project:' +
+                CustSMSText1 := 'Dear Customer, Your PLOT REFUND Request Is Approved. Name: ' + Customer.Name + '. Appl No:' + NewConfirmedOrder_P."No." + ', Project:' +
                                 GetDescription.GetDimensionName(NewConfirmedOrder_P."Shortcut Dimension 1 Code", 1) + ', Amount: ' + FORMAT(NewConfirmedOrder_P."Refund Initiate Amount") + ', Date: ' + FORMAT(TODAY) +
                                 ' *Thank you & Look Forward for your Next Plot Purchase with Building Blocks Group.';
 
@@ -533,7 +533,7 @@ codeunit 50058 "Customer Refund SMS"
                 //CustMobileNo := '8374999906';
                 IF CustMobileNo <> '' THEN BEGIN
                     CustSMSText1 := '';
-                    CustSMSText1 := 'Dear Customer, Your PLOT REFUND Request is Rejected at ' + '(' + StageTxt + ') Stage. Name: Mr /Ms ' + Customer.Name + ', Appl No:' + NewConfirmedOrder_P."No." + ', Project:' +
+                    CustSMSText1 := 'Dear Customer, Your PLOT REFUND Request is Rejected at ' + StageTxt + ' Stage. Name: ' + Customer.Name + ', Appl No:' + NewConfirmedOrder_P."No." + ', Project:' +
                                     GetDescription.GetDimensionName(NewConfirmedOrder_P."Shortcut Dimension 1 Code", 1) + ', Amount: ' + FORMAT(NewConfirmedOrder_P."Refund Initiate Amount") + ', Date: ' + FORMAT(TODAY) +
                                     ' *Thank you & Look Forward for your Next Plot Purchase with Building Blocks Group.';
 

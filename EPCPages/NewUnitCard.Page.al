@@ -802,14 +802,14 @@ page 50081 "New Unit Card"
                                                         // ' ' + 'Project: ' + GetDescription.GetDimensionName(Rec."Shortcut Dimension 1 Code", 1) + ' ' + 'Date: ' +
                                                         // FORMAT(AppPayEntry."Posting date")
 
-                                                        'Dear' + Customer.Name + 'We have Received Rs. ' + FORMAT(AppPayEntry.Amount) + 'for the Application ' + Rec."Application No." + 'Project' + GetDescription.GetDimensionName(Rec."Shortcut Dimension 1 Code", 1) + ' on ' + FORMAT(AppPayEntry."Posting date") + '.  Thankyou BBGIND'   //Code Added 21012026
+                                                        'Dear ' + Customer.Name + ' We have Received Rs. ' + FORMAT(AppPayEntry.Amount) + ' for the Application ' + Rec."Application No." + ' Project ' + GetDescription.GetDimensionName(Rec."Shortcut Dimension 1 Code", 1) + ' on ' + FORMAT(AppPayEntry."Posting date") + '.  Thankyou BBGIND'   //Code Added 21012026
                                                     ELSE
                                                         CustSMSText :=
                                                         // 'Mr/Mrs/Ms:' + Customer.Name + 'Welcome to BBG Family. Appl No:' + Rec."Application No." +   //Code commented 21012026
                                                         // ' ' + 'Recvd Rs.' + FORMAT(AppPayEntry.Amount) +
                                                         // ' ' + 'Project: ' + GetDescription.GetDimensionName(Rec."Shortcut Dimension 1 Code", 1) + ' ' + 'Date: ' +
                                                         // FORMAT(AppPayEntry."Posting date") + 'Tx for payment(If Chq-Subject to Realization).BBGIND';
-                                                        'Dear' + Customer.Name + 'We have Received Rs. ' + FORMAT(AppPayEntry.Amount) + 'for the Application ' + Rec."Application No." + 'Project' + GetDescription.GetDimensionName(Rec."Shortcut Dimension 1 Code", 1) + ' on ' + FORMAT(AppPayEntry."Posting date") + '.  Thankyou BBGIND';   //Code Added 21012026
+                                                        'Dear ' + Customer.Name + ' We have Received Rs. ' + FORMAT(AppPayEntry.Amount) + ' for the Application ' + Rec."Application No." + ' Project ' + GetDescription.GetDimensionName(Rec."Shortcut Dimension 1 Code", 1) + ' on ' + FORMAT(AppPayEntry."Posting date") + '.  Thankyou BBGIND';   //Code Added 21012026
 
                                                     MESSAGE('%1', CustSMSText);
                                                     //210224 Added new code

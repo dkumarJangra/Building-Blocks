@@ -113,6 +113,15 @@ page 50089 "Associate Advance Payment Form"
                 {
                     Editable = false;
                 }
+                Field("Ref. External Doc. No."; Rec."Ref. External Doc. No.")
+                {
+                    Caption = 'External document No.';
+                }
+                field(Narration; Rec.Narration)
+                {
+                    Caption = 'Narration';
+
+                }
             }
         }
     }
@@ -407,6 +416,9 @@ page 50089 "Associate Advance Payment Form"
         AssociatePaymentHdr."Amt applicable for Payment" := Rec."Advance Pmt Amount";
         AssociatePaymentHdr."Net Payable (As per Actual)" := Rec."Advance Pmt Amount";
         AssociatePaymentHdr."Rejected/Approved" := AssociatePaymentHdr."Rejected/Approved"::Approved;
+        AssociatePaymentHdr."Ref. External Doc. No." := Rec."Ref. External Doc. No.";  //Added code 27022026
+        AssociatePaymentHdr.Narration := Copystr(Rec.Narration, 1, 60); //Added code 27022026
+        AssociatePaymentHdr."Narration 2" := CopyStr(Rec.Narration, 61, 120); //Added code 27022026
         AssociatePaymentHdr.INSERT;
         PostPayment.PostAssociateAdvancePmt(AssociatePaymentHdr);
     end;

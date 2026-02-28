@@ -1788,7 +1788,7 @@ codeunit 97725 PostPayment
     end;
 
 
-    procedure InitVoucherNarration(JnlTemplate: Code[10]; JnlBatch: Code[10]; DocumentNo: Code[20]; GenJnlLineNo: Integer; NarrationLineNo: Integer; LineNarrationText: Text[50])
+    procedure InitVoucherNarration(JnlTemplate: Code[10]; JnlBatch: Code[10]; DocumentNo: Code[20]; GenJnlLineNo: Integer; NarrationLineNo: Integer; LineNarrationText: Text[250])    //Change linenarrationText length 50-->250 //27022026
     var
         GenJnlNarration: Record "Gen. Journal Narration"; //"16549";
         LineNo: Integer;
@@ -4327,7 +4327,6 @@ codeunit 97725 PostPayment
         GenJnlLine1.SETRANGE("Document No.", PDocNo);
         IF GenJnlLine1.FINDFIRST THEN
             REPEAT
-
                 GenJnlPostLine.RunWithoutCheck(GenJnlLine1)  // ALLE AKUL 050225
             UNTIL GenJnlLine1.NEXT = 0;
 
@@ -7107,8 +7106,9 @@ codeunit 97725 PostPayment
         WithTDSAmt: Decimal;
         WithoutTDSAmt: Decimal;
         CalculateTax: Codeunit "Calculate Tax";
+        NarrationText2: Text[200];
     begin
-
+        NarrationText2 := '';
         UserSetup.RESET;
         UserSetup.GET(USERID);
 
@@ -7165,6 +7165,7 @@ codeunit 97725 PostPayment
                 WithTDSAmt := AssPmtHdr."Amt applicable for Payment";
 
             NarrationText1 := 'Associate Payment ' + COPYSTR(AssPmtHdr."Associate Code", 1, 30);
+            NarrationText2 := AssPmtHdr.Narration + ' ' + AssPmtHdr."Narration 2"; //Added new code 2702026
             IF WithoutTDSAmt <> 0 THEN BEGIN
                 GenJnlLine1.INIT;
                 IF AssPmtHdr."Payment Mode" = AssPmtHdr."Payment Mode"::Cash THEN BEGIN
@@ -7212,9 +7213,10 @@ codeunit 97725 PostPayment
                 GenJnlLine1."Payment As Advance" := TRUE;
                 GenJnlLine1."System-Created Entry" := TRUE;
                 GenJnlLine1.Description := 'Associate Pmt';
+                GenJnlLine1."Ref. External Doc. No." := assPmtHdr."Ref. External Doc. No.";   //added new code 27022026
                 GenJnlLine1.INSERT;
                 InitVoucherNarration(GenJnlLine1."Journal Template Name", GenJnlLine1."Journal Batch Name", GenJnlLine1."Document No.",
-                  GenJnlLine1."Line No.", GenJnlLine1."Line No.", NarrationText1);
+                  GenJnlLine1."Line No.", GenJnlLine1."Line No.", NarrationText1 + ' ' + NarrationText2);   //Added NarrationText2 27022026
                 InsertJnDimension(GenJnlLine1); //310113
                 LineNo := GenJnlLine1."Line No.";
                 CalculateTax.CallTaxEngineOnGenJnlLine(GenJnlLine1, GenJnlLine1);
@@ -7274,7 +7276,7 @@ codeunit 97725 PostPayment
                 // GenJnlLine1.Validate("Bank Charge", true);
                 // GenJnlLine1.Modify();
                 InitVoucherNarration(GenJnlLine1."Journal Template Name", GenJnlLine1."Journal Batch Name", GenJnlLine1."Document No.",
-                  GenJnlLine1."Line No.", GenJnlLine1."Line No.", NarrationText1);
+                  GenJnlLine1."Line No.", GenJnlLine1."Line No.", NarrationText1 + ' ' + NarrationText2);
                 InsertJnDimension(GenJnlLine1); //310113
                 CalculateTax.CallTaxEngineOnGenJnlLine(GenJnlLine1, GenJnlLine1);
 
