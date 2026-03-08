@@ -414,7 +414,7 @@ page 97918 "Commission Payable"
         PaidTo: Code[20];
         UserSetup: Record "User Setup";
         BondSetup: Record "Unit Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         Vendor: Record Vendor;
         DocumentNo: Code[20];
         PostingNoSeries: Code[10];

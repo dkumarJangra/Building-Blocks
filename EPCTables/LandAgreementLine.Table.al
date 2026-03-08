@@ -399,7 +399,7 @@ table 50054 "Land Agreement Line"
 
     local procedure CreateDimensions()
     var
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        NoSeriesManagement: Codeunit "No. Series"; //NoSeriesManagement;
         DimensionValue: Record "Dimension Value";
         GeneralLedgerSetup: Record "General Ledger Setup";
     begin

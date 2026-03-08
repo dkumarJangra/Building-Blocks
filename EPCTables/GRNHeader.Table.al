@@ -928,8 +928,11 @@ table 97731 "GRN Header"
 
         IF "GRN No." = '' THEN BEGIN
             PopulateNumber;
-            NoSeriesMgt.InitSeries(GetNoSeriesCode, xRec."GRN No. Series", WORKDATE, "GRN No.", "GRN No. Series");
+            //  NoSeriesMgt.InitSeries(GetNoSeriesCode, xRec."GRN No. Series", WORKDATE, "GRN No.", "GRN No. Series");  //Old code commented 07032026
+            "GRN No." := NoSeriesMgt.GetNextNo(GetNoSeriesCode, WorkDate, true);  //New code added 07032026 
             "Posted GRN No. Series" := "GRN No. Series";
+
+
         END;
 
 
@@ -977,7 +980,7 @@ table 97731 "GRN Header"
         PurchHeader: Record "Purchase Header";
         Vendor: Record Vendor;
         GRNLines: Record "GRN Line";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         PurAndPay: Record "Purchases & Payables Setup";
         GateEntryLines: Record "Gate Entry Line";// 16553;
         GateEntry: Record "Gate Entry Header";// 16552;

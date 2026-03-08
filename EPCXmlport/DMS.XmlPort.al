@@ -1541,7 +1541,7 @@ tabledata "Purch. Cr. Memo Hdr." = rm,
     procedure getContactNo() rtxtContactNo: Text;
     var
         lrecMktngSetup: Record "Marketing Setup";
-        lcNoSeriesMgmt: Codeunit NoSeriesManagement;
+        lcNoSeriesMgmt: Codeunit "No. Series"; //NoSeriesManagement;
     begin
         //<DMS author="M.Hamblin" date="12/12/2011" issue="--" >
         // Returns a contact # from the assigned number series

@@ -44,7 +44,7 @@ codeunit 97742 "Job Queue for R-50082"
         Codeunit_12: Codeunit "Job Queue for R-50082_1";
         "ReportDataforE-Mail": Record "Report Data for E-Mail";
         BatchNo: Code[20];
-        NoseriesMGT: Codeunit NoSeriesManagement;
+        NoseriesMGT: Codeunit "No. Series"; //NoSeriesManagement;
         UnitSetup: Record "Unit Setup";
         "ReportDataforE-Mail_1": Record "Report Data for E-Mail";
         EntryNo: Integer;

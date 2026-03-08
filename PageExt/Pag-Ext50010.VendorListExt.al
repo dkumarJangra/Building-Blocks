@@ -170,7 +170,7 @@ pageextension 50010 "BBG Vendor List Ext" extends "Vendor List"
                 var
                     CompanywiseGLAccount: Record "Company wise G/L Account";
                     VendorTemplate: Record "Vendor Templ.";
-                    NoSeriesMgmt: Codeunit NoSeriesManagement;
+                    NoSeriesMgmt: Codeunit "No. Series"; //NoSeriesManagement;
                     AllowedSection: Record "Allowed Sections";
                 begin
                     CompanywiseGLAccount.RESET;
@@ -219,7 +219,7 @@ pageextension 50010 "BBG Vendor List Ext" extends "Vendor List"
                 trigger OnAction()
                 var
                     VendorTemplate: Record "Vendor Templ.";
-                    NoSeriesMgmt: Codeunit NoSeriesManagement;
+                    NoSeriesMgmt: Codeunit "No. Series"; //NoSeriesManagement;
                 begin
                     IF CONFIRM(Text002) THEN BEGIN
                         VendorTemplate.Reset();
@@ -243,7 +243,7 @@ pageextension 50010 "BBG Vendor List Ext" extends "Vendor List"
                 trigger OnAction()
                 var
                     VendorTemplate: Record "Vendor Templ.";
-                    NoSeriesMgmt: Codeunit NoSeriesManagement;
+                    NoSeriesMgmt: Codeunit "No. Series"; //NoSeriesManagement;
                 begin
                     IF CONFIRM(Text004) THEN BEGIN
                         VendorTemplate.Reset();
@@ -269,7 +269,7 @@ pageextension 50010 "BBG Vendor List Ext" extends "Vendor List"
                 var
                     CompanywiseGLAccount: Record "Company wise G/L Account";
                     VendorTemplate: Record "Vendor Templ.";
-                    NoSeriesMgmt: Codeunit NoSeriesManagement;
+                    NoSeriesMgmt: Codeunit "No. Series"; //NoSeriesManagement;
                     AllowedSection: Record "Allowed Sections";
                 begin
                     CompanywiseGLAccount.RESET;

@@ -582,7 +582,7 @@ page 97953 "Payable Form NEW"
         GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line";
         LineNo2: Integer;
         GenJnlBatch: Record "Gen. Journal Batch";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         //NODNOCLine: Record 13785;//Need to check the code in UAT
 
         GenJnlLine2: Record "Gen. Journal Line";

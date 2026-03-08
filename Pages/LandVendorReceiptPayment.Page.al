@@ -122,7 +122,7 @@ page 50164 "Land Vendor Receipt Payment"
         UnitSetup: Record "Unit Setup";
         LineNo: Integer;
         DocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         GenJnlLineDevCharge: Record "Gen. Journal Line";
         LandAgreementHeader: Record "Land Agreement Header";
         GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line";

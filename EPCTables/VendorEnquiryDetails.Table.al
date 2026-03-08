@@ -279,7 +279,7 @@ table 97741 "Vendor Enquiry Details"
         Vendor: Record Vendor;
         DimensionValue: Record "Dimension Value";
         PurchSetup: Record "Purchases & Payables Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         TextAttachment: Label 'Do You want to Replace the Attachment ?';
         Text0002: Label 'The attachment is empty.';
         OrderAddress: Record "Order Address";

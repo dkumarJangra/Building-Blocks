@@ -374,7 +374,7 @@ xmlport 50101 "Vendor and Lead Upload"
         RecVendor_1: Record Vendor;
         MobFirstLetter: Text;
         VendNo: Code[20];
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        NoSeriesManagement: Codeunit "No. Series"; //NoSeriesManagement;
         RegionwiseVendor: Record "Region wise Vendor";
         CompanywiseGLAccount: Record "Company wise G/L Account";
         Vend: Record Vendor;

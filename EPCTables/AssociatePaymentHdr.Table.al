@@ -761,7 +761,7 @@ table 50018 "Associate Payment Hdr"
         BankACC: Record "Bank Account";
         GLACC: Record "G/L Account";
         UnitSetup: Record "Unit Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         UserSetup: Record "User Setup";
         PaymentMethod: Record "Payment Method";
         GLAccount: Record "G/L Account";

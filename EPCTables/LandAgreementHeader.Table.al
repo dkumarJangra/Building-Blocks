@@ -284,7 +284,7 @@ table 50053 "Land Agreement Header"
 
     trigger OnInsert()
     var
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        NoSeriesManagement: Codeunit "No. Series"; //NoSeriesManagement;
         UnitSetup: Record "Unit Setup";
         InventorySetup: Record "Inventory Setup";
     begin
@@ -340,7 +340,7 @@ table 50053 "Land Agreement Header"
         v_LandPPRDocumentList: Record "Land R-2 PPR  Document List";
         LandPPRDocumentList_1: Record "Sub Team Master";
         v_LandPPRDocumentList_1: Record "Sub Team Master";
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        NoSeriesManagement: Codeunit "No. Series"; //NoSeriesManagement;
         DocumentSetup: Record "Document Setup";
     begin
         IF xRec."Opportunity Document No." <> "Opportunity Document No." THEN BEGIN

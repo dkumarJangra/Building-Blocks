@@ -216,7 +216,7 @@ page 50096 "Associate Payment Form"
                     var
                         BondSetup: Record "Unit Setup";
                         PostedDocNo: Code[20];
-                        NoSeriesMgt: Codeunit NoSeriesManagement;
+                        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
                         VLEntry: Record "Vendor Ledger Entry";
                         VLEntry_2: Record "Detailed Vendor Ledg. Entry";
                         //CompanyWiseGL_1: Record "Company wise G/L Account";

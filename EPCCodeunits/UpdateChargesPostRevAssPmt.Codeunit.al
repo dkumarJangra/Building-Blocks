@@ -319,7 +319,7 @@ codeunit 97735 "UpdateCharges /Post/Rev AssPmt"
         LineNo2: Integer;
         GenJnlBatch: Record "Gen. Journal Batch";
         DocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line";
         RecGenJnlLines: Record "Gen. Journal Line";
         GLEntry: Record "G/L Entry";

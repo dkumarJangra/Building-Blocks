@@ -123,7 +123,7 @@ page 97962 "Travel Sent for Approval"
         TotalAmttoPay: Decimal;
         TAPayDetail: Record "Travel Payment Details";
         TADocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         Unitsetup: Record "Unit Setup";
         ChainMgt: Codeunit "Unit Post";
         Chain: Record Vendor;

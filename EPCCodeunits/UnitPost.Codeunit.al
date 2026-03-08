@@ -2007,7 +2007,7 @@ codeunit 97722 "Unit Post"
         MMName: Text[50];
         Text0010: Label 'Are you sure to post the entries?';
         Text002_1: Label 'Please verify the details below and confirm. Do you want to post ? %1    :%2\Project Name       :%3  Project Code :%4\Unit No.               :%5\Customer Name   :%6-%7\Associate Code    :%8-%9 \Receiving Amount: %10 \Amount in Words : %11 \Posting Date        : %12.';
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         ComInfo: Record "Company Information";
         Customer: Record Customer;
         CustSMSText: Text[700];
@@ -2761,7 +2761,7 @@ codeunit 97722 "Unit Post"
         AppPayEntry_2: Record "Application Payment Entry";
         CreatUPEryfromConfOrder: Codeunit "Creat UPEry from ConfOrder/APP";
         PostPayment: Codeunit PostPayment;
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         BondSetup: Record "Unit Setup";
     begin
         LineNo_1 := 0;

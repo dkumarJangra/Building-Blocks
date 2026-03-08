@@ -48,7 +48,7 @@ page 60789 "Land Sale Document Temp List"
 
                 trigger OnAction()
                 var
-                    NoSeriesMgt: Codeunit NoSeriesManagement;
+                    NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
                     UnitSetup: Record "Unit Setup";
                     SalesHeader: Record "Sales Header";
                     SICustomer: Record Customer;

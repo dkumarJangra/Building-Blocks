@@ -93,7 +93,7 @@ page 50261 "Item Revalue on FG Item"
                     GenJournalLine: Record "Gen. Journal Line" temporary;
                     GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line";
                     BBGSetups: Record "BBG Setups";
-                    NoSeriesManagement: Codeunit NoSeriesManagement;
+                    NoSeriesManagement: Codeunit "No. Series"; //NoSeriesManagement;
                     GenJournalBatch: Record "Gen. Journal Batch";
                     DocNo: Code[20];
                     DimensionSetEntry: Record "Dimension Set Entry" temporary;

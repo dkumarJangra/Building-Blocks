@@ -626,8 +626,11 @@ table 97814 "Assoc Pmt Voucher Header"
         IF "Document No." = '' THEN BEGIN
             UnitSetup.GET;
             UnitSetup.TESTFIELD("Voucher No. Series");
-            NoSeriesMgt.InitSeries(UnitSetup."Voucher No. Series", xRec."No. Series", WORKDATE, "Document No.",
-             "No. Series");
+            // NoSeriesMgt.InitSeries(UnitSetup."Voucher No. Series", xRec."No. Series", WORKDATE, "Document No.",
+            //"No. Series");  //Old code commented 07032026
+
+            "Document No." := NoSeriesMgt.GetNextNo(UnitSetup."Voucher No. Series", WorkDate, true);  //New code added 07032026 
+
         END;
 
         "User ID" := USERID;
@@ -663,7 +666,7 @@ table 97814 "Assoc Pmt Voucher Header"
         BankACC: Record "Bank Account";
         GLACC: Record "G/L Account";
         UnitSetup: Record "Unit Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         UserSetup: Record "User Setup";
         PaymentMethod: Record "Payment Method";
         VoucherLine: Record "Voucher Line";
@@ -683,10 +686,13 @@ table 97814 "Assoc Pmt Voucher Header"
     begin
         UnitSetup.GET;
         //TestNoSeries;
-        IF NoSeriesMgt.SelectSeries(UnitSetup."Voucher No. Series", OldCommVHdr."No. Series", "No. Series") THEN BEGIN
-            UnitSetup.GET;
-            //  TestNoSeries;
-            NoSeriesMgt.SetSeries("Document No.");
+        //IF NoSeriesMgt.SelectSeries(UnitSetup."Voucher No. Series", OldCommVHdr."No. Series", "No. Series") THEN BEGIN  //Old code commented 07032026
+        UnitSetup.GET;
+        //  TestNoSeries;
+        //  NoSeriesMgt.SetSeries("Document No.");  //Old code commented 07032026
+        if NoSeriesMgt.LookupRelatedNoSeries(UnitSetup."Voucher No. Series", Rec."No. Series") then BEGIN  //New code Added 07032026
+            Rec.Validate("No. Series");  //New code Added 07032026
+            NoSeriesMgt.TestManual("No. Series");  //New code Added 07032026
             EXIT(TRUE);
         END;
     end;

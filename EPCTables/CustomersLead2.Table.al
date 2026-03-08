@@ -1040,7 +1040,9 @@ table 60720 "Customers Lead_2"
 
         IF "No." = '' THEN BEGIN
             RMSetup.TESTFIELD("Contact Nos.");
-            NoSeriesMgt.InitSeries(RMSetup."Contact Nos.", xRec."No. Series", 0D, "No.", "No. Series");
+            // NoSeriesMgt.InitSeries(RMSetup."Contact Nos.", xRec."No. Series", 0D, "No.", "No. Series");  //Old code commented 07032026
+            "No." := NoSeriesMgt.GetNextNo(RMSetup."Contact Nos.", WorkDate, true);  //New code added 07032026 
+
         END;
 
         IF NOT SkipDefaults THEN BEGIN
@@ -1089,7 +1091,7 @@ table 60720 "Customers Lead_2"
         ContBusRel: Record "Contact Business Relation";
         PostCode: Record "Post Code";
         DuplMgt: Codeunit DuplicateManagement;
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         UpdateCustVendBank: Codeunit "CustVendBank-Update";
         CampaignMgt: Codeunit "Campaign Target Group Mgt";
         ContChanged: Boolean;
@@ -1134,10 +1136,13 @@ table 60720 "Customers Lead_2"
         Cont := Rec;
         RMSetup.GET;
         RMSetup.TESTFIELD("Contact Nos.");
-        IF NoSeriesMgt.SelectSeries(RMSetup."Contact Nos.", OldCont."No. Series", Cont."No. Series") THEN BEGIN
-            RMSetup.GET;
-            RMSetup.TESTFIELD("Contact Nos.");
-            NoSeriesMgt.SetSeries(Cont."No.");
+        //IF NoSeriesMgt.SelectSeries(RMSetup."Contact Nos.", OldCont."No. Series", Cont."No. Series") THEN BEGIN   //Old code commented 07032026
+        RMSetup.GET;
+        RMSetup.TESTFIELD("Contact Nos.");
+        //  NoSeriesMgt.SetSeries(Cont."No.");  //Old code commented 07032026
+        if NoSeriesMgt.LookupRelatedNoSeries(RMSetup."Contact Nos.", Rec."No. Series") then BEGIN  //New code Added 07032026
+            Rec.Validate("No. Series");  //New code Added 07032026
+            NoSeriesMgt.TestManual("No. Series"); //New code Added 07032026
             Rec := Cont;
             EXIT(TRUE);
         END;

@@ -1225,7 +1225,7 @@ page 50015 "Unit Allocation"
         UnitSetup: Record "Unit Setup";
         LineNo2: Integer;
         DocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         Job: Record Job;
         ConfOrder: Record "Confirmed Order";
         BondInvestmentAmt: Decimal;

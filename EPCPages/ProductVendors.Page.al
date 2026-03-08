@@ -101,7 +101,7 @@ page 97763 "Product Vendors"
 
     var
         PurchSetup: Record "Purchases & Payables Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         EnquiryNo: Code[20];
         PRHeader: Record "Purchase Request Header";
         PRRequestDoctype: Option Indent;

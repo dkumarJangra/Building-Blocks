@@ -326,7 +326,7 @@ table 50059 "Land Vendor Receipt Payment"
         GenJournalLine_1: Record "Gen. Journal Line";
         LineNo: Integer;
         DocNo: Code[20];
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        NoSeriesManagement: Codeunit "No. Series"; //NoSeriesManagement;
         UserSetup: Record "User Setup";
         EntryExists: Boolean;
         JobMaster: Record "Job Master";

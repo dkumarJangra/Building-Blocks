@@ -486,7 +486,7 @@ table 60667 "Land Lead/Opp Line"
         OldDocument: Record Document;
         RecDocument: Record Document;
         DocumentSetup: Record "Document Setup";
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        NoSeriesManagement: Codeunit "No. Series"; //NoSeriesManagement;
         PostCode: Record "Post Code";
         LandOldDocument: Record "Land Document Attachment";
         LandDocument: Record "Land Document Attachment";
@@ -556,7 +556,7 @@ table 60667 "Land Lead/Opp Line"
 
     local procedure CreateDimensions()
     var
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        NoSeriesManagement: Codeunit "No. Series"; //NoSeriesManagement;
         DimensionValue: Record "Dimension Value";
         GeneralLedgerSetup: Record "General Ledger Setup";
     begin
@@ -774,7 +774,7 @@ table 60667 "Land Lead/Opp Line"
         LandAgreementExpense: Record "Land Agreement Expense";
         OpportunityLandAgreementExpense: Record "Land Agreement Expense";
         LastLandAgreementLine: Record "Land Agreement Line";
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        NoSeriesManagement: Codeunit "No. Series"; //NoSeriesManagement;
     begin
         IF CONFIRM('Do you want to Transfer Line') THEN BEGIN
             LandAgreementHeader.RESET;

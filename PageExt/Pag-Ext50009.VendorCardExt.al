@@ -494,6 +494,23 @@ pageextension 50009 "BBG Vendor Card Ext" extends "Vendor Card"
             field("BBG INOPERATIVE PAN"; Rec."BBG INOPERATIVE PAN")
             {
                 ApplicationArea = All;
+                trigger OnValidate()     //Added new code for send sms 02032026 Start
+                var
+                    myInt: Integer;
+                    Postpayment: Codeunit PostPayment;
+                    Compinfo: Record "Company Information";
+                begin
+                    Compinfo.Get();
+                    If Compinfo."Send SMS" THEN BEGIN
+                        IF (Rec."BBG INOPERATIVE PAN" = true) AND (Rec."BBG Mob. No." <> '') THEN BEGIN
+                            Postpayment.SendSMS(Rec."BBG Mob. No.", 'Dear ' + Rec.Name + ', your PAN ' + rec."BBG Old P.A.N. No." + ' registered with ' + Rec."No." + ' is showing as Inoperative as per ITD records. Please update the status. BBGIND.');
+                            Message('Sms has been sent to the vendor regarding inoperative PAN');
+                        END ELSE
+                            Message('Sms has been NOT sent to the vendor regarding inoperative PAN');
+                    END ELSE
+                        Message('Company is not registered for sending SMS. Please contact Admin');
+                    //Added new code for send sms 02032026 END
+                end;
 
             }
         }

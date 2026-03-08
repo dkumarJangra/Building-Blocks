@@ -132,7 +132,7 @@ xmlport 50082 "G/L Data Export"
 
                     trigger OnBeforePassVariable()
                     begin
-                        Balance_ := 'Balance';
+                        Balance_ := 'Net Amount';
                     end;
                 }
                 textelement(DocDate_)
@@ -484,7 +484,7 @@ xmlport 50082 "G/L Data Export"
                 {
                     trigger OnBeforePassVariable()
                     begin
-                        balamount1 := Format(BalAmt + "G/L Entry".Amount);
+                        balamount1 := Format("G/L Entry".Amount);
                     end;
                 }
 
@@ -562,6 +562,8 @@ xmlport 50082 "G/L Data Export"
                         IF CustLedgerEntry.FINDFIRST THEN
                             APPNo := CustLedgerEntry."BBg App. No. / Order Ref No.";
                     END;
+                    TotalDebtiamount := TotalDebtiamount + "G/L Entry"."Debit Amount";
+                    TotalCreditAmount := TotalCreditAmount + "G/L Entry"."Credit Amount";
                 end;
             }
             tableelement(Integer3; Integer)
@@ -670,7 +672,7 @@ xmlport 50082 "G/L Data Export"
 
                     trigger OnBeforePassVariable()
                     begin
-                        DebitAmt12_ := '';
+                        DebitAmt12_ := format(TotalDebtiamount + DRBalAmt);
                     end;
                 }
                 textelement(CreditAmt12_)
@@ -678,7 +680,7 @@ xmlport 50082 "G/L Data Export"
 
                     trigger OnBeforePassVariable()
                     begin
-                        CreditAmt12_ := '';
+                        CreditAmt12_ := format(TotalCreditAmount + CRBalAmt);
                     end;
                 }
                 textelement(BalAmt2_)
@@ -686,7 +688,7 @@ xmlport 50082 "G/L Data Export"
 
                     trigger OnBeforePassVariable()
                     begin
-                        BalAmt2_ := Format(BalAmt);
+                        BalAmt2_ := Format(TotalDebtiamount + DRBalAmt - (TotalCreditAmount + CRBalAmt));
                     end;
                 }
 
@@ -721,5 +723,7 @@ xmlport 50082 "G/L Data Export"
         PreviousDate: Date;
         FilterGLAccount: TExt;
         FilterClosingDate: date;
+        TotalDebtiamount: Decimal;
+        TotalCreditAmount: Decimal;
 }
 

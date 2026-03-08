@@ -35,14 +35,17 @@ tableextension 50066 "BBG Customer Bank Account Ext" extends "Customer Bank Acco
     VAR
         CustomerBankAccount: Record "Customer Bank Account";
         BondSetup: Record "Unit Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
     BEGIN
         WITH CustomerBankAccount DO BEGIN
             OldCustomerBankAccount := Rec;
             BondSetup.GET;
             BondSetup.TESTFIELD(BondSetup."Customer Bank Code");
-            IF NoSeriesMgt.SelectSeries(BondSetup."Customer Bank Code", OldCustomerBankAccount."No. Series", "No. Series") THEN BEGIN
-                NoSeriesMgt.SetSeries(Code);
+            // IF NoSeriesMgt.SelectSeries(BondSetup."Customer Bank Code", OldCustomerBankAccount."No. Series", "No. Series") THEN BEGIN  //Old code commented 07032026
+            //  NoSeriesMgt.SetSeries(Code);  //Old code commented 07032026
+            if NoSeriesMgt.LookupRelatedNoSeries(BondSetup."Customer Bank Code", Rec."No. Series") then BEGIN  //New code Added 07032026
+                Rec.Validate("No. Series"); //New code Added 07032026
+                NoSeriesMgt.TestManual("No. Series"); //New code Added 07032026
                 Rec := CustomerBankAccount;
                 EXIT(TRUE);
             END;

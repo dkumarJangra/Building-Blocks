@@ -344,7 +344,7 @@ table 97770 Document
 
     procedure SetupNew()
     var
-        NoSerieMgnt: Codeunit NoSeriesManagement;
+        NoSerieMgnt: Codeunit "No. Series"; //NoSeriesManagement;
     begin
         IF ("No." = '') THEN
             CASE "Document Type" OF
@@ -352,7 +352,8 @@ table 97770 Document
                     BEGIN
                         DocumentSetup.GET;
                         DocumentSetup.TESTFIELD("Document Nos.");
-                        NoSerieMgnt.InitSeries(DocumentSetup."Document Nos.", '', 0D, "No.", DocumentSetup."Document Nos.");
+                        //NoSerieMgnt.InitSeries(DocumentSetup."Document Nos.", '', 0D, "No.", DocumentSetup."Document Nos.");  //Old code commented 07032026 
+                        "No." := NoSerieMgnt.GetNextNo(DocumentSetup."Document Nos.", WorkDate, true);  //New code added 07032026 
                     END;
                 "Document Type"::Template:
                     ERROR(E_NONAME);

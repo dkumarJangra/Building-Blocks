@@ -24,10 +24,13 @@ page 97850 "Approved PR Header"
 
                         PurAndPay.GET;
                         PurAndPay.TESTFIELD("Indent Nos");
-                        IF NoSeriesMgt.SelectSeries(PurAndPay."Indent Nos", Rec."Indent No. Series", Rec."Indent No. Series") THEN BEGIN
-                            PurAndPay.GET;
-                            PurAndPay.TESTFIELD("Indent Nos");
-                            NoSeriesMgt.SetSeries(Rec."Document No.");
+                        //IF NoSeriesMgt.SelectSeries(PurAndPay."Indent Nos", Rec."Indent No. Series", Rec."Indent No. Series") THEN BEGIN  //Old code commented 07032026
+                        PurAndPay.GET;
+                        PurAndPay.TESTFIELD("Indent Nos");
+                        //  NoSeriesMgt.SetSeries(Rec."Document No.");  //Old code commented 07032026
+                        if NoSeriesMgt.LookupRelatedNoSeries(PurAndPay."Indent Nos", Rec."Indent No. Series") then BEGIN  //New code Added 07032026
+                            Rec.Validate("Indent No. Series");  //New code Added 07032026
+                            NoSeriesMgt.TestManual(Rec."Indent No. Series");  //New code Added 07032026
                             CurrPage.UPDATE;
                         END;
                     end;
@@ -409,7 +412,7 @@ page 97850 "Approved PR Header"
     end;
 
     var
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         PurAndPay: Record "Purchases & Payables Setup";
         UserTasksNew: Record "User Tasks New";
         DocTypeApprovalRec: Record "Document Type Approval";

@@ -167,7 +167,7 @@ report 50094 "Generate Travel hierarchy"
         Vend2: Record "Region wise Vendor";
         VendStatus: Option " ",Provisional,Active,Inactive;
         DocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         UnitSetup: Record "Unit Setup";
         TravelPaymentEntry1: Record "Travel Payment Entry";
         SNo: Integer;

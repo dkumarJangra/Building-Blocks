@@ -251,7 +251,7 @@ page 97788 "Fixed Deposit Details"
                         GenJnlTemplate: Record "Gen. Journal Template";
                         GenJnlBatch: Record "Gen. Journal Batch";
                         "LineNo.": Integer;
-                        NoSeriesMgmt: Codeunit NoSeriesManagement;
+                        NoSeriesMgmt: Codeunit "No. Series"; //NoSeriesManagement;
                         "DocumentNo.": Code[20];
                         GenJournalLine: Record "Gen. Journal Line";
                         GenJournalLine2: Record "Gen. Journal Line";
@@ -276,7 +276,8 @@ page 97788 "Fixed Deposit Details"
                             "LineNo." += 10000;
                             CLEAR(NoSeriesMgmt);
                             IF GenJnlBatch."No. Series" <> '' THEN
-                                "DocumentNo." := NoSeriesMgmt.TryGetNextNo(GenJnlBatch."No. Series", TODAY);
+                                //"DocumentNo." := NoSeriesMgmt.TryGetNextNo(GenJnlBatch."No. Series", TODAY);  //Old code commented 07032026
+                                "DocumentNo." := NoSeriesMgmt.GetNextNo(GenJnlBatch."No. Series", WorkDate, true);  //New code added 07032026 
                         END;
 
                         //Debit Entry;
@@ -337,7 +338,7 @@ page 97788 "Fixed Deposit Details"
                         GenJnlTemplate: Record "Gen. Journal Template";
                         GenJnlBatch: Record "Gen. Journal Batch";
                         "LineNo.": Integer;
-                        NoSeriesMgmt: Codeunit NoSeriesManagement;
+                        NoSeriesMgmt: Codeunit "No. Series"; //NoSeriesManagement;
                         "DocumentNo.": Code[20];
                         GenJournalLine: Record "Gen. Journal Line";
                         GenJournalLine2: Record "Gen. Journal Line";
@@ -365,7 +366,8 @@ page 97788 "Fixed Deposit Details"
                             "LineNo." += 10000;
                             CLEAR(NoSeriesMgmt);
                             IF GenJnlBatch."No. Series" <> '' THEN
-                                "DocumentNo." := NoSeriesMgmt.TryGetNextNo(GenJnlBatch."No. Series", TODAY);
+                                //"DocumentNo." := NoSeriesMgmt.TryGetNextNo(GenJnlBatch."No. Series", TODAY); //Old code commented 07032026
+                                "DocumentNo." := NoSeriesMgmt.GetNextNo(GenJnlBatch."No. Series", Today, true);  //New code added 07032026 
                         END;
 
                         //Principal

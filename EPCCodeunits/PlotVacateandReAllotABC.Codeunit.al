@@ -86,7 +86,7 @@ codeunit 97767 "Plot Vacate and Re-Allot A-B-C"
         UnitSetup: Record "Unit Setup";
         LineNo2: Integer;
         DocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         Job: Record Job;
         ConfOrder: Record "Confirmed Order";
         BondInvestmentAmt: Decimal;

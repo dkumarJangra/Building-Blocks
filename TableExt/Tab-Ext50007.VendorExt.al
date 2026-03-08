@@ -537,7 +537,7 @@ tableextension 50007 "BBG Vendor Ext" extends Vendor
         pos: Integer;
         result: Text;
         IsNumeric: Boolean;
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
 
     trigger OnAfterInsert()
     begin
@@ -607,7 +607,8 @@ tableextension 50007 "BBG Vendor Ext" extends Vendor
     BEGIN
         // ALLEPG 051012 Start
         Vendor1.INIT;
-        NoSeriesMgt.InitSeries('AGENT', '', 0D, Vendor1."No.", Vendor1."No. Series");
+        //NoSeriesMgt.InitSeries('AGENT', '', 0D, Vendor1."No.", Vendor1."No. Series");  //Old code commented 07032026
+        Vendor1."No." := NoSeriesMgt.GetNextNo('AGENT', WorkDate, true);  //New code added 07032026 
         //ALLE-RM-START
         Vendor1.Name := NewVendor.Name;
         Vendor1."E-Mail" := NewVendor.EmailID;

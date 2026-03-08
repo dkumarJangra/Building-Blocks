@@ -143,7 +143,7 @@ table 60693 "Customer Prospect Details"
     }
 
     var
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        NoSeriesManagement: Codeunit "No. Series"; //NoSeriesManagement;
         BBGSetups: Record "BBG Setups";
         ResponsibilityCenter: Record "Responsibility Center 1";
         UnitMaster: Record "Unit Master";

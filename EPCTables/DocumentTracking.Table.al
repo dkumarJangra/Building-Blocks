@@ -191,7 +191,7 @@ table 97740 "Document Tracking"
         Job: Record Job;
         DocTrackingEntry: Record "Document Tracking Log";
         EntryNo: Integer;
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         DocumentTrackingLog: Record "Document Tracking Log";
         VersionNo: Integer;
         DocumentTracking: Record "Document Tracking";

@@ -99,7 +99,7 @@ page 97737 "Create GRN"
 
     var
         GrnHdr: Record "GRN Header";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         PurAndPay: Record "Purchases & Payables Setup";
 
     local procedure GRNNoOnAfterValidate()

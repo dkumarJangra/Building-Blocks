@@ -663,7 +663,8 @@ table 97728 "Purchase Request Header"
         IF "Document No." = '' THEN BEGIN
             PurAndPay.GET;
             PurAndPay.TESTFIELD("Indent Nos");
-            NoSeriesMgt.InitSeries(PurAndPay."Indent Nos", xRec."Indent No. Series", WORKDATE, "Document No.", "Indent No. Series");
+            // NoSeriesMgt.InitSeries(PurAndPay."Indent Nos", xRec."Indent No. Series", WORKDATE, "Document No.", "Indent No. Series");  //Old code commented 07032026
+            "Document No." := NoSeriesMgt.GetNextNo(PurAndPay."Indent Nos", WorkDate, true);  //New code added 07032026 
         END;
         //NDALLE061205
         "Responsibility Center" := UserMgt.GetRespCenter(1, "Responsibility Center");
@@ -696,7 +697,7 @@ table 97728 "Purchase Request Header"
     var
         IndLine: Record "Purchase Request Line";
         PurAndPay: Record "Purchases & Payables Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         DimValue: Record "Dimension Value";
         CompInfo: Record "Company Information";
         Employee: Record Employee;

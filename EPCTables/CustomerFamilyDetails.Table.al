@@ -147,7 +147,7 @@ table 60695 "Customer Family Details"
     var
         PostCode: Record "Post Code";
         RMSetup: Record "Marketing Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         CustomersLead_2: Record "Customers Lead_2";
 }
 

@@ -496,8 +496,9 @@ page 97739 "GRN Header JES"
                         IF GRNLine.FIND('-') THEN BEGIN
                             PurAndPay.GET;
                             PurAndPay.TESTFIELD("Rejection No. Series");
-                            NoSeriesMgt.InitSeries(PurAndPay."Rejection No. Series", xRec."Rejection No. Series", WORKDATE,
-                              Rec."Rejection Note No.", Rec."Rejection No. Series");
+                            //  NoSeriesMgt.InitSeries(PurAndPay."Rejection No. Series", xRec."Rejection No. Series", WORKDATE,
+                            //  Rec."Rejection Note No.", Rec."Rejection No. Series");  //Old code commented 07032026
+                            Rec."Rejection Note No." := NoSeriesMgt.GetNextNo(PurAndPay."Rejection No. Series", WorkDate, true);  //New code added 07032026 
                             REPEAT
                                 GRNLine."Rejection Note No." := Rec."Rejection Note No.";
                                 GRNLine."Rejection Note Generated" := TRUE;
@@ -820,7 +821,7 @@ page 97739 "GRN Header JES"
         GRNLine: Record "GRN Line";
         PurchHdr: Record "Purchase Header";
         PucrhPost: Codeunit "Purch.-Post";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         PurAndPay: Record "Purchases & Payables Setup";
         GRNHdr: Record "GRN Header";
         DocType: Record "Document Type Setup";

@@ -13,7 +13,7 @@ codeunit 97721 "Release Unit Application"
         ApplPaymentEntry: Record "Unit Payment Entry";
         BondSetup: Record "Unit Setup";
         ApplHistory: Record "Unit History";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         BondPost: Codeunit "Unit Post";
         GetDescription: Codeunit GetDescription;
         UnitMaster: Record "Unit Master";

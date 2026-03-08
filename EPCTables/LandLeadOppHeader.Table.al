@@ -330,7 +330,7 @@ table 60666 "Land Lead/Opp Header"
 
     trigger OnInsert()
     var
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        NoSeriesManagement: Codeunit "No. Series"; //NoSeriesManagement;
         UnitSetup: Record "Unit Setup";
     begin
         IF "Document No." = '' THEN BEGIN
@@ -378,7 +378,7 @@ table 60666 "Land Lead/Opp Header"
         OldDocument: Record "Land Document Attachment";
         //RecDocument: Record 60730;
         DocumentSetup: Record "Document Setup";
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        NoSeriesManagement: Codeunit "No. Series"; //NoSeriesManagement;
         PostCode: Record "Post Code";
         InventorySetup: Record "Inventory Setup";
         LandPPRDocumentList_1: Record "Sub Team Master";

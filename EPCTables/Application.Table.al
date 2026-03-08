@@ -1149,7 +1149,8 @@ table 97790 Application
                     ERROR('You have already created Application No.-' + RecApp."Application No." + ' ' + 'kindly use it');
             END;
             IF NOT RecordNotFound THEN BEGIN
-                NoSeriesMgt.InitSeries(BondSetup."Application Nos.", xRec."No. Series", 0D, "Application No.", "No. Series");
+                //NoSeriesMgt.InitSeries(BondSetup."Application Nos.", xRec."No. Series", 0D, "Application No.", "No. Series");  //Old code commented 07032026
+                "Application No." := NoSeriesMgt.GetNextNo(BondSetup."Application Nos.", WorkDate, true);  //New code added 07032026 
                 "Posting Date" := WORKDATE;
                 "Document Date" := WORKDATE;
                 // "Document Date" := GetDescription.GetDocomentDate;
@@ -1191,7 +1192,7 @@ table 97790 Application
     var
         Text001: Label '%1 already exists.';
         Text002: Label 'You cannot rename a %1.';
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         BondSetup: Record "Unit Setup";
         UserSetup: Record "User Setup";
         Customer: Record Customer;
@@ -1266,8 +1267,11 @@ table 97790 Application
         Appl := Rec;
         BondSetup.GET;
         BondSetup.TESTFIELD("Application Nos.");
-        IF NoSeriesMgt.SelectSeries(BondSetup."Application Nos.", OldAppl."No. Series", Appl."No. Series") THEN BEGIN
-            NoSeriesMgt.SetSeries(Appl."Application No.");
+        //IF NoSeriesMgt.SelectSeries(BondSetup."Application Nos.", OldAppl."No. Series", Appl."No. Series") THEN BEGIN  //Old code commented 07032026
+        //  NoSeriesMgt.SetSeries(Appl."Application No.");  //Old code commented 07032026
+        if NoSeriesMgt.LookupRelatedNoSeries(BondSetup."Application Nos.", Appl."Application No.") then BEGIN  //New code Added 07032026
+            Appl.Validate("No. Series");  //New code Added 07032026
+            NoSeriesMgt.TestManual(Appl."No. Series");  //New code Added 07032026
             Rec := Appl;
             EXIT(TRUE);
         END;

@@ -883,8 +883,8 @@ page 50238 "Gold/Silver Voucher Direct"
         recGatePassLines2: Record "Gate Pass Line";
         Customer: Record Customer;
         JobJnlPostLine: Codeunit "Job Jnl.-Post Line";
-        NoSeries: Codeunit NoSeriesManagement;
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeries: Codeunit "No. Series"; //NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         ItemJnlPostLine: Codeunit "Item Jnl.-Post Line";
         GEnJnlPostLine: Codeunit "Gen. Jnl.-Post Line";
         UserMgt: Codeunit "User Setup Management";

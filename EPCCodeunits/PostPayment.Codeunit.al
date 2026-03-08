@@ -74,7 +74,7 @@ codeunit 97725 PostPayment
         PostDate: Date;
         ComHoldDate: Date;
         UnitMaster: Record "Unit Master";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         CompanyGLAccount: Record "Company wise G/L Account";
         NewInsertAppLines: Record "NewApplication Payment Entry";
         WithoutTDSAmt: Decimal;
@@ -1857,7 +1857,7 @@ codeunit 97725 PostPayment
         Application: Record Application;
         BondPaymentEntry: Record "Unit Payment Entry";
         PostedDocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         AmountRecd: Decimal;
         Application1: Record Application;
     begin
@@ -2186,7 +2186,7 @@ codeunit 97725 PostPayment
     var
         Cust: Record Customer;
         BondPostingGroup1: Record "Customer Posting Group";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         Line: Integer;
         NarrationText1: Text[50];
         NarrationText2: Text[50];
@@ -3344,7 +3344,7 @@ codeunit 97725 PostPayment
         BondBankAmount: Decimal;
         UnitPayEntry: Record "Unit Payment Entry";
         AVJMAmount: Decimal;
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         ReConOrd: Record "Confirmed Order";
         PaymentModeJV: Boolean;
         TotalInvAmount_1: Decimal;
@@ -4214,7 +4214,7 @@ codeunit 97725 PostPayment
         NarrationText1: Text[50];
         CreditAmt: Decimal;
         PostedDocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
     begin
         //ALLEDK 090113
 
@@ -4745,7 +4745,7 @@ codeunit 97725 PostPayment
         InsertAppLines: Record "Application Payment Entry";
         JVLastLineNo: Integer;
         CreatUPEryfromConfOrderAPP: Codeunit "Creat UPEry from ConfOrder/APP";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         RConOrder: Record "Confirmed Order";
         FormConfimedOrder: Page "Confirmed Order";
         ExcessAmount: Decimal;
@@ -4872,7 +4872,7 @@ codeunit 97725 PostPayment
         InsertAppLines: Record "Application Payment Entry";
         JVLastLineNo: Integer;
         CreatUPEryfromConfOrderAPP: Codeunit "Creat UPEry from ConfOrder/APP";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         RConOrder: Record "Confirmed Order";
         FormConfimedOrder: Page "Confirmed Order";
         ExcessAmount: Decimal;
@@ -5137,7 +5137,7 @@ codeunit 97725 PostPayment
         NarrationText1: Text[50];
         CreditAmt: Decimal;
         PostedDocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         UnitPayEntry: Record "Unit Payment Entry";
         Amt: Decimal;
         InsertUnitAppLines: Record "Unit Payment Entry";
@@ -6102,7 +6102,7 @@ codeunit 97725 PostPayment
         BondBankAmount: Decimal;
         UnitPayEntry: Record "Unit Payment Entry";
         AVJMAmount: Decimal;
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         ReConOrd: Record "Confirmed Order";
         PaymentModeJV: Boolean;
     begin
@@ -7164,7 +7164,7 @@ codeunit 97725 PostPayment
             END ELSE
                 WithTDSAmt := AssPmtHdr."Amt applicable for Payment";
 
-            NarrationText1 := 'Associate Payment ' + COPYSTR(AssPmtHdr."Associate Code", 1, 30);
+            // NarrationText1 := 'Associate Payment ' + COPYSTR(AssPmtHdr."Associate Code", 1, 30);  //Code comented 27022027
             NarrationText2 := AssPmtHdr.Narration + ' ' + AssPmtHdr."Narration 2"; //Added new code 2702026
             IF WithoutTDSAmt <> 0 THEN BEGIN
                 GenJnlLine1.INIT;
@@ -7269,6 +7269,7 @@ codeunit 97725 PostPayment
                 GenJnlLine1.Description := 'Associate Pmt';
                 GenJnlLine1."Source Code" := 'BANKPYMTV';
                 GenJnlLine1.VALIDATE("TDS Section Code", BondSetup."TDS Nature of Deduction");
+                GenJnlLine1."Ref. External Doc. No." := AssPmtHdr."Ref. External Doc. No.";   //added new code 27022026
 
                 GenJnlLine1.INSERT;
 

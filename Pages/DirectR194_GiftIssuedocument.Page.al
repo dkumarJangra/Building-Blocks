@@ -756,8 +756,8 @@ page 50510 "Direct 194R Gift Issue"
         recGatePassLines2: Record "Gate Pass Line";
         Customer: Record Customer;
         JobJnlPostLine: Codeunit "Job Jnl.-Post Line";
-        NoSeries: Codeunit NoSeriesManagement;
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeries: Codeunit "No. Series"; //NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         ItemJnlPostLine: Codeunit "Item Jnl.-Post Line";
         GEnJnlPostLine: Codeunit "Gen. Jnl.-Post Line";
         UserMgt: Codeunit "User Setup Management";
@@ -1101,7 +1101,8 @@ page 50510 "Direct 194R Gift Issue"
                 GenJnlBatch.GET(GenTemplateCode, GenBatchCode);
                 GenJnlBatch.TestField("No. Series");
                 DocNo := '';
-                DocNo := NoSeriesMgt.DoGetNextNo(GenJnlBatch."No. Series", Today, true, false);
+                // DocNo := NoSeriesMgt.DoGetNextNo(GenJnlBatch."No. Series", Today, true, false);  //Old code commented 07032026
+                DocNo := NoSeriesMgt.GetNextNo(GenJnlBatch."No. Series", WorkDate, true);  //New code added 07032026 
 
 
                 TotalAmount := (GPassLine.Qty * GPassLine."Unit Cost");
@@ -1210,7 +1211,8 @@ page 50510 "Direct 194R Gift Issue"
                 Clear(GenJnlLine_2);
                 DocNo := '';
                 TotalAmount := 0;
-                DocNo := NoSeriesMgt.DoGetNextNo(GenJnlBatch."No. Series", Today, true, false);
+                // DocNo := NoSeriesMgt.DoGetNextNo(GenJnlBatch."No. Series", Today, true, false);  //Old code commented 07032026
+                DocNo := NoSeriesMgt.GetNextNo(GenJnlBatch."No. Series", WorkDate, true);  //New code added 07032026 
 
                 TotalAmount := GPassLine."Gift Control Amount";
 

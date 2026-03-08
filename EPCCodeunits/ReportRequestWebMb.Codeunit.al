@@ -211,7 +211,7 @@ codeunit 97770 "Report Request Web/Mb"
     var
         ReportRequestfromWebMb: Record "Report Request from Web/Mb.";
         UnitSetup: Record "Unit Setup";
-        NoseriesMGT: Codeunit NoSeriesManagement;
+        NoseriesMGT: Codeunit "No. Series"; //NoSeriesManagement;
         BatchNo: Code[20];
         Codeunit_12: Codeunit "Job Queue for R-50011_1";
         Vend: Record Vendor;

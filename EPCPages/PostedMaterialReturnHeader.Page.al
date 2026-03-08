@@ -27,10 +27,13 @@ page 97861 "Posted Material Return Header"
 
                         PurAndPay.GET;
                         PurAndPay.TESTFIELD("Material Return Note");
-                        IF NoSeriesMgt.SelectSeries(PurAndPay."Material Return Note", Rec."MRN No. Series", Rec."MRN No. Series") THEN BEGIN
-                            PurAndPay.GET;
-                            PurAndPay.TESTFIELD("Material Return Note");
-                            NoSeriesMgt.SetSeries(Rec."Document No.");
+                        //IF NoSeriesMgt.SelectSeries(PurAndPay."Material Return Note", Rec."MRN No. Series", Rec."MRN No. Series") THEN BEGIN  //Old code commented 07032026
+                        PurAndPay.GET;
+                        PurAndPay.TESTFIELD("Material Return Note");
+                        //  NoSeriesMgt.SetSeries(Rec."Document No.");  //Old code commented 07032026
+                        if NoSeriesMgt.LookupRelatedNoSeries(PurAndPay."Material Return Note", Rec."MRN No. Series") then BEGIN  //New code Added 07032026
+                            Rec.Validate("MRN No. Series");  //New code Added 07032026
+                            NoSeriesMgt.TestManual(Rec."MRN No. Series");  //New code Added 07032026
                             CurrPage.UPDATE;
                         END;
                     end;
@@ -181,7 +184,7 @@ page 97861 "Posted Material Return Header"
         ItemJnl: Record "Item Journal Line";
         ItemJournalTemplate: Record "Item Journal Template";
         numSeries: Code[10];
-        NoSeries: Codeunit NoSeriesManagement;
+        NoSeries: Codeunit "No. Series"; //NoSeriesManagement;
         PictureExists: Boolean;
         DocNumber: Code[10];
         ItemJournal: Record "Item Journal Line";
@@ -189,7 +192,7 @@ page 97861 "Posted Material Return Header"
         recGatePassLines: Record "Gate Pass Line";
         recEmployee: Record Employee;
         CodeUnitRun: Boolean;
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         PurAndPay: Record "Purchases & Payables Setup";
         Navigate: Page Navigate;
         UserMgt: Codeunit "EPC User Setup Management";

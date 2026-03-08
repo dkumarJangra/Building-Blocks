@@ -109,6 +109,6 @@ table 60696 "Customer Visit Schedule Detail"
     var
         PostCode: Record "Post Code";
         RMSetup: Record "Marketing Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
 }
 

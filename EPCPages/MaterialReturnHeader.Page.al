@@ -551,7 +551,7 @@ page 97747 "Material Return Header"
         ItemJnl: Record "Item Journal Line";
         ItemJournalTemplate: Record "Item Journal Template";
         numSeries: Code[10];
-        NoSeries: Codeunit NoSeriesManagement;
+        NoSeries: Codeunit "No. Series"; //NoSeriesManagement;
         PictureExists: Boolean;
         DocNumber: Code[10];
         ItemJournal: Record "Item Journal Line";
@@ -559,7 +559,7 @@ page 97747 "Material Return Header"
         recGatePassLines: Record "Gate Pass Line";
         recEmployee: Record Employee;
         CodeUnitRun: Boolean;
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         PurAndPay: Record "Purchases & Payables Setup";
         GenSetup: Record "General Ledger Setup";
         ItemJnlPostLine: Codeunit "Item Jnl.-Post Line";

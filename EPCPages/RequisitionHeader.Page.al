@@ -652,7 +652,7 @@ page 97795 "Requisition Header"
     end;
 
     var
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         PurAndPay: Record "Purchases & Payables Setup";
         UserTasksNew: Record "User Tasks New";
         DocTypeApprovalRec: Record "Document Type Approval";

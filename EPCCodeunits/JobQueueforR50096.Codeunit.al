@@ -61,7 +61,7 @@ codeunit 97743 "Job Queue for R-50096"
         ErrorText: Text[30];
         "ReportDataforE-Mail": Record "Report Data for E-Mail";
         BatchNo: Code[20];
-        NoseriesMGT: Codeunit NoSeriesManagement;
+        NoseriesMGT: Codeunit "No. Series"; //NoSeriesManagement;
         UnitSetup: Record "Unit Setup";
         "ReportDataforE-Mail_1": Record "Report Data for E-Mail";
         EntryNo: Integer;

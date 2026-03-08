@@ -22,10 +22,14 @@ page 97745 "Inward Gate Pass Header"
                     begin
                         PurAndPay.GET;
                         PurAndPay.TESTFIELD("Inward Gate Pass");
-                        IF NoSeriesMgt.SelectSeries(PurAndPay."Inward Gate Pass", Rec."IWGP No. Series", Rec."IWGP No. Series") THEN BEGIN
-                            PurAndPay.GET;
-                            PurAndPay.TESTFIELD("Inward Gate Pass");
-                            NoSeriesMgt.SetSeries(Rec."Document No.");
+                        //IF NoSeriesMgt.SelectSeries(PurAndPay."Inward Gate Pass", Rec."IWGP No. Series", Rec."IWGP No. Series") THEN BEGIN  //Old code commented 07032026
+                        PurAndPay.GET;
+                        PurAndPay.TESTFIELD("Inward Gate Pass");
+                        //  NoSeriesMgt.SetSeries(Rec."Document No.");  //Old code commented 07032026
+
+                        if NoSeriesMgt.LookupRelatedNoSeries(PurAndPay."Inward Gate Pass", Rec."IWGP No. Series") then BEGIN  //New code Added 07032026
+                            Rec.Validate(Rec."IWGP No. Series");  //New code Added 07032026
+                            NoSeriesMgt.TestManual(Rec."No. Series");  //New code Added 07032026
                             CurrPage.UPDATE;
                         END;
                     end;
@@ -136,7 +140,7 @@ page 97745 "Inward Gate Pass Header"
     end;
 
     var
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         PurAndPay: Record "Purchases & Payables Setup";
         recGatePassLines: Record "Gate Pass Line";
         txtConfirm: Label 'Are You sure about the details to be updated in Ledgers ?';

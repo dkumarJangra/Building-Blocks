@@ -134,7 +134,7 @@ page 50120 "Associate Profile Update"
         RegionwiseVendor: Record "Region wise Vendor";
         CompanywiseGLAccount: Record "Company wise G/L Account";
         AssociateLoginDetails: Record "Associate Login Details";
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        NoSeriesManagement: Codeunit "No. Series"; //NoSeriesManagement;
     // BondSetup: Record 97788;
     // NODHeader: Record 13786;
     // NODLine: Record 13785;

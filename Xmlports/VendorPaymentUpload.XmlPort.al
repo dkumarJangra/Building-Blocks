@@ -105,7 +105,7 @@ xmlport 50061 "Vendor Payment Upload"
         USERSETUP: Record "User Setup";
         BondSetup: Record "Unit Setup";
         PostedDocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         AssociatePaymentHdr: Record "Associate Payment Hdr";
         TotalInvAmount_1: Decimal;
         Amt: Decimal;

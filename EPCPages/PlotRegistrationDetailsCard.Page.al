@@ -67,12 +67,7 @@ page 60685 "Plot Registration Details Card"
                 field("Approval Status"; Rec."Approval Status")
                 {
                 }
-                field("Customer User ID "; Rec."Customer User ID ")  //Added new field 27022026
-                {
-                }
-                field(Password; Rec.Password)    //Added new field 27022026
-                {
-                }
+
             }
 
             part("Document Approval Details"; "Document Approval Details")
@@ -435,7 +430,14 @@ page 60685 "Plot Registration Details Card"
                 {
                     Caption = 'Ageing Days';
                 }
+                field("Customer User ID "; Rec."Customer User ID ")  //Added new field 27022026
+                {
+                }
+                field(Password; Rec.Password)    //Added new field 27022026
+                {
+                }
             }
+
             group("Stage -6")
             {
                 Caption = 'Stage - 6 (PRLC Plot Registration details)';

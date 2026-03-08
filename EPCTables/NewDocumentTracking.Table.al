@@ -145,7 +145,7 @@ table 97751 "New Document Tracking"
         Job: Record Job;
         DocTrackingEntry: Record "New Document Tracking Log";
         EntryNo: Integer;
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         DocumentTrackingLog: Record "New Document Tracking Log";
         VersionNo: Integer;
         DocumentTracking: Record "New Document Tracking";

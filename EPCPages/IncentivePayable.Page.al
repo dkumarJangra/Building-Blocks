@@ -238,7 +238,7 @@ page 97991 "Incentive Payable"
         VendorPostingGroup: Record "Vendor Posting Group";
         //NODNOCLine: Record 13785;//Need to check the code in UAT
         AllowedSection: Record "Allowed Sections";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         DocNo1: Code[20];
         Type2: Option " ",Direct,Team;
 

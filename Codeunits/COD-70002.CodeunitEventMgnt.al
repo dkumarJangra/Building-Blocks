@@ -689,15 +689,39 @@ codeunit 70002 "BBG Codeunit Event Mgnt."
             SalesLine.TestField("Job No.", '');
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", OnBeforePostCustomerEntry, '', false, false)]
-    local procedure OnBeforePostCustomerEntry_SalesPost(var GenJnlLine: Record "Gen. Journal Line"; var SalesHeader: Record "Sales Header")
+    ////old code Start 07032026 Commented
+
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", OnBeforePostCustomerEntry, '', false, false)]
+    // local procedure OnBeforePostCustomerEntry_SalesPost(var GenJnlLine: Record "Gen. Journal Line"; var SalesHeader: Record "Sales Header")
+    // begin
+    //     //VSID Alle ND Job0007
+    //     GenJnlLine."Order Ref No." := SalesHeader."No.";
+    //     GenJnlLine."Milestone Code" := SalesHeader."Last Stage Completed"; // ALLE SP
+    //     GenJnlLine."Posting Type" := GenJnlLine."Posting Type"::Running;
+    //     //VSID Alle ND Job0007
+    // End;
+    //old code end 07032026 Commented
+
+    //New code Start 07032026
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales Post Invoice Events",
+                 'OnPostLedgerEntryOnBeforeGenJnlPostLine', '', false, false)]
+    local procedure OnPostLedgerEntryOnBeforeGenJnlPostLine(
+    var GenJnlLine: Record "Gen. Journal Line";
+    SalesHeader: Record "Sales Header";
+    var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line";
+    PreviewMode: Boolean;
+    SuppressCommit: Boolean)
     begin
-        //VSID Alle ND Job0007
         GenJnlLine."Order Ref No." := SalesHeader."No.";
         GenJnlLine."Milestone Code" := SalesHeader."Last Stage Completed"; // ALLE SP
         GenJnlLine."Posting Type" := GenJnlLine."Posting Type"::Running;
-        //VSID Alle ND Job0007
-    End;
+    end;
+
+
+    //New code end 07032026
+
+
 
     PROCEDURE PostRetentionEntries(SalesHeader: Record "Sales Header");
     VAR
@@ -4762,12 +4786,39 @@ codeunit 70002 "BBG Codeunit Event Mgnt."
         //ALLE-SR-081107 <<
     End;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post", 'OnBeforePostVendorEntry', '', false, false)]
-    local procedure InsertTDSSectionCodeGenJnlLineOnPostLedgerEntryOnBeforeGenJnlPostLine(
-           var GenJnlLine: Record "Gen. Journal Line";
-           var PurchHeader: Record "Purchase Header")
-    var
-    Begin
+
+    //Old code commented 07032026 Start
+
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post", 'OnBeforePostVendorEntry', '', false, false)]
+    // local procedure InsertTDSSectionCodeGenJnlLineOnPostLedgerEntryOnBeforeGenJnlPostLine(
+    //        var GenJnlLine: Record "Gen. Journal Line";
+    //        var PurchHeader: Record "Purchase Header")
+    // var
+    // Begin
+    //     GenJnlLine."Application No." := PurchHeader."Application No.";
+    //     if PurchHeader."Associate Posting Type" <> PurchHeader."Associate Posting Type"::" " then
+    //         GenJnlLine."Posting Type" := PurchHeader."Associate Posting Type"
+    //     Else
+    //         GenJnlLine."Posting Type" := GenJnlLine."Posting Type"::Running;
+
+    //     GenJnlLine."Ref. External Doc. No." := PurchHeader."Ref. External Doc. No."; //Added new code 15122025
+    // End;
+
+    //Old code commented 07032026 END
+
+    //New code commented 07032026 Start
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch. Post Invoice Events",
+                  'OnPostLedgerEntryOnBeforeGenJnlPostLine', '', false, false)]
+    local procedure OnPostLedgerEntryOnBeforeGenJnlPostLine1(
+     var GenJnlLine: Record "Gen. Journal Line";
+     PurchHeader: Record "Purchase Header";
+     TotalPurchLine: Record "Purchase Line";
+     TotalPurchLineLCY: Record "Purchase Line";
+     PreviewMode: Boolean;
+     SuppressCommit: Boolean;
+     var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line")
+    begin
         GenJnlLine."Application No." := PurchHeader."Application No.";
         if PurchHeader."Associate Posting Type" <> PurchHeader."Associate Posting Type"::" " then
             GenJnlLine."Posting Type" := PurchHeader."Associate Posting Type"
@@ -4775,7 +4826,8 @@ codeunit 70002 "BBG Codeunit Event Mgnt."
             GenJnlLine."Posting Type" := GenJnlLine."Posting Type"::Running;
 
         GenJnlLine."Ref. External Doc. No." := PurchHeader."Ref. External Doc. No."; //Added new code 15122025
-    End;
+    end;
+    //New code commented 07032026 END
 
     procedure UpdateVoucherHeader(VAR VoucherNo: Code[20])
     var

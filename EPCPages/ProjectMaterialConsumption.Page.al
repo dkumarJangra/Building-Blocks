@@ -886,8 +886,8 @@ page 97845 "Project Material Consumption"
         recGatePassLines2: Record "Gate Pass Line";
         JobJnlPostLine: Codeunit "Job Jnl.-Post Line";
         JobJnlPostLine1: Codeunit MyCodeunit;
-        NoSeries: Codeunit NoSeriesManagement;
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeries: Codeunit "No. Series"; //NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         ItemJnlPostLine: Codeunit "Item Jnl.-Post Line";
         GEnJnlPostLine: Codeunit "Gen. Jnl.-Post Line";
         UserMgt: Codeunit "EPC User Setup Management";

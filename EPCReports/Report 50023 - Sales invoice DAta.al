@@ -76,7 +76,7 @@ report 50023 "Sales invoice DAta"
     procedure SalesHeaderInsert(APPNo: Code[20])
     var
         SaleSetup: Record "Sales & Receivables Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         SOHeader: Record "Sales Header";
         SaleNo: Code[20];
         SInvHead: Record "Sales Invoice Header";

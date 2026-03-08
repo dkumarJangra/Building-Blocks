@@ -85,7 +85,7 @@ codeunit 50058 "Customer Refund SMS"
         UnitSetup: Record "Unit Setup";
         LineNo2: Integer;
         DocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         Job: Record Job;
         GenJnlLine2: Record "Gen. Journal Line";
         ConfOrder: Record "New Confirmed Order";
@@ -233,9 +233,10 @@ codeunit 50058 "Customer Refund SMS"
             //  CustMobileNo := '9818076832';
             IF CustMobileNo <> '' THEN BEGIN
                 CustSMSText1 := '';
-                CustSMSText1 := 'Dear Customer, Your PLOT REFUND Request Received at CRM Desk. Name: ' + Customer.Name + ', Appl No:' + NewConfirmedOrder_P."No." + ', Project:' +
-                                GetDescription.GetDimensionName(NewConfirmedOrder_P."Shortcut Dimension 1 Code", 1) + ', Amount: ' + FORMAT(NewConfirmedOrder_P."Refund Initiate Amount") + ', Date: ' + FORMAT(TODAY) +
+                CustSMSText1 := 'Dear Customer, Your PLOT REFUND Request Received at CRM Desk. Name: ' + Customer.Name + ',  Appl No:' + NewConfirmedOrder_P."No." + ', Project : ' +
+                                GetDescription.GetDimensionName(NewConfirmedOrder_P."Shortcut Dimension 1 Code", 1) + ', Amount: ' + FORMAT(NewConfirmedOrder_P."Refund Initiate Amount") + ',  Date: ' + FORMAT(TODAY) +
                                 ' *Thank you & Look Forward for your Next Plot Purchase with Building Blocks Group.';
+                //Message('%1', CustSMSText1);  //06032026
                 //210224 Added new code
                 CLEAR(CheckMobileNoforSMS);
                 ExitMessage := CheckMobileNoforSMS.CheckMobileNo(CustMobileNo, FALSE);

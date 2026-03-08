@@ -194,7 +194,7 @@ page 60723 "Get Land Lead"
         v_LandPPRDocumentList: Record "Land R-2 PPR  Document List";
         OldDocument: Record "Land Document Attachment";
         DocumentSetup: Record "Document Setup";
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        NoSeriesManagement: Codeunit "No. Series"; //NoSeriesManagement;
         PostCode: Record "Post Code";
         InventorySetup: Record "Inventory Setup";
         LandPPRDocumentList_1: Record "Land R-1 PPR Document Lis_1";

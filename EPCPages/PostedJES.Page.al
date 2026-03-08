@@ -194,7 +194,7 @@ page 97832 "Posted JES"
         GRNLine: Record "GRN Line";
         PurchHdr: Record "Purchase Header";
         PucrhPost: Codeunit "Purch.-Post";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         PurAndPay: Record "Purchases & Payables Setup";
         GRNHdr: Record "GRN Header";
         GRNHdr2: Record "GRN Header";

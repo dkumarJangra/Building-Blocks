@@ -546,7 +546,7 @@ page 50094 "Unit Card Transfered"
         UnitSetup: Record "Unit Setup";
         LineNo2: Integer;
         DocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         Job: Record Job;
         GenJnlLine2: Record "Gen. Journal Line";
         ConfOrder: Record "Confirmed Order";

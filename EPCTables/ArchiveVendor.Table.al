@@ -2135,7 +2135,7 @@ table 97862 "Archive Vendor"
         //ItemCrossReference: Record 5717;
         RMSetup: Record "Marketing Setup";
         ServiceItem: Record "Service Item";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         MoveEntries: Codeunit MoveEntries;
         UpdateContFromVend: Codeunit "VendCont-Update";
         DimMgt: Codeunit DimensionManagement;

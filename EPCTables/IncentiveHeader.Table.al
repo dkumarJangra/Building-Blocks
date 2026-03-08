@@ -140,7 +140,8 @@ table 97848 "Incentive Header"
         IF "Incentive Code" = '' THEN BEGIN
             UnitSetup.GET;
             UnitSetup.TESTFIELD("Incentive Setup No. Series");
-            NoSeriesMgt.InitSeries(UnitSetup."Incentive Setup No. Series", xRec."No. Series", 0D, "Incentive Code", "No. Series");
+            // NoSeriesMgt.InitSeries(UnitSetup."Incentive Setup No. Series", xRec."No. Series", 0D, "Incentive Code", "No. Series"); //Old code commented 07032026 
+            "Incentive Code" := NoSeriesMgt.GetNextNo(UnitSetup."Incentive Setup No. Series", WorkDate, true);  //New code added 07032026 
         END;
 
         //CheckDuplicate(Rec);
@@ -150,7 +151,7 @@ table 97848 "Incentive Header"
         IncentiveHdr: Record "Incentive Header";
         IncentiveLine: Record "Incentive Line";
         PurchasesPayablesSetup: Record "Purchases & Payables Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         TEXT50000: Label 'Incentive with %1 status already exist. ';
         TEXT50001: Label 'Details of Released Incentive cannot be modified.';
         TEXT50002: Label 'You cannot delete from in-active or release Incentive.  ';
@@ -167,8 +168,11 @@ table 97848 "Incentive Header"
         IncentiveHdr := Rec;
         PurchasesPayablesSetup.GET;
         PurchasesPayablesSetup.TESTFIELD("Incentive No.");
-        IF NoSeriesMgt.SelectSeries(PurchasesPayablesSetup."Incentive No.", OldIncentiveHdr."No. Series", IncentiveHdr."No. Series") THEN BEGIN
-            NoSeriesMgt.SetSeries(IncentiveHdr."Incentive Code");
+        //IF NoSeriesMgt.SelectSeries(PurchasesPayablesSetup."Incentive No.", OldIncentiveHdr."No. Series", IncentiveHdr."No. Series") THEN BEGIN  //Old code commented 07032026
+        //  NoSeriesMgt.SetSeries(IncentiveHdr."Incentive Code");  //Old code commented 07032026
+        if NoSeriesMgt.LookupRelatedNoSeries(PurchasesPayablesSetup."Incentive No.", Rec."No. Series") then BEGIN  //New code Added 07032026
+            Rec.Validate("No. Series");  //New code Added 07032026
+            NoSeriesMgt.TestManual("No. Series");  //New code Added 07032026
             Rec := IncentiveHdr;
             EXIT(TRUE);
         END;

@@ -26,10 +26,14 @@ page 97859 "Posted MIN Header"
 
                         PurAndPay.GET;
                         PurAndPay.TESTFIELD("Material Issue Note");
-                        IF NoSeriesMgt.SelectSeries(PurAndPay."Material Issue Note", Rec."MIN No. Series", Rec."MIN No. Series") THEN BEGIN
-                            PurAndPay.GET;
-                            PurAndPay.TESTFIELD("Material Issue Note");
-                            NoSeriesMgt.SetSeries(Rec."Document No.");
+                        // IF NoSeriesMgt.SelectSeries(PurAndPay."Material Issue Note", Rec."MIN No. Series", Rec."MIN No. Series") THEN BEGIN  //Old code commented 07032026
+                        PurAndPay.GET;
+                        PurAndPay.TESTFIELD("Material Issue Note");
+                        //   NoSeriesMgt.SetSeries(Rec."Document No.");  //Old code commented 07032026
+
+                        if NoSeriesMgt.LookupRelatedNoSeries(PurAndPay."Material Issue Note", Rec."MIN No. Series") then BEGIN  //New code Added 07032026
+                            Rec.Validate("MIN No. Series");  //New code Added 07032026
+                            NoSeriesMgt.TestManual(Rec."MIN No. Series");  //New code Added 07032026
                             CurrPage.UPDATE;
                         END;
                     end;
@@ -209,7 +213,7 @@ page 97859 "Posted MIN Header"
         ItemJnl: Record "Item Journal Line";
         ItemJournalTemplate: Record "Item Journal Template";
         numSeries: Code[10];
-        NoSeries: Codeunit NoSeriesManagement;
+        NoSeries: Codeunit "No. Series"; //NoSeriesManagement;
         PictureExists: Boolean;
         DocNumber: Code[10];
         ItemJournal: Record "Item Journal Line";
@@ -220,7 +224,7 @@ page 97859 "Posted MIN Header"
         txtConfirm: Label 'Are You sure about the details to be updated in Ledgers ?';
         Text001: Label 'Do you want to replace the existing picture of %1 %2?';
         Text002: Label 'Do you want to delete the picture of %1 %2?';
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         PurAndPay: Record "Purchases & Payables Setup";
         GenPostSetup: Record "General Posting Setup";
         GPassLine: Record "Gate Pass Line";

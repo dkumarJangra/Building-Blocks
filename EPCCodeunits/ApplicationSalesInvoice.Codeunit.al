@@ -24,7 +24,7 @@ codeunit 97737 "Application Sales Invoice"
     procedure SalesHeaderInsert(AppNo: Code[20]; CallFromBatch: Boolean; RegStDate_1: Date; RegEndDate_1: Date; InvPostDate_1: Date)
     var
         SaleSetup: Record "Sales & Receivables Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         SOHeader: Record "Sales Header";
         SaleNo: Code[20];
         SInvHead: Record "Sales Invoice Header";

@@ -461,7 +461,7 @@ page 50293 "Associate Target Request"
         VendorList: Page "Vendor List";
         MonthNo: Integer;
         BBGSetups: Record "BBG Setups";
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        NoSeriesManagement: Codeunit "No. Series"; //NoSeriesManagement;
         Year1: Integer;
         TeamMaster: Record "Team Master";
         TargetSubmittedfromAssociat: Record "Target Submitted from Associat";

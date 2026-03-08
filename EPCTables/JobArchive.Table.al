@@ -1214,7 +1214,7 @@ table 97765 "EPC Job Archive"
         Cust: Record Customer;
         Cont: Record Contact;
         ContBusinessRelation: Record "Contact Business Relation";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         DimMgt: Codeunit DimensionManagement;
         MoveEntries: Codeunit MoveEntries;
         RecUserSetup: Record "User Setup";

@@ -123,7 +123,7 @@ report 50093 "Travel Generator New"
         ProjCode: Code[20];
         ToDate: Date;
         UnitSetup: Record "Unit Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         Recordfind: Boolean;
         APPPaymentEntry: Record "Application Payment Entry";
         PCode: Text[200];

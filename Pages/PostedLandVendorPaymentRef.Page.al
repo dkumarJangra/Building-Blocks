@@ -111,7 +111,7 @@ page 50252 "Posted Land Vendor Payment/Ref"
         UnitSetup: Record "Unit Setup";
         LineNo: Integer;
         DocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         GenJnlLineDevCharge: Record "Gen. Journal Line";
         LandAgreementHeader: Record "Land Agreement Header";
         GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line";

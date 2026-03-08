@@ -759,7 +759,7 @@ table 60743 "Archive Customers Lead_2"
         ContBusRel: Record "Contact Business Relation";
         PostCode: Record "Post Code";
         DuplMgt: Codeunit DuplicateManagement;
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         UpdateCustVendBank: Codeunit "CustVendBank-Update";
         CampaignMgt: Codeunit "Campaign Target Group Mgt";
         ContChanged: Boolean;

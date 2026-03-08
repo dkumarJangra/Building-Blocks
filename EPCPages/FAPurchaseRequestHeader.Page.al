@@ -464,7 +464,7 @@ page 97759 "FA Purchase Request Header"
         Text007: Label 'Do you want to Send the %1 No.-%2 For Approval';
         Text50001: Label 'Enquiry cannot Be generated before approval';
         Enquiry: Page "Enquiry Vendor Lists";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         WorkFlowApprovalMgmt: Codeunit "Document Managment";
         OpenApprovalEntriesExistForCurrUser: Boolean;
         OpenApprovalEntriesExist: Boolean;

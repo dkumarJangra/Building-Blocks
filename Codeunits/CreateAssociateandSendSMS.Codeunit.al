@@ -81,7 +81,7 @@ codeunit 50009 "Create Associate and Send SMS"
         BondSetup: Record "Unit Setup";
         //NODHeader: Record 13786;
         //NODLine: Record 13785;
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        NoSeriesManagement: Codeunit "No. Series"; //NoSeriesManagement;
         CompanywiseGLAccount: Record "Company wise G/L Account";
         Vend: Record Vendor;
         RecVendorBankAccount: Record "Vendor Bank Account";

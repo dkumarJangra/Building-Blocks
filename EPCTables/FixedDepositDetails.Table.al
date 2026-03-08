@@ -216,7 +216,7 @@ table 97786 "Fixed Deposit Details"
 
     var
         GLSetup: Record "General Ledger Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         BankAcccount: Record "Bank Account";
         StrError: Text[250];
         txtStart: Label 'Fixed Deposit Start Date';

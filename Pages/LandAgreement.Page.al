@@ -212,7 +212,7 @@ page 50156 "Land Agreement"
                         Item: Record Item;
                         InventorySetup: Record "Inventory Setup";
                         LandAgreementLine: Record "Land Agreement Line";
-                        NoSeriesMgt: Codeunit NoSeriesManagement;
+                        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
                         DimMgt: Codeunit DimensionManagement;
                     begin
                         //TESTFIELD("Approval Status","Approval Status"::Approved);

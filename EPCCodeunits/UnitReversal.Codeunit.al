@@ -103,7 +103,7 @@ codeunit 97729 "Unit Reversal"
         LineNo: Integer;
         MISPaymentScheduleBuffer: Record "Project Budget Line Buffer";
         MISPaymentSchedulePosted: Record "FD Payment Schedule Posted";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         UnitMaster: Record "Unit Master";
         AppPayEntry: Record "Application Payment Entry";
         UnitPayEntry: Record "Unit Payment Entry";
@@ -297,7 +297,7 @@ codeunit 97729 "Unit Reversal"
         Application: Record Application;
         BondPaymentEntry: Record "Unit Payment Entry";
         PostedDocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         NarrationText1: Text[250];
         BondPostingGroup1: Record "Customer Posting Group";
         ApplicationPaymentEntry_1: Record "Application Payment Entry";
@@ -1800,7 +1800,7 @@ codeunit 97729 "Unit Reversal"
         Application: Record Application;
         BondPaymentEntry: Record "Unit Payment Entry";
         PostedDocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         NarrationText1: Text[250];
         BondPostingGroup1: Record "Customer Posting Group";
         CompanywiseGLAccount: Record "Company wise G/L Account";
@@ -2145,7 +2145,7 @@ codeunit 97729 "Unit Reversal"
         Application: Record Application;
         BondPaymentEntry: Record "Unit Payment Entry";
         PostedDocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         NarrationText1: Text[250];
         BondPostingGroup1: Record "Customer Posting Group";
         CompanywiseGLAccount: Record "Company wise G/L Account";
@@ -2237,7 +2237,7 @@ codeunit 97729 "Unit Reversal"
         NarrationText1: Text[250];
         Bond: Record "Confirmed Order";
         DocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         TPmtEntry_1: Record "Travel Payment Entry";
         TPmtEntry_2: Record "Travel Payment Entry";
         PostCreditNote_1: Boolean;
@@ -2567,7 +2567,7 @@ codeunit 97729 "Unit Reversal"
         NarrationText1: Text[250];
         Bond: Record "Confirmed Order";
         DocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         CommissionEntry_1: Record "Commission Entry";
         CommissionEntry_2: Record "Commission Entry";
         PostCreditNote_1: Boolean;
@@ -2906,7 +2906,7 @@ codeunit 97729 "Unit Reversal"
         NarrationText1: Text[250];
         Bond: Record "Confirmed Order";
         DocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         TPmtEntry_1: Record "Travel Payment Entry";
         TPmtEntry_2: Record "Travel Payment Entry";
         PostCreditNote_1: Boolean;
@@ -3067,7 +3067,7 @@ codeunit 97729 "Unit Reversal"
         NarrationText1: Text[250];
         Bond_1: Record "Confirmed Order";
         DocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         CommissionEntry_1: Record "Commission Entry";
         CommissionEntry_2: Record "Commission Entry";
         PostCreditNote_1: Boolean;
@@ -4359,7 +4359,7 @@ codeunit 97729 "Unit Reversal"
         NarrationText1: Text[250];
         Bond: Record "Confirmed Order";
         DocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         CommissionEntry_1: Record "Commission Entry";
         CommissionEntry_2: Record "Commission Entry";
         PostCreditNote_1: Boolean;
@@ -4555,7 +4555,7 @@ codeunit 97729 "Unit Reversal"
         NarrationText1: Text[250];
         Bond: Record "Confirmed Order";
         DocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         CommissionEntry_1: Record "Commission Entry";
         CommissionEntry_2: Record "Commission Entry";
         PostCreditNote_1: Boolean;
@@ -4650,7 +4650,7 @@ codeunit 97729 "Unit Reversal"
         NarrationText1: Text[250];
         Bond: Record "Confirmed Order";
         DocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         CommissionEntry_1: Record "Commission Entry";
         CommissionEntry_2: Record "Commission Entry";
         PostCreditNote_1: Boolean;
@@ -4740,7 +4740,7 @@ codeunit 97729 "Unit Reversal"
         NarrationText1: Text[250];
         Bond: Record "Confirmed Order";
         DocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         CommissionEntry_1: Record "Commission Entry";
         CommissionEntry_2: Record "Commission Entry";
         PostCreditNote_1: Boolean;
@@ -4927,7 +4927,7 @@ codeunit 97729 "Unit Reversal"
         NarrationText1: Text[250];
         Bond: Record "Confirmed Order";
         DocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         CommissionEntry_1: Record "Commission Entry";
         CommissionEntry_2: Record "Commission Entry";
         PostCreditNote_1: Boolean;
@@ -5020,7 +5020,7 @@ codeunit 97729 "Unit Reversal"
         NarrationText1: Text[250];
         Bond: Record "Confirmed Order";
         DocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         CommissionEntry_1: Record "Commission Entry";
         CommissionEntry_2: Record "Commission Entry";
         PostCreditNote_1: Boolean;
@@ -5180,7 +5180,7 @@ codeunit 97729 "Unit Reversal"
         NarrationText1: Text[250];
         Bond: Record "Confirmed Order";
         DocNo: Code[20];
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         CommissionEntry_1: Record "Commission Entry";
         CommissionEntry_2: Record "Commission Entry";
         PostCreditNote_1: Boolean;

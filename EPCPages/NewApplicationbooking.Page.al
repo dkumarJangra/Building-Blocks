@@ -1174,7 +1174,7 @@ page 50079 "New Application booking"
         Text0011: Label 'is not within your range of allowed posting dates';
         unitpost: Codeunit "Unit Post";
         ComInfo: Record "Company Information";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         CreateBond: Codeunit "Unit and Comm. Creation Job";
         NewUnitMaster: Record "Unit Master";
         NewAppEntry: Record "NewApplication Payment Entry";

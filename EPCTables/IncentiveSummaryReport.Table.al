@@ -184,13 +184,14 @@ table 97841 "Incentive Summary-Report"
         IF "Incentive Application No." = '' THEN BEGIN
             UnitSetup.GET;
             UnitSetup.TESTFIELD("Incentive Summary No.");
-            NoSeriesMgt.InitSeries(UnitSetup."Incentive Summary No.", xRec."Incentive No. Series", WORKDATE, "Incentive Application No.",
-             "Incentive No. Series");
+            //NoSeriesMgt.InitSeries(UnitSetup."Incentive Summary No.", xRec."Incentive No. Series", WORKDATE, "Incentive Application No.",
+            //"Incentive No. Series");  //Old code commented 07032026
+            "Incentive Application No." := NoSeriesMgt.GetNextNo(UnitSetup."Incentive Summary No.", WorkDate, true);  //New code added 07032026 
         END;
     end;
 
     var
         UnitSetup: Record "Unit Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
 }
 

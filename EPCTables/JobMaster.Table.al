@@ -150,7 +150,8 @@ table 97724 "Job Master"
         IF Code = '' THEN BEGIN
             PurAndPay.GET;
             PurAndPay.TESTFIELD("Job No");
-            NoSeriesMgt.InitSeries(PurAndPay."Job No", xRec."No. Series", WORKDATE, Code, "No. Series");
+            // NoSeriesMgt.InitSeries(PurAndPay."Job No", xRec."No. Series", WORKDATE, Code, "No. Series"); //Old code commented 07032026
+            Code := NoSeriesMgt.GetNextNo(PurAndPay."Job No", WorkDate, true);  //New code added 07032026  
         END;
         //ALLEAB001
     end;
@@ -160,7 +161,7 @@ table 97724 "Job Master"
         RecSubCategory: Record "Sub Category";
         RecSSCategory: Record "Sub Sub Category";
         PurAndPay: Record "Purchases & Payables Setup";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         DimValue: Record "Dimension Value";
 }
 

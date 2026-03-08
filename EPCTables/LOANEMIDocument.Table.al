@@ -101,7 +101,7 @@ table 60738 "LOAN EMI Document"
     end;
 
     var
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        NoSeriesManagement: Codeunit "No. Series"; //NoSeriesManagement;
         BBGSetups: Record "BBG Setups";
 }
 

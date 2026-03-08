@@ -213,7 +213,7 @@ page 50202 "Associate Payment Form Incenti"
                     var
                         BondSetup: Record "Unit Setup";
                         PostedDocNo: Code[20];
-                        NoSeriesMgt: Codeunit NoSeriesManagement;
+                        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
                         VLEntry: Record "Vendor Ledger Entry";
                         VLEntry_2: Record "Vendor Ledger Entry";
                         CompanyWiseGL_1: Record "Company wise G/L Account";

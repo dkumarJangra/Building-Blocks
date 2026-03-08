@@ -629,7 +629,7 @@ page 50101 "Associate Login Details"
         RegionwiseVendor: Record "Region wise Vendor";
         CompanywiseGLAccount: Record "Company wise G/L Account";
         AssociateLoginDetails: Record "Associate Login Details";
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        NoSeriesManagement: Codeunit "No. Series"; //NoSeriesManagement;
         BondSetup: Record "Unit Setup";
         //NODHeader: Record 13786;//Need to check the code in UAT
 

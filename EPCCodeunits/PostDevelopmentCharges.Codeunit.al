@@ -53,7 +53,7 @@ codeunit 97765 "Post Development Charges"
         PostDate: Date;
         ComHoldDate: Date;
         UnitMaster: Record "Unit Master";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         CompanyGLAccount: Record "Company wise G/L Account";
         GenJnlLineDevCharge: Record "Gen. Journal Line";
         vAppPaymentEntry: Record "Application Pmt Devlop. Entry";

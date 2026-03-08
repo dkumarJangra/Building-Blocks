@@ -807,49 +807,59 @@ table 97733 "Gate Pass Header"
         IF (("Document Type" = "Document Type"::MIN) AND ("Document No." = '')) THEN BEGIN
             PurAndPay.GET;
             PurAndPay.TESTFIELD("Material Issue Note");
-            NoSeriesMgt.InitSeries(PurAndPay."Material Issue Note", xRec."MIN No. Series", WORKDATE, "Document No.", "MIN No. Series");
+            //NoSeriesMgt.InitSeries(PurAndPay."Material Issue Note", xRec."MIN No. Series", WORKDATE, "Document No.", "MIN No. Series");  //Old code commented 07032026 
+            "Document No." := NoSeriesMgt.GetNextNo(PurAndPay."Material Issue Note", WorkDate, true);  //New code added 07032026 
         END;
 
         IF (("Document Type" = "Document Type"::"Material Return") AND ("Document No." = '')) THEN BEGIN
             PurAndPay.GET;
             PurAndPay.TESTFIELD("Material Return Note");
-            NoSeriesMgt.InitSeries(PurAndPay."Material Return Note", xRec."MRN No. Series", WORKDATE, "Document No.", "MRN No. Series");
+            //NoSeriesMgt.InitSeries(PurAndPay."Material Return Note", xRec."MRN No. Series", WORKDATE, "Document No.", "MRN No. Series");  //Old code commented 07032026 
+            "Document No." := NoSeriesMgt.GetNextNo(PurAndPay."Material Return Note", WorkDate, true);  //New code added 07032026 
+
         END;
 
         IF (("Document Type" = "Document Type"::"Outward Gatepass") AND ("Document No." = '')) THEN BEGIN
             PurAndPay.GET;
             PurAndPay.TESTFIELD("Outward Gate Pass");
-            NoSeriesMgt.InitSeries(PurAndPay."Outward Gate Pass", xRec."OWGP No. Series", WORKDATE, "Document No.", "OWGP No. Series");
+            //NoSeriesMgt.InitSeries(PurAndPay."Outward Gate Pass", xRec."OWGP No. Series", WORKDATE, "Document No.", "OWGP No. Series"); //Old code commented 07032026 
+            "Document No." := NoSeriesMgt.GetNextNo(PurAndPay."Outward Gate Pass", WorkDate, true);  //New code added 07032026 
         END;
 
         IF (("Document Type" = "Document Type"::"Inward Gatepass") AND ("Document No." = '')) THEN BEGIN
             PurAndPay.GET;
             PurAndPay.TESTFIELD("Inward Gate Pass");
-            NoSeriesMgt.InitSeries(PurAndPay."Inward Gate Pass", xRec."IWGP No. Series", WORKDATE, "Document No.", "IWGP No. Series");
+            //NoSeriesMgt.InitSeries(PurAndPay."Inward Gate Pass", xRec."IWGP No. Series", WORKDATE, "Document No.", "IWGP No. Series");  //Old code commented 07032026
+            "Document No." := NoSeriesMgt.GetNextNo(PurAndPay."Inward Gate Pass", WorkDate, true);  //New code added 07032026 
         END;
 
 
         IF (("Document Type" = "Document Type"::"Consumption FOC") AND ("Document No." = '')) THEN BEGIN
             PurAndPay.GET;
             PurAndPay.TESTFIELD(PurAndPay."Consumption FOC Nos.");
-            NoSeriesMgt.InitSeries(PurAndPay."Consumption FOC Nos.",
-            xRec."Consumption FOC Nos.", WORKDATE, "Document No.", "Consumption FOC Nos.");
+            //NoSeriesMgt.InitSeries(PurAndPay."Consumption FOC Nos.",   //Old code 07032026 comment
+            //xRec."Consumption FOC Nos.", WORKDATE, "Document No.", "Consumption FOC Nos.");
+
+            "Document No." := NoSeriesMgt.GetNextNo(PurAndPay."Consumption FOC Nos.", WorkDate, true);  //New code added 07032026 
+
 
         END;
 
         IF (("Document Type" = "Document Type"::"Consumption Chargable") AND ("Document No." = '')) THEN BEGIN
             PurAndPay.GET;
             PurAndPay.TESTFIELD(PurAndPay."Consumption Chargable Nos.");
-            NoSeriesMgt.InitSeries(PurAndPay."Consumption Chargable Nos.", xRec."Consumption Chargeable Nos.",
-            WORKDATE, "Document No.", "Consumption Chargeable Nos.");
+            //NoSeriesMgt.InitSeries(PurAndPay."Consumption Chargable Nos.", xRec."Consumption Chargeable Nos.",
+            //WORKDATE, "Document No.", "Consumption Chargeable Nos."); //Old code commented 07032026 
+            "Document No." := NoSeriesMgt.GetNextNo(PurAndPay."Consumption Chargable Nos.", WorkDate, true);  //New code added 07032026 
         END;
 
         //RAHEE1.00 060512
         IF (("Document Type" = "Document Type"::"Finished Goods") AND ("Document No." = '')) THEN BEGIN
             PurAndPay.GET;
             PurAndPay.TESTFIELD(PurAndPay."FG Recipt Nos.");
-            NoSeriesMgt.InitSeries(PurAndPay."FG Recipt Nos.", xRec."Consumption Chargeable Nos.",
-            WORKDATE, "Document No.", "FG Recipt Nos.");
+            //NoSeriesMgt.InitSeries(PurAndPay."FG Recipt Nos.", xRec."Consumption Chargeable Nos.",
+            //WORKDATE, "Document No.", "FG Recipt Nos.");  //Old code commented 07032026 
+            "Document No." := NoSeriesMgt.GetNextNo(PurAndPay."FG Recipt Nos.", WorkDate, true);  //New code added 07032026 
         END;
         //RAHEE1.00 060512
         //NDALLE081205
@@ -885,7 +895,7 @@ table 97733 "Gate Pass Header"
         DimValue: Record "Dimension Value";
         Vendor: Record Vendor;
         PurchHeader: Record "Purchase Header";
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         PurAndPay: Record "Purchases & Payables Setup";
         CompInfo: Record "Company Information";
         Employee: Record Employee;
@@ -983,8 +993,10 @@ table 97733 "Gate Pass Header"
                         CLEAR(ServItem);
                         ServItem.INIT;
                         ServMgtSetup.TESTFIELD("Service Item Nos.");
-                        NoSeriesMgt.InitSeries(
-                          ServMgtSetup."Service Item Nos.", ServItem."No. Series", 0D, ServItem."No.", ServItem."No. Series");
+                        //NoSeriesMgt.InitSeries(
+                        //ServMgtSetup."Service Item Nos.", ServItem."No. Series", 0D, ServItem."No.", ServItem."No. Series");  //Old code commented 07032026 
+                        ServItem."No." := NoSeriesMgt.GetNextNo(ServMgtSetup."Service Item Nos.", WorkDate, true);  //New code added 07032026 
+
                         ServItem.INSERT;
                         //ServItem."Sales/Serv. Shpt. Document No." := SalesShipmentLine."Document No.";
                         //ServItem."Sales/Serv. Shpt. Line No." := SalesShipmentLine."Line No.";

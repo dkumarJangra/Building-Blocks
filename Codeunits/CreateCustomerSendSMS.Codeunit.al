@@ -14,7 +14,7 @@ codeunit 50057 "Create Customer / SendSMS"
     var
         CustomerLoginDetails: Record "Customer Login Details";
         VendNo: Code[20];
-        NoSeriesManagement: Codeunit NoSeriesManagement;
+        NoSeriesManagement: Codeunit "No. Series"; //NoSeriesManagement;
         CompanywiseGLAccount: Record "Company wise G/L Account";
         PostPayment: Codeunit PostPayment;
         SMS: Text;

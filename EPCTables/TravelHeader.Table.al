@@ -208,7 +208,7 @@ table 97834 "Travel Header"
 
     var
         Unitsetup: Record "Unit Setup";
-        NoseriesMgt: Codeunit NoSeriesManagement;
+        NoseriesMgt: Codeunit "No. Series"; //NoSeriesManagement;
         TravelPaymentDetails: Record "Travel Payment Details";
         TravelPaymentEntry: Record "Travel Payment Entry";
         Vend: Record Vendor;
