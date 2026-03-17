@@ -262,10 +262,9 @@ report 50075 "New Associate Bottom To Top_1"
                     CustSMSText := '';
                     CustMobileNo := SMSVendor."BBG Mob. No.";
                     CustSMSText :=
-                       'Dear Customer, Your CHEQUE Got Bounced & Request to process the Payment immediately. Name:' +
-                        VCustomerName + ', Appl No: ' + VAppNo + ',Project: ' + VProjectName + ', Amount: Rs.' +
-                        FORMAT(VAppAmount) + ', Date:' + FORMAT(VCheqDate) + ',' +
-                        'Thank you & Assuring you of Best Property Services with Building Blocks Group';
+                       'Dear Customer, Your CHEQUE Got Bounced & Request to process the Payment immediately. Name: ' +
+                        VCustomerName + ', Appl No: ' + VAppNo + ', Project: ' + VProjectName + ', Amount: Rs.' +
+                        FORMAT(VAppAmount) + ', Date:' + FORMAT(VCheqDate) + '.Thank you & Assuring you of Best Property Services with Building Blocks Group.';
 
 
                     CLEAR(PostPayment);
@@ -279,10 +278,9 @@ report 50075 "New Associate Bottom To Top_1"
             CustMobileNo := VCustMbNo;
             CustSMSText := '';
             CustSMSText :=
-                'Dear Customer, Your CHEQUE Got Bounced & Request to process the Payment immediately. Name: Mr/Ms ' +
-                 VCustomerName + ', Appl No: ' + VAppNo + ',Project: ' + VProjectName + ', Amount: Rs.' +
-                 FORMAT(VAppAmount) + ', Date:' + FORMAT(VCheqDate) + ',' +
-                 'Thank you & Assuring you of Best Property Services with Building Blocks Group';
+                'Dear Customer, Your CHEQUE Got Bounced & Request to process the Payment immediately. Name: ' +
+                 VCustomerName + ', Appl No: ' + VAppNo + ', Project: ' + VProjectName + ', Amount: Rs.' +
+                 FORMAT(VAppAmount) + ', Date:' + FORMAT(VCheqDate) + '.Thank you & Assuring you of Best Property Services with Building Blocks Group.';
             MESSAGE('%1', CustSMSText);
             CLEAR(PostPayment);
             PostPayment.SendSMS(CustMobileNo, CustSMSText);
@@ -306,8 +304,8 @@ report 50075 "New Associate Bottom To Top_1"
                     CustSMSText := '';
                     CustMobileNo := SMSVendor."BBG Mob. No.";
                     CustSMSText :=
-                    'Dear Mr/Ms:' + RecVendor.Name + ', Your associate ID is ' + FORMAT(RecVendor."No.") + '.Congrats on getting promoted as ' + VTText + ' Today' +
-                    '. Assuring of our best support at all times.Good luck and God bless-Your loving BBG family ';
+                    'Dear Mr/Ms:' + RecVendor.Name + ', Your Associate ID is ' + FORMAT(RecVendor."No.") + '.Congrats on getting promoted as ' + VTText + ' Dt:' + FORMAT(VPostDate) +
+                    '.Assuring of our best support at all times.Good luck and Gob bless Your loving BBGINDIA.';
 
                     //SMS change on 230224 above new and below old.
                     //'Dear Mr/Ms:' + RecVendor.Name+ ', Your associate ID is '+ FORMAT(RecVendor."No.")+'. Congratulations you are promoted as'+VTText+' Dt:'+FORMAT(VPostDate)+
@@ -372,8 +370,8 @@ report 50075 "New Associate Bottom To Top_1"
                     CustSMSText := '';
                     CustMobileNo := SMSVendor."BBG Mob. No.";
                     CustSMSText :=
-                          'Dear Mr/Ms:' + RecVendor.Name + '' + '. Your Parent is changed to' + ' ' + VTText + ' ' + 'Dt: ' + FORMAT(VPostDate) + '. Assuring of our ' +
-                          'best support at all times.Good Luck and God Bless-Your loving BBG family.';
+                          'Dear ' + RecVendor.Name + '. Your Parent is changed as  ' + VTText + ' Dt: ' + FORMAT(VPostDate) +
+                          'Thank and Assure you of our Best Support in Transforming Your Dreams into Reality. Good Luck and God Bless.BBGIND';
 
                     //Added Above code 140224, 190224
 

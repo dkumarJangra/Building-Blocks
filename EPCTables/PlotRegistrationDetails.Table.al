@@ -1473,7 +1473,7 @@ table 60675 "Plot Registration Details"
                                 IF ResponsibilityCenter.GET("Shortcut Dimension 1 Code") THEN;
                                 SmsText := '';
                                 SmsText := 'Dear Customer, We acknowledge the Receipt of Thumb impression form to Plot Registration Dept. for the Appl No: ' + FORMAT("No.") +
-                                ', Name: ' + Customer.Name + ', Project:' + FORMAT(ResponsibilityCenter.Name) + ', Date: ' + FORMAT(TODAY) + '.Thank you.BBGIND';
+                                ', Name: ' + Customer.Name + ', Project: ' + FORMAT(ResponsibilityCenter.Name) + ', Date: ' + FORMAT(TODAY) + '.Thank you.BBGIND';
                                 PostPayment.SendSMS(Customer."BBG Mobile No.", SmsText);
                                 "Send SMS Stage-1 Date Time" := CURRENTDATETIME;
                                 //ALLEDK15112022 Start
@@ -1526,7 +1526,7 @@ table 60675 "Plot Registration Details"
                                 ResponsibilityCenter.RESET;
                                 IF ResponsibilityCenter.GET("Shortcut Dimension 1 Code") THEN;
                                 SmsText := '';
-                                SmsText := 'Dear Customer, Your Application challan has been generated for the Appl No: ' + FORMAT("No.") + ', Name: ' + Customer.Name + ', Project:' +
+                                SmsText := 'Dear Customer, Your Application challan has been generated for the Appl No: ' + FORMAT("No.") + ', Name: ' + Customer.Name + ', Project: ' +
                                  FORMAT(ResponsibilityCenter.Name) + ', Date: ' + FORMAT(TODAY) + '.Thank you.BBGIND';
                                 PostPayment.SendSMS(Customer."BBG Mobile No.", SmsText);
                                 "Send SMS Challan Date Time" := CURRENTDATETIME;
@@ -1580,7 +1580,7 @@ table 60675 "Plot Registration Details"
                                 IF ResponsibilityCenter.GET("Shortcut Dimension 1 Code") THEN;
                                 SmsText := '';
                                 SmsText := 'Dear Customer, Your Application is out for Registration to SRO office, for the Appl No: ' + FORMAT("No.") +
-                                ', Name: ' + Customer.Name + ', Project:' + FORMAT(ResponsibilityCenter.Name) + ', Date: ' + FORMAT(TODAY) + '.Thank you.BBGIND';
+                                ', Name: ' + Customer.Name + ', Project: ' + FORMAT(ResponsibilityCenter.Name) + ', Date: ' + FORMAT(TODAY) + '.Thank you.BBGIND';
                                 PostPayment.SendSMS(Customer."BBG Mobile No.", SmsText);
                                 "Send SMS Doc SRO Reg. DateTime" := CURRENTDATETIME;
                                 //ALLEDK15112022 Start

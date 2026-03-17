@@ -152,6 +152,7 @@ page 50183 "Pre-Deactivate Vendor List"
                                             AssociateLoginDetails."Mobile_ No" := 'R' + AssociateLoginDetails."Mobile_ No";
                                             AssociateLoginDetails.MODIFY;
                                         END;
+
                                     END ELSE BEGIN
                                         RecVendor_1.RESET;
                                         IF RecVendor_1.GET(PreDeactivateVendors."No.") THEN;
@@ -247,6 +248,24 @@ page 50183 "Pre-Deactivate Vendor List"
                                     REPEAT
                                         PostPayment.SendSMS_DeActivate(PreDeactivateVendors."Mob. No.", BBGSetups.SMS);
                                         COMMIT;
+                                        //New code added 11032026 Start
+                                        AssociateLoginDetails.RESET;
+                                        AssociateLoginDetails.SETRANGE(Associate_ID, PreDeactivateVendors."No.");
+                                        IF AssociateLoginDetails.FINDFIRST THEN BEGIN
+                                            AssociateLoginDetails.Status := AssociateLoginDetails.Status::Reject;
+                                            AssociateLoginDetails.MODIFY;
+                                        END;
+
+                                        Leadlist.RESET;
+                                        Leadlist.SetRange(Leadlist."Lead Associate / Customer Id", PreDeactivateVendors."No.");
+                                        IF Leadlist.FindSet() then
+                                            repeat
+                                                Leadlist.Status := Leadlist.Status::Rejected;
+                                                Leadlist."Status change from" := 'Due to Associate Deactive as on-' + format(Today);
+                                                Leadlist.Modify;
+                                            until Leadlist.NExt = 0;
+
+                                    //New code added 11032026 END
                                     UNTIL PreDeactivateVendors.NEXT = 0;
 
                                 PreDeactivateVendors.RESET;
@@ -310,6 +329,7 @@ page 50183 "Pre-Deactivate Vendor List"
         Teamcodeupdatedownline: codeunit "Team codeupdate at downline";
         Updatevendor: Record vendor;
         Newregionwisevend: Record "Region wise Vendor";
+        Leadlist: Record "Customers Lead_2";
 
     local procedure UpdateRankWiseVendorData(VendorCode: Code[20])
     var

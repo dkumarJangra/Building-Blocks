@@ -220,8 +220,8 @@ codeunit 97738 "SMS Features"
                             CustSMSText := '';
                             CustSMSText :=
 
-                            'Dear ' + '' + Cust.Name + ' Appl No.: ' + ConfirmedOrder."No." + ', Recvd Rs.' + FORMAT(ABS(AppPayEntry.Amount)) +  //Changes in 21012026
-                              ', Project:' + GetDescription.GetDimensionName(ConfirmedOrder."Shortcut Dimension 1 Code", 1) +
+                            'Dear ' + '' + Cust.Name + ' Appl No.: ' + ConfirmedOrder."No." + ', Recvd Rs. ' + FORMAT(ABS(AppPayEntry.Amount)) +  //Changes in 21012026
+                              ', Project: ' + GetDescription.GetDimensionName(ConfirmedOrder."Shortcut Dimension 1 Code", 1) +
                               ', Date: ' + FORMAT(AppPayEntry."Posting date") + ' BBGIND.';
 
 
@@ -545,10 +545,15 @@ codeunit 97738 "SMS Features"
                             CustSMSText := '';
                             CustSMSText :=
 
-                  'Dear Customer, Your CHEQUE Got Bounced & Request to process the Payment immediately.' +   //210824 Added new SMS
-                   'Name: Mr/Ms ' + Customer.Name + ', Appl No: ' + BALEntry."Application No." + ', Project: ' + RespCenter.Name
-                   + ' Amount: Rs.' + FORMAT(ABS(BALEntry.Amount)) + ', Date: ' + FORMAT(BALEntry."Posting Date") + ',' +
-                   ' *Thank you & Assuring you of Best Property Services with Building Blocks Group.';
+                    //   'Dear Customer, Your CHEQUE Got Bounced & Request to process the Payment immediately.' +   //210824 Added new SMS
+                    //    ' Name: ' + Customer.Name + ', Appl No: ' + BALEntry."Application No." + ', Project: ' + RespCenter.Name
+                    //    + ', Amount: Rs.' + FORMAT(ABS(BALEntry.Amount)) + ', Date: ' + FORMAT(BALEntry."Posting Date") +
+                    //    '.Thank you & Assuring you of Best Property Services with Building Blocks Group.';
+
+                    'Dear Customer, Your CHEQUE Got Bounced & Request to process the Payment immediately. Name: ' +
+                    Customer.Name + ', Appl No: ' + BALEntry."Application No." + ', Project: ' + RespCenter.Name + ', Amount: Rs.' +
+                    FORMAT(BALEntry.Amount) + ', Date: ' + FORMAT(BALEntry."Posting Date") +
+                    '.Thank you & Assuring you of Best Property Services with Building Blocks Group.';
 
                             //210824 comment Old SMS
 
@@ -1019,13 +1024,22 @@ codeunit 97738 "SMS Features"
                 CustMobileNo := SMSVendor."BBG Mob. No.";
                 CustSMSText :=
                     'Dear Customer, Your CHEQUE Got Bounced & Request to process the Payment immediately. Name: ' +
-                    Customer.Name + ', Appl No: ' + NewApplicationPaymtEntry_2."Document No." + ',Project: ' + ResponsibilityCenter.Name + ', Amount: Rs.' +
-                    FORMAT(NewApplicationPaymtEntry_2.Amount) + ', Date:' + FORMAT(NewApplicationPaymtEntry_2."Cheque Date") + ',' +
-                    'Thank you & Assuring you of Best Property Services with Building Blocks Group';
+                    Customer.Name + ', Appl No: ' + NewApplicationPaymtEntry_2."Document No." + ', Project: ' + ResponsibilityCenter.Name + ', Amount: Rs.' +
+                    FORMAT(NewApplicationPaymtEntry_2.Amount) + ', Date: ' + FORMAT(NewApplicationPaymtEntry_2."Cheque Date") +
+                    '.Thank you & Assuring you of Best Property Services with Building Blocks Group.';
 
                 CLEAR(PostPayment);
                 PostPayment.SendSMS(CustMobileNo, CustSMSText);
                 SLEEP(50);
+                //09032026 Added new code start
+                CLEAR(SMSLogDetails);
+                SmsMessage := '';
+                SmsMessage1 := '';
+                SmsMessage := COPYSTR(CustSMSText, 1, 250);
+                SmsMessage1 := COPYSTR(CustSMSText, 251, 250);
+                SMSLogDetails.SMSValue(SmsMessage, SmsMessage1, 'Vendor', SMSVendor."No.", SMSVendor.Name, 'Customer Cheque Bounce', '', '', '');
+                //09032026 Added new code end
+
             END;
         END;
 
@@ -1037,15 +1051,22 @@ codeunit 97738 "SMS Features"
                 CustSMSText := '';
                 CustMobileNo := SMSVendor."BBG Mob. No.";
                 CustSMSText :=
-                                       'Dear Customer, Your CHEQUE Got Bounced & Request to process the Payment immediately. Name: ' +
-                    Customer.Name + ', Appl No: ' + NewApplicationPaymtEntry_2."Document No." + ',Project: ' + ResponsibilityCenter.Name + ', Amount: Rs.' +
-                    FORMAT(NewApplicationPaymtEntry_2.Amount) + ', Date:' + FORMAT(NewApplicationPaymtEntry_2."Cheque Date") + ',' +
-                    'Thank you & Assuring you of Best Property Services with Building Blocks Group';
+                                      'Dear Customer, Your CHEQUE Got Bounced & Request to process the Payment immediately. Name: ' +
+                    Customer.Name + ', Appl No: ' + NewApplicationPaymtEntry_2."Document No." + ', Project: ' + ResponsibilityCenter.Name + ', Amount: Rs.' +
+                    FORMAT(NewApplicationPaymtEntry_2.Amount) + ', Date: ' + FORMAT(NewApplicationPaymtEntry_2."Cheque Date") +
+                    '.Thank you & Assuring you of Best Property Services with Building Blocks Group.';
 
 
                 CLEAR(PostPayment);
                 PostPayment.SendSMS(CustMobileNo, CustSMSText);
                 SLEEP(50);
+                CLEAR(SMSLogDetails);
+                SmsMessage := '';
+                SmsMessage1 := '';
+                SmsMessage := COPYSTR(CustSMSText, 1, 250);
+                SmsMessage1 := COPYSTR(CustSMSText, 251, 250);
+                SMSLogDetails.SMSValue(SmsMessage, SmsMessage1, 'Vendor', SMSVendor."No.", SMSVendor.Name, 'Customer Cheque Bounce', '', '', '');
+
             END;
         END;
 
@@ -1054,15 +1075,23 @@ codeunit 97738 "SMS Features"
             CustMobileNo := Customer."BBG Mobile No.";
             CustSMSText := '';
             CustSMSText :=
-                 'Dear Customer, Your CHEQUE Got Bounced & Request to process the Payment immediately. Name: ' +                                                            //250625 code modify
-                    Customer.Name + ', Appl No: ' + NewApplicationPaymtEntry_2."Document No." + ',Project: ' + ResponsibilityCenter.Name + ', Amount: Rs.' +
-                    FORMAT(NewApplicationPaymtEntry_2.Amount) + ', Date:' + FORMAT(NewApplicationPaymtEntry_2."Cheque Date") + ',' +
-                    'Thank you & Assuring you of Best Property Services with Building Blocks Group';
+                 'Dear Customer, Your CHEQUE Got Bounced & Request to process the Payment immediately. Name: ' +
+                    Customer.Name + ', Appl No: ' + NewApplicationPaymtEntry_2."Document No." + ', Project: ' + ResponsibilityCenter.Name + ', Amount: Rs.' +
+                    FORMAT(NewApplicationPaymtEntry_2.Amount) + ', Date: ' + FORMAT(NewApplicationPaymtEntry_2."Cheque Date") +
+                    '.Thank you & Assuring you of Best Property Services with Building Blocks Group.';
 
-            MESSAGE('%1', CustSMSText);
+
             CLEAR(PostPayment);
             PostPayment.SendSMS(CustMobileNo, CustSMSText);
+            SLEEP(50);
+            CLEAR(SMSLogDetails);
+            SmsMessage := '';
+            SmsMessage1 := '';
+            SmsMessage := COPYSTR(CustSMSText, 1, 250);
+            SmsMessage1 := COPYSTR(CustSMSText, 251, 250);
+            SMSLogDetails.SMSValue(SmsMessage, SmsMessage1, 'Customer', Customer."No.", Customer.Name, 'Customer Cheque Bounce', '', '', '');
             //  MESSAGE('%1','SMS Sent');
+            MESSAGE('%1', CustSMSText);
         END;
     end;
 }

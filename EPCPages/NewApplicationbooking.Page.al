@@ -884,16 +884,16 @@ page 50079 "New Application booking"
                                                     IF (AppPayEntry.Amount <> 0) THEN BEGIN
                                                         IF (AppPayEntry."Payment Mode" = AppPayEntry."Payment Mode"::Cash) THEN
                                                             CustSMSText :=
-                                                            'Mr/Mrs/Ms:' + Customer.Name + 'Welcome to BBG Family. Appl No:' + Rec."Application No." + ' ' +
-                                                            'Recvd Rs.' + FORMAT(AppPayEntry.Amount) +
-                                                            ' ' + 'Project: ' + GetDescription.GetDimensionName(Rec."Shortcut Dimension 1 Code", 1) + ' ' + 'Date: ' +
-                                                            FORMAT(AppPayEntry."Posting date") + 'BBGIND.'  //'.BBGIND'  //02022026 Added code
+                                                            'Mr/Mrs/Ms: ' + Customer.Name + ' Welcome to BBG Family. Appl No: ' + Rec."Application No." +
+                                                            ' Recvd Rs. ' + FORMAT(AppPayEntry.Amount) +
+                                                            ' Project: ' + GetDescription.GetDimensionName(Rec."Shortcut Dimension 1 Code", 1) + ' Date: ' +
+                                                            FORMAT(AppPayEntry."Posting date") + ' BBGIND.'  //'.BBGIND'  //02022026 Added code
                                                         ELSE
                                                             CustSMSText :=
-                                                            'Mr/Mrs/Ms:' + Customer.Name + 'Welcome to BBG Family. Appl No:' + Rec."Application No." +
-                                                            ' ' + 'Recvd Rs.' + FORMAT(AppPayEntry.Amount) +
-                                                            ' ' + 'Project: ' + GetDescription.GetDimensionName(Rec."Shortcut Dimension 1 Code", 1) + ' ' + 'Date: ' +
-                                                            FORMAT(AppPayEntry."Posting date") + 'Tx for payment(If Chq-Subject to Realization).BBGIND';
+                                                            'Mr/Mrs/Ms: ' + Customer.Name + ' Welcome to BBG Family. Appl No: ' + Rec."Application No." +
+                                                            ' Recvd Rs. ' + FORMAT(AppPayEntry.Amount) +
+                                                            ' Project: ' + GetDescription.GetDimensionName(Rec."Shortcut Dimension 1 Code", 1) + ' Date: ' +
+                                                            FORMAT(AppPayEntry."Posting date") + ' Tx for payment(If Chq-Subject to Realization). BBGIND';
 
                                                         MESSAGE('%1', CustSMSText);
                                                         PostPayment.SendSMS(CustMobileNo, CustSMSText);

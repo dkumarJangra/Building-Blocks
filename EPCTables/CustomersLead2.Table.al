@@ -962,6 +962,12 @@ table 60720 "Customers Lead_2"
             TableRelation = "Rank Code Master".Code;
         }
 
+        field(60044; "Status change from"; Text[50])           //06102025 Added new field
+        {
+            Caption = 'Statu Change From';
+            DataClassification = ToBeClassified;
+        }
+
     }
 
     keys

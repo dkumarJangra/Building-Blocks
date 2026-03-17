@@ -1,5 +1,6 @@
 page 50615 "Lead Head Associate List"
 {
+    Caption = 'Lead Team Head associate Data';
     PageType = List;
     SourceTable = "Lead Team HeadAssociate list";
     UsageCategory = Lists;

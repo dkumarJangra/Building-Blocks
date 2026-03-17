@@ -156,7 +156,7 @@ xmlport 50062 "General Jnl Line Upload"
         USERSETUP: Record "User setup";
         BondSetup: Record "Unit setup";
         PostedDocNo: Code[20];
-        NoSeriesMgt: Codeunit "Noseriesmanagement";
+        NoSeriesMgt: Codeunit "No. Series";
         ChqNo1: Code[20];
         CheqDate1: Date;
         BankACC: Record "Bank Account";

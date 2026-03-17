@@ -249,8 +249,11 @@ report 50016 "Commission Report_Job Batch"
                         IF UnitPayEntry.FINDSET THEN
                             REPEAT
                                 IF UnitPayEntry."Cheque Status" = UnitPayEntry."Cheque Status"::Cleared THEN BEGIN
-                                    IF (UnitPayEntry."Charge Code" = 'BSP1') OR (UnitPayEntry."Charge Code" = 'PPLAN') THEN BEGIN
+                                    //IF (UnitPayEntry."Charge Code" = 'BSP1') OR (UnitPayEntry."Charge Code" = 'PPLAN') THEN BEGIN  //code commented 11032026
+                                    IF (UnitPayEntry."Charge Code" = 'BSP1') THEN BEGIN  //Code added 11032026
                                         BSP1 += ROUND(UnitPayEntry.Amount, 1);
+                                    ENd ELSE IF (UnitPayEntry."Commision Applicable") AND (UnitPayEntry."Charge Code" = 'PPLAN') THEN BEGIN //Code added 11032026
+                                        BSP1 += ROUND(UnitPayEntry.Amount, 1);  //Code added 11032026
                                     END ELSE IF UnitPayEntry."Charge Code" = 'BSP2' THEN BEGIN
                                         BSP2 += UnitPayEntry.Amount;
                                     END ELSE IF UnitPayEntry."Charge Code" = 'BSP3' THEN BEGIN
