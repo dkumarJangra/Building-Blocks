@@ -773,6 +773,10 @@ table 97761 "Responsibility Center 1"
         {
             DataClassification = ToBeClassified;
         }
+        field(60106; "Min. Allotement % for BSPs"; Decimal)  //Added new field 13032026 
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys

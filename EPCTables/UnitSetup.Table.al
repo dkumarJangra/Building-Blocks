@@ -1074,7 +1074,24 @@ table 97788 "Unit Setup"
             Caption = 'Gift Vendor Rank Code';
             TableRelation = Rank.Code;
         }
+        field(50394; "Min. All. % appl. from (BSPs)"; Date)  //Added new code 13032026
+        {
+            Caption = 'Min. Allotment % applicable from Date (BSPs)';
 
+            trigger OnValidate()
+            var
+                newconfirmedorder: Record "New Confirmed Order";
+            begin
+                //Added new code 13032026 Start
+                IF "Min. All. % appl. from (BSPs)" <> 0D THEN BEGIN
+                    newconfirmedorder.RESET;
+                    newconfirmedorder.SetRange("Posting Date", "Min. All. % appl. from (BSPs)");
+                    IF newconfirmedorder.FindFirst() then
+                        Error('Customer Booking already exists on this Date');
+                END;
+                //Added new code 13032026 END
+            end;
+        }
     }
 
     keys

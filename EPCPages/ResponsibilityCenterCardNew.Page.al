@@ -82,6 +82,9 @@ page 97819 "Responsibility Center Card New"
                 field("Min. Allotment %"; Rec."Min. Allotment %")
                 {
                 }
+                field("Min. Allotement % for BSPs"; Rec."Min. Allotement % for BSPs")  //Added new field 13032026
+                {
+                }
                 field("Loan Applicable"; Rec."Loan Applicable")
                 {
                 }

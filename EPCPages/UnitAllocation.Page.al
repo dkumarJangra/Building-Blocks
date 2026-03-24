@@ -1640,6 +1640,8 @@ page 50015 "Unit Allocation"
         UnitSetup1: Record "Unit Setup";
         v_UnitMasters: Record "Unit Master";
         ArchiveConfirmedOrder: Record "Archive Confirmed Order";
+        PostRcptinLLPs: Codeunit "Post Receipts in LLPS";
+        UnitSetups: Record "Unit Setup";
     begin
         Rec."Unit Code" := Rec."New Unit No.";
         Rec."Unit Payment Plan" := Rec."New Unit Payment Plan";
@@ -2107,6 +2109,9 @@ page 50015 "Unit Allocation"
         Unitmaster.MODIFY;
 
         //"New Unit No." := '';//ALLETDK120413
+        UnitSetups.GET;   //Added new code 13032026
+        IF Rec."Posting Date" >= UnitSetups."Min. All. % appl. from (BSPs)" THEN   //Added new code 13032026
+            Rec."Min. Allotment Amount for BSPs" := PostRcptinLLPs.MinAllotemntforBSPs(Rec);  //Added new code 13032026
         Rec.MODIFY;
 
     end;

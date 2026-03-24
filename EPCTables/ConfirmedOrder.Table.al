@@ -1455,6 +1455,12 @@ table 97793 "Confirmed Order"
             DataClassification = ToBeClassified;
             Editable = False;
         }
+        field(60061; "Min. Allotment Amount for BSPs"; Decimal)           //Added new field 13032026
+        {
+            Caption = 'Min. Allotment Amount for BSPs';
+            DataClassification = ToBeClassified;
+            Editable = False;
+        }
 
 
     }

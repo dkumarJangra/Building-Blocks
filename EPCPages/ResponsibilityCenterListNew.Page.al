@@ -93,6 +93,9 @@ page 97820 "Responsibility Center ListNew"
                 {
 
                 }
+                field("Min. Allotement % for BSPs"; Rec."Min. Allotement % for BSPs")  //Added new field 13032026
+                {
+                }
             }
         }
     }

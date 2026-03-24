@@ -418,6 +418,11 @@ page 98010 "Unit Setup"
                 {
                     ApplicationArea = all;
                 }
+                field("Min. All. % appl. from (BSPs)"; Rec."Min. All. % appl. from (BSPs)")   //Added new field 13032026
+                {
+                    Caption = 'Min. Allotment % applicable from Date (BSPs)';
+                    ApplicationArea = All;
+                }
             }
             group(Travel)
             {

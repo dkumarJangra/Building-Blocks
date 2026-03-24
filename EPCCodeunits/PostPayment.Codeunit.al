@@ -7748,6 +7748,7 @@ codeunit 97725 PostPayment
         NoncommissionAmt: Decimal;
         NewMinAmount: Decimal;
         UnitAndCommbuffers: Record "Unit & Comm. Creation Buffer";
+        UnitSetups: Record "Unit Setup";
     begin
         CLEAR(ComHoldDate);
         CLEAR(PostDate);
@@ -7772,7 +7773,12 @@ codeunit 97725 PostPayment
         END;
         //MinAmount := 777700.00;
         //Code Start 26092025 
-        NewMinAmount := PPLANCommissonCalculate(RecConforder1);
+        UnitSetups.GET;  //Added new Code 13032026
+        IF RecConforder1."Posting Date" >= UnitSetups."Min. All. % appl. from (BSPs)" THEN BEGIN  //Added new Code 13032026
+            IF (RecConforder1."Min. Allotment Amount for BSPs" <> 0) then   //Added new Code 13032026
+                MinAmount := RecConforder1."Min. Allotment Amount for BSPs"  //Added new Code 13032026
+        END ELSE                                                              //Added new Code 13032026
+            NewMinAmount := PPLANCommissonCalculate(RecConforder1);
 
         IF NewMinAmount > 0 then begin
             IF MinAmount > NewMinAmount then

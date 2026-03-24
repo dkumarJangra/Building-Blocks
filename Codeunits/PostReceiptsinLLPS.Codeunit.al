@@ -36,6 +36,8 @@ codeunit 50008 "Post Receipts in LLPS"
         PLDetails: Record "Payment Plan Details";
         v_NewApplicationPaymentEntry_1: Record "NewApplication Payment Entry";
         AppPayEntry_1: Record "Application Payment Entry";
+        Conforders: Record "Confirmed Order";
+        UnitSetups: Record "Unit Setup";
 
 
     procedure PostReceipt(P_NewApplicationPayEntry: Record "NewApplication Payment Entry")
@@ -88,6 +90,18 @@ codeunit 50008 "Post Receipts in LLPS"
                     v_NewApplicationPaymentEntry_1."Receipt post InterComp Date" := TODAY;
                     v_NewApplicationPaymentEntry_1.MODIFY;
                 END;
+                //Added new code 13032026 start
+                UnitSetups.GET;
+                Conforders.RESET;
+                IF Conforders.GET(P_NewApplicationPayEntry."Document No.") THEN BEGIN
+                    IF Conforders."Posting Date" >= UnitSetups."Min. All. % appl. from (BSPs)" THEN BEGIN
+                        IF Conforders."Min. Allotment Amount for BSPs" = 0 then BEGIN
+                            Conforders."Min. Allotment Amount for BSPs" := MinAllotemntforBSPs(Conforders);
+                            Conforders.Modify;
+                        END;
+                    END;
+                END;
+                //Added new code 13032026 END
             END;
         END;
     end;
@@ -325,6 +339,37 @@ codeunit 50008 "Post Receipts in LLPS"
                 BondReversal.BondReverse(NewApplPayEntry."Document No.", NewApplPayEntry."Commmission Reverse", 0, FALSE);
             END;
         END;
+    end;
+
+    procedure MinAllotemntforBSPs(ConfirmedOrders: Record "Confirmed Order"): Decimal    //Added new function 13032026
+    var
+        ConfirmOrders: Record "Confirmed Order";
+        PTLineSales: Record "Payment Terms Line Sale";
+        TotalBSPAmount: Decimal;
+        ResponsibilityCenter: Record "Responsibility Center 1";
+    begin
+        //Added new function 13032026 Start
+        TotalBSPAmount := 0;
+        ConfirmOrders.RESET;
+        IF ConfirmOrders.GET(ConfirmedOrders."No.") THEN begin
+            PTLineSales.RESET;
+            PTLineSales.SetRange("Document No.", ConfirmOrders."No.");
+            PTLineSales.SetRange("Commision Applicable", True);
+            IF PTLineSales.FindSet() then BEGIN
+                repeat
+                    TotalBSPAmount := TotalBSPAmount + PTLineSales."Criteria Value / Base Amount";
+                Until PTLineSales.Next = 0;
+            END;
+            ResponsibilityCenter.RESET;
+            IF ResponsibilityCenter.GET(ConfirmOrders."Shortcut Dimension 1 Code") THEN begin
+                IF ResponsibilityCenter."Min. Allotement % for BSPs" <> 0 then
+                    TotalBSPAmount := TotalBSPAmount * ResponsibilityCenter."Min. Allotement % for BSPs" / 100
+                ELSE
+                    TotalBSPAmount := confirmOrders."Min. Allotment Amount";
+                Exit(TotalBSPAmount);
+            end;
+        end;
+        //Added new function 13032026 END
     end;
 }
 
