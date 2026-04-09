@@ -1,5 +1,6 @@
-table 60811 "WhatsApp Data Push Details"
+table 60812 "Ptd WhatsApp Data Push Details"
 {
+    Caption = 'Posted WhatsApp Data Push Details';
     DataClassification = ToBeClassified;
 
     fields

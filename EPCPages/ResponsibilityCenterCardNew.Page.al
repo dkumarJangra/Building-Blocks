@@ -92,6 +92,10 @@ page 97819 "Responsibility Center Card New"
                 {
 
                 }
+                field("MIS Project Code"; Rec."MIS Project Code")   //Added new field 09042026
+                {
+
+                }
             }
             group(Image)
             {

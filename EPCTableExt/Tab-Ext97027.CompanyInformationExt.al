@@ -88,6 +88,10 @@ tableextension 97027 "EPC Company Information Ext" extends "Company Information"
         {
             DataClassification = ToBeClassified;
         }
+        field(50340; "Data Push on Jiva"; Boolean)    //Added new field 05042026
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys

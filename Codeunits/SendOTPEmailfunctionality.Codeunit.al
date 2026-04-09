@@ -104,5 +104,6 @@ codeunit 50046 "SendOTP Email functionality"
         EMAILS_F := EMAILS;
         BodyMessages_F := BodyMessages;
     end;
+
 }
 

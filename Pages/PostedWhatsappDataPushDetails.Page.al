@@ -1,8 +1,11 @@
-page 60840 "WhatsApp data push"
+page 60841 "Posted WhatsApp data push"
 {
-    //Editable = false;
+    Editable = false;
+    InsertAllowed = false;
+    DeleteAllowed = false;
+    ModifyAllowed = false;
     PageType = List;
-    SourceTable = "WhatsApp Data Push Details";
+    SourceTable = "Ptd WhatsApp Data Push Details";
     ApplicationArea = All;
     UsageCategory = Lists;
     layout
@@ -29,11 +32,11 @@ page 60840 "WhatsApp data push"
                 }
                 field("Associate Mobile No."; Rec."Associate Mobile No.")
                 {
-                    Editable = true;
+                    Editable = false;
                 }
                 field("Associate E-Mail"; Rec."Associate E-Mail")
                 {
-                    Editable = true;
+                    Editable = false;
                 }
                 field("Customer No."; Rec."Customer No.")
                 {
@@ -45,11 +48,11 @@ page 60840 "WhatsApp data push"
                 }
                 field("Custommer Mobile No."; Rec."Custommer Mobile No.")
                 {
-                    Editable = true;
+                    Editable = false;
                 }
                 field("Customer Email"; Rec."Customer Email")
                 {
-                    Editable = true;
+                    Editable = false;
                 }
                 field("Project No."; Rec."Project No.")
                 {
@@ -162,10 +165,12 @@ page 60840 "WhatsApp data push"
         {
             action("Calculate Data")
             {
+                Visible = false;
                 RunObject = Codeunit 50048;
             }
             Action("Select All")
             {
+                Visible = false;
                 trigger OnAction()
                 var
                     WhatsappDataPush: Record "WhatsApp Data Push Details";
@@ -203,6 +208,7 @@ page 60840 "WhatsApp data push"
             }
             Action("Un-Select All")
             {
+                Visible = false;
                 trigger OnAction()
                 var
                     WhatsappDataPush: Record "WhatsApp Data Push Details";
@@ -238,6 +244,7 @@ page 60840 "WhatsApp data push"
 
             Action("Send Whatsapp Message")
             {
+                Visible = false;
                 trigger OnAction()
                 var
                     WhatsappDataPush: Record "WhatsApp Data Push Details";
@@ -259,9 +266,7 @@ page 60840 "WhatsApp data push"
                                     DGCWhatsupSMS.CreateBodyForPaymentReminderForVendor(WhatsupSetup.Password, WhatsappDataPush."Associate Mobile No.", WhatsappDataPush."Associate Name", format(WhatsappDataPush."Total Amount"), Format(WhatsappDataPush."End Date"), WhatsappDataPush."Project Name", Format(WhatsappDataPush."Plot No."), Format(WhatsappDataPush."Application No."), WhatsappDataPush)
                                 Else if WhatsappDataPush."Receiver Type" = WhatsappDataPush."Receiver Type"::"Customer & Associate" then begin
                                     DGCWhatsupSMS.CreateBodyForPaymentReminder(WhatsupSetup.Password, WhatsappDataPush."Custommer Mobile No.", WhatsappDataPush."Customer Name", format(WhatsappDataPush."Total Amount"), Format(WhatsappDataPush."End Date"), WhatsappDataPush."Project Name", Format(WhatsappDataPush."Plot No."), Format(WhatsappDataPush."Application No."), WhatsappDataPush);
-                                    //Commit();
                                     DGCWhatsupSMS.CreateBodyForPaymentReminderForVendor(WhatsupSetup.Password, WhatsappDataPush."Associate Mobile No.", WhatsappDataPush."Associate Name", format(WhatsappDataPush."Total Amount"), Format(WhatsappDataPush."End Date"), WhatsappDataPush."Project Name", Format(WhatsappDataPush."Plot No."), Format(WhatsappDataPush."Application No."), WhatsappDataPush);
-                                    Commit();
                                 end;
                             Until WhatsappDataPush.Next = 0;
                             Message('Messages has been sent to Customers');
@@ -282,8 +287,8 @@ page 60840 "WhatsApp data push"
                     Cust: Record customer;
                     DueAmount: Decimal;
                 begin
-                    IF Confirm('Do you want to send the Email?') THEN begin
-                        WhatsappDataPush.RESET;
+                    IF Confirm('Do you want to push the Whatsapp Message?') THEN begin
+                        WhatsappDataPush.RESET();
                         WhatsappDataPush.SetRange("Select for send Email", true);
                         IF WhatsappDataPush.FindSet() then BEGIN
                             repeat
@@ -362,119 +367,9 @@ page 60840 "WhatsApp data push"
                     END;
                 End;
             }
-            Action("Send Email And Whatsapp Message")
-            {
-                Visible = false;
-                trigger OnAction()
-                var
-                    WhatsappDataPush: Record "WhatsApp Data Push Details";
-                    DGCWhatsupSMS: Codeunit "DGC Whatsup SMS";
-                    SendWhatsupEmail: Codeunit "Send Whatsup Email";
-                    Cust: Record customer;
-                    DueAmount: Decimal;
-                    WhatsupSetup: Record "Whatsup Integration Setup";
-                begin
-                    IF Confirm('Do you want to push the Whatsapp Message?') THEN begin
-                        WhatsupSetup.Get();
-                        WhatsappDataPush.RESET;
-                        WhatsappDataPush.SetRange("Select for send Whatsapp", True);
-                        IF WhatsappDataPush.FindSet() then BEGIN
-                            repeat
-                                IF WhatsappDataPush."Receiver Type" = WhatsappDataPush."Receiver Type"::Customer then
-                                    DGCWhatsupSMS.CreateBodyForPaymentReminder(WhatsupSetup.Password, WhatsappDataPush."Custommer Mobile No.", WhatsappDataPush."Customer Name", format(WhatsappDataPush."Total Amount"), Format(WhatsappDataPush."End Date"), WhatsappDataPush."Project Name", Format(WhatsappDataPush."Plot No."), Format(WhatsappDataPush."Application No."), WhatsappDataPush)
-                                Else if WhatsappDataPush."Receiver Type" = WhatsappDataPush."Receiver Type"::Associate then
-                                    DGCWhatsupSMS.CreateBodyForPaymentReminderForVendor(WhatsupSetup.Password, WhatsappDataPush."Associate Mobile No.", WhatsappDataPush."Associate Name", format(WhatsappDataPush."Total Amount"), Format(WhatsappDataPush."End Date"), WhatsappDataPush."Project Name", Format(WhatsappDataPush."Plot No."), Format(WhatsappDataPush."Application No."), WhatsappDataPush)
-                                Else if WhatsappDataPush."Receiver Type" = WhatsappDataPush."Receiver Type"::"Customer & Associate" then begin
-                                    DGCWhatsupSMS.CreateBodyForPaymentReminder(WhatsupSetup.Password, WhatsappDataPush."Custommer Mobile No.", WhatsappDataPush."Customer Name", format(WhatsappDataPush."Total Amount"), Format(WhatsappDataPush."End Date"), WhatsappDataPush."Project Name", Format(WhatsappDataPush."Plot No."), Format(WhatsappDataPush."Application No."), WhatsappDataPush);
-                                    DGCWhatsupSMS.CreateBodyForPaymentReminderForVendor(WhatsupSetup.Password, WhatsappDataPush."Associate Mobile No.", WhatsappDataPush."Associate Name", format(WhatsappDataPush."Total Amount"), Format(WhatsappDataPush."End Date"), WhatsappDataPush."Project Name", Format(WhatsappDataPush."Plot No."), Format(WhatsappDataPush."Application No."), WhatsappDataPush);
-                                end;
-                            Until WhatsappDataPush.Next = 0;
-                            Message('Messages has been sent to Customers');
-                        end ELSE
-                            Message('No record found');
-                    END ELSE
-                        Message('Nothing to Process');
-
-                    WhatsappDataPush.RESET;
-                    WhatsappDataPush.SetRange("Select for send Email", False);
-                    IF WhatsappDataPush.FindSet() then BEGIN
-                        repeat
-                            IF WhatsappDataPush."Receiver Type" = WhatsappDataPush."Receiver Type"::Customer Then begin
-                                CLEAR(SendWhatsupEmail);
-                                IF WhatsappDataPush."Customer Email" <> '' THEN BEGIN
-                                    DueAmount := WhatsappDataPush."Total Amount" - WhatsappDataPush."Received Amount";
-                                    If DueAmount < 0 then
-                                        DueAmount := 0;
-                                    SendWhatsupEmail.SetEmailfilters(WhatsappDataPush."Customer Email", WhatsappDataPush."Customer Name",
-                                    WhatsappDataPush."Application No.", WhatsappDataPush."Project Name", WhatsappDataPush."Plot No.", WhatsappDataPush."Start Date", DueAmount);
-                                    IF NOT SendWhatsupEmail.RUN THEN BEGIN
-                                        WhatsappDataPush."Email Error message For Cust" := CopyStr(GetLastErrorText, 1, 250);
-                                    END ELSE
-                                        WhatsappDataPush."Sent Email" := True;
-                                END ELSE
-                                    WhatsappDataPush."Email Error message For Cust" := 'Customer Email Id not define';
-
-                                WhatsappDataPush."Select for send Email" := False;
-                                WhatsappDataPush.Modify;
-                                Commit;
-                            end Else if WhatsappDataPush."Receiver Type" = WhatsappDataPush."Receiver Type"::Associate Then begin
-                                IF WhatsappDataPush."Associate E-Mail" <> '' THEN BEGIN
-                                    DueAmount := WhatsappDataPush."Total Amount" - WhatsappDataPush."Received Amount";
-                                    If DueAmount < 0 then
-                                        DueAmount := 0;
-                                    SendWhatsupEmail.SetEmailfilters(WhatsappDataPush."Associate E-Mail", WhatsappDataPush."Associate Name",
-                                    WhatsappDataPush."Application No.", WhatsappDataPush."Project Name", WhatsappDataPush."Plot No.", WhatsappDataPush."Start Date", DueAmount);
-                                    IF NOT SendWhatsupEmail.RUN THEN BEGIN
-                                        WhatsappDataPush."Email Err mess For Vendor" := CopyStr(GetLastErrorText, 1, 250);
-                                    END ELSE
-                                        WhatsappDataPush."Sent Email" := True;
-                                END ELSE
-                                    WhatsappDataPush."Email Err mess For Vendor" := 'Customer Email Id not define';
-
-                                WhatsappDataPush."Select for send Email" := False;
-                                WhatsappDataPush.Modify;
-                                Commit;
-                            end Else if WhatsappDataPush."Receiver Type" = WhatsappDataPush."Receiver Type"::"Customer & Associate" Then begin
-                                //For Customer
-                                IF WhatsappDataPush."Customer Email" <> '' THEN BEGIN
-                                    DueAmount := WhatsappDataPush."Total Amount" - WhatsappDataPush."Received Amount";
-                                    If DueAmount < 0 then
-                                        DueAmount := 0;
-                                    SendWhatsupEmail.SetEmailfilters(WhatsappDataPush."Customer Email", WhatsappDataPush."Customer Name",
-                                    WhatsappDataPush."Application No.", WhatsappDataPush."Project Name", WhatsappDataPush."Plot No.", WhatsappDataPush."Start Date", DueAmount);
-                                    IF NOT SendWhatsupEmail.RUN THEN BEGIN
-                                        WhatsappDataPush."Email Error message For Cust" := CopyStr(GetLastErrorText, 1, 250);
-                                    END ELSE
-                                        WhatsappDataPush."Sent Email" := True;
-                                END ELSE
-                                    WhatsappDataPush."Email Error message For Cust" := 'Customer Email Id not define';
-
-                                //For Associate
-                                IF WhatsappDataPush."Associate E-Mail" <> '' THEN BEGIN
-                                    DueAmount := WhatsappDataPush."Total Amount" - WhatsappDataPush."Received Amount";
-                                    If DueAmount < 0 then
-                                        DueAmount := 0;
-                                    SendWhatsupEmail.SetEmailfilters(WhatsappDataPush."Associate E-Mail", WhatsappDataPush."Associate Name",
-                                    WhatsappDataPush."Application No.", WhatsappDataPush."Project Name", WhatsappDataPush."Plot No.", WhatsappDataPush."Start Date", DueAmount);
-                                    IF NOT SendWhatsupEmail.RUN THEN BEGIN
-                                        WhatsappDataPush."Email Err mess For Vendor" := CopyStr(GetLastErrorText, 1, 250);
-                                    END ELSE
-                                        WhatsappDataPush."Sent Email" := True;
-                                END ELSE
-                                    WhatsappDataPush."Email Err mess For Vendor" := 'Customer Email Id not define';
-
-                                WhatsappDataPush."Select for send Email" := False;
-                                WhatsappDataPush.Modify;
-                                Commit;
-                            end;
-                        Until WhatsappDataPush.Next = 0;
-                        Message('Messages has been sent to Customers');
-                    end ELSE
-                        Message('No record found');
-                END;
-            }
             action("Receiver Type - Customer")
             {
+                Visible = false;
                 trigger OnAction()
                 var
                     WhatsAppDataPushDetails: Record "WhatsApp Data Push Details";
@@ -490,6 +385,7 @@ page 60840 "WhatsApp data push"
             }
             action("Receiver Type - Associate")
             {
+                Visible = false;
                 trigger OnAction()
                 var
                     WhatsAppDataPushDetails: Record "WhatsApp Data Push Details";
@@ -505,6 +401,7 @@ page 60840 "WhatsApp data push"
             }
             action("Receiver Type - Both")
             {
+                Visible = false;
                 Caption = 'Receiver Type - Customer and Associate';
                 trigger OnAction()
                 var
@@ -521,6 +418,7 @@ page 60840 "WhatsApp data push"
             }
             action("Send Via - Whatsup")
             {
+                Visible = false;
                 trigger OnAction()
                 var
                     WhatsAppDataPushDetails: Record "WhatsApp Data Push Details";
@@ -537,6 +435,7 @@ page 60840 "WhatsApp data push"
             }
             action("Send Via - Email")
             {
+                Visible = false;
                 trigger OnAction()
                 var
                     WhatsAppDataPushDetails: Record "WhatsApp Data Push Details";
@@ -578,5 +477,6 @@ page 60840 "WhatsApp data push"
         UnitPaymentDueDaysupdate: Codeunit 50048;
         NewUnitmasters: Record 97821;
         Updationofplotdetails: Record 60811;
+
 }
 

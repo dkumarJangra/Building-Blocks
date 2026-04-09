@@ -96,6 +96,10 @@ page 97820 "Responsibility Center ListNew"
                 field("Min. Allotement % for BSPs"; Rec."Min. Allotement % for BSPs")  //Added new field 13032026
                 {
                 }
+                field("MIS Project Code"; Rec."MIS Project Code")  //Added new field 09042026
+                {
+
+                }
             }
         }
     }

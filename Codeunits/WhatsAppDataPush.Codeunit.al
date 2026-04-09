@@ -3,6 +3,7 @@ codeunit 50048 "WhatsApp Data Push"
 
     trigger OnRun()
     begin
+        DataTransfer();
         TestNoofdays.DELETEALL;
         UpdateNoofDaysforOpenApplications('');
         COMMIT;
@@ -60,11 +61,11 @@ codeunit 50048 "WhatsApp Data Push"
         IF NewConfirmedOrder_2.GET(NewConfirmedOrder."No.") THEN BEGIN
             Updationofplotdetails.RESET;
             // IF NOT Updationofplotdetails.GET(NewConfirmedOrder_2."No.") THEN BEGIN
-            If updationofplotdetails.Get(NewConfirmedOrder_2."No.") Then begin
+            updationofplotdetails.SetRange("Application No.", NewConfirmedOrder_2."No.");
+            If updationofplotdetails.FindFirst() Then begin
                 Exit(updationofplotdetails."No. Of Days")
             End else begin
                 ResponsibilityCenter.RESET;
-
                 IF ResponsibilityCenter.GET(NewConfirmedOrder."Shortcut Dimension 1 Code") THEN BEGIN
                     // ResponsibilityCenter.TESTFIELD(ResponsibilityCenter."Min. Amt. Single plot for Web");
                     // ResponsibilityCenter.TESTFIELD("Min. Amt. Double plot for Web");
@@ -99,6 +100,7 @@ codeunit 50048 "WhatsApp Data Push"
 
                             IF (StartDt >= DueDate) AND (StartDt <= EndDate) THEN BEGIN
                                 TestNoofdays.INIT;
+                                TestNoofdays."Entry ID" := CreateGuid();
                                 TestNoofdays."Application No." := NewConfirmedOrder."No.";
                                 TestNoofdays."Plot No." := NewConfirmedOrder."Unit Code";
                                 TestNoofdays."No. of Days" := (EndDate - StartDt);
@@ -109,10 +111,16 @@ codeunit 50048 "WhatsApp Data Push"
                                 TestNoofdays."Min. allotment Amount" := NewConfirmedOrder."Min. Allotment Amount";
                                 TestNoofdays."Creation Date Time" := CURRENTDATETIME;
                                 TestNoofdays.INSERT;
+                                TestNoofdays.Validate("Customer No.", NewConfirmedOrder."Customer No.");
+                                TestNoofdays.Validate("Project No.", NewConfirmedOrder."Shortcut Dimension 1 Code");
+                                TestNoofdays.Validate("Associate ID", NewConfirmedOrder."Introducer Code");
+                                TestNoofdays."Posting Date/DOJ" := NewConfirmedOrder."Posting Date";
+                                TestNoofdays.Modify();
                                 DataInsert := TRUE;
                             END ELSE
                                 IF (NOT DataInsert) AND (StartDt > EndDate) THEN BEGIN
                                     TestNoofdays.INIT;
+                                    TestNoofdays."Entry ID" := CreateGuid();
                                     TestNoofdays."Application No." := NewConfirmedOrder."No.";
                                     TestNoofdays."Plot No." := NewConfirmedOrder."Unit Code";
                                     TestNoofdays."No. of Days" := (EndDate - StartDt);
@@ -123,10 +131,16 @@ codeunit 50048 "WhatsApp Data Push"
                                     TestNoofdays."Min. allotment Amount" := NewConfirmedOrder."Min. Allotment Amount";
                                     TestNoofdays."Creation Date Time" := CURRENTDATETIME;
                                     TestNoofdays.INSERT;
+                                    TestNoofdays.Validate("Customer No.", NewConfirmedOrder."Customer No.");
+                                    TestNoofdays.Validate("Project No.", NewConfirmedOrder."Shortcut Dimension 1 Code");
+                                    TestNoofdays.Validate("Associate ID", NewConfirmedOrder."Introducer Code");
+                                    TestNoofdays."Posting Date/DOJ" := NewConfirmedOrder."Posting Date";
+                                    TestNoofdays.Modify();
                                     DataInsert := TRUE;
                                 END ELSE
                                     IF (NOT DataInsert) AND (StartDt < EndDate) THEN BEGIN
                                         TestNoofdays.INIT;
+                                        TestNoofdays."Entry ID" := CreateGuid();
                                         TestNoofdays."Application No." := NewConfirmedOrder."No.";
                                         TestNoofdays."Plot No." := NewConfirmedOrder."Unit Code";
                                         TestNoofdays."No. of Days" := (EndDate - StartDt);
@@ -137,6 +151,11 @@ codeunit 50048 "WhatsApp Data Push"
                                         TestNoofdays."Min. allotment Amount" := NewConfirmedOrder."Min. Allotment Amount";
                                         TestNoofdays."Creation Date Time" := CURRENTDATETIME;
                                         TestNoofdays.INSERT;
+                                        TestNoofdays.Validate("Customer No.", NewConfirmedOrder."Customer No.");
+                                        TestNoofdays.Validate("Project No.", NewConfirmedOrder."Shortcut Dimension 1 Code");
+                                        TestNoofdays.Validate("Associate ID", NewConfirmedOrder."Introducer Code");
+                                        TestNoofdays."Posting Date/DOJ" := NewConfirmedOrder."Posting Date";
+                                        TestNoofdays.Modify();
                                         DataInsert := TRUE;
                                     END;
 
@@ -147,6 +166,7 @@ codeunit 50048 "WhatsApp Data Push"
                             DueDate := NewConfirmedOrder."Posting Date" + ResponsibilityCenter."Allotment Amt Days (First Day)";
                             IF (StartDt >= DueDate) AND (StartDt <= EndDate) THEN BEGIN
                                 TestNoofdays.INIT;
+                                TestNoofdays."Entry ID" := CreateGuid();
                                 TestNoofdays."Application No." := NewConfirmedOrder."No.";
                                 TestNoofdays."Plot No." := NewConfirmedOrder."Unit Code";
                                 TestNoofdays."No. of Days" := (EndDate - StartDt);
@@ -157,10 +177,16 @@ codeunit 50048 "WhatsApp Data Push"
                                 TestNoofdays."Min. allotment Amount" := NewConfirmedOrder."Min. Allotment Amount";
                                 TestNoofdays."Creation Date Time" := CURRENTDATETIME;
                                 TestNoofdays.INSERT;
+                                TestNoofdays.Validate("Customer No.", NewConfirmedOrder."Customer No.");
+                                TestNoofdays.Validate("Project No.", NewConfirmedOrder."Shortcut Dimension 1 Code");
+                                TestNoofdays.Validate("Associate ID", NewConfirmedOrder."Introducer Code");
+                                TestNoofdays."Posting Date/DOJ" := NewConfirmedOrder."Posting Date";
+                                TestNoofdays.Modify();
                                 DataInsert := TRUE;
                             END ELSE
                                 IF (NOT DataInsert) AND (StartDt > EndDate) THEN BEGIN
                                     TestNoofdays.INIT;
+                                    TestNoofdays."Entry ID" := CreateGuid();
                                     TestNoofdays."Application No." := NewConfirmedOrder."No.";
                                     TestNoofdays."Plot No." := NewConfirmedOrder."Unit Code";
                                     TestNoofdays."No. of Days" := (EndDate - StartDt);
@@ -171,10 +197,16 @@ codeunit 50048 "WhatsApp Data Push"
                                     TestNoofdays."Min. allotment Amount" := NewConfirmedOrder."Min. Allotment Amount";
                                     TestNoofdays."Creation Date Time" := CURRENTDATETIME;
                                     TestNoofdays.INSERT;
+                                    TestNoofdays.Validate("Customer No.", NewConfirmedOrder."Customer No.");
+                                    TestNoofdays.Validate("Project No.", NewConfirmedOrder."Shortcut Dimension 1 Code");
+                                    TestNoofdays.Validate("Associate ID", NewConfirmedOrder."Introducer Code");
+                                    TestNoofdays."Posting Date/DOJ" := NewConfirmedOrder."Posting Date";
+                                    TestNoofdays.Modify();
                                     DataInsert := TRUE;
                                 END ELSE
                                     IF (NOT DataInsert) AND (StartDt < EndDate) THEN BEGIN
                                         TestNoofdays.INIT;
+                                        TestNoofdays."Entry ID" := CreateGuid();
                                         TestNoofdays."Application No." := NewConfirmedOrder."No.";
                                         TestNoofdays."Plot No." := NewConfirmedOrder."Unit Code";
                                         TestNoofdays."No. of Days" := (EndDate - StartDt);
@@ -185,6 +217,11 @@ codeunit 50048 "WhatsApp Data Push"
                                         TestNoofdays."Min. allotment Amount" := NewConfirmedOrder."Min. Allotment Amount";
                                         TestNoofdays."Creation Date Time" := CURRENTDATETIME;
                                         TestNoofdays.INSERT;
+                                        TestNoofdays.Validate("Customer No.", NewConfirmedOrder."Customer No.");
+                                        TestNoofdays.Validate("Project No.", NewConfirmedOrder."Shortcut Dimension 1 Code");
+                                        TestNoofdays.Validate("Associate ID", NewConfirmedOrder."Introducer Code");
+                                        TestNoofdays."Posting Date/DOJ" := NewConfirmedOrder."Posting Date";
+                                        TestNoofdays.Modify();
                                         DataInsert := TRUE;
                                     END;
                         END;
@@ -195,6 +232,7 @@ codeunit 50048 "WhatsApp Data Push"
                             DueDate := NewConfirmedOrder."Posting Date" + ResponsibilityCenter."Option A Days (First Days)";
                             IF (StartDt >= DueDate) AND (StartDt <= EndDate) THEN BEGIN
                                 TestNoofdays.INIT;
+                                TestNoofdays."Entry ID" := CreateGuid();
                                 TestNoofdays."Application No." := NewConfirmedOrder."No.";
                                 TestNoofdays."Plot No." := NewConfirmedOrder."Unit Code";
                                 TestNoofdays."No. of Days" := (EndDate - StartDt);
@@ -205,11 +243,17 @@ codeunit 50048 "WhatsApp Data Push"
                                 TestNoofdays."Min. allotment Amount" := NewConfirmedOrder."Min. Allotment Amount";
                                 TestNoofdays."Creation Date Time" := CURRENTDATETIME;
                                 TestNoofdays.INSERT;
+                                TestNoofdays.Validate("Customer No.", NewConfirmedOrder."Customer No.");
+                                TestNoofdays.Validate("Project No.", NewConfirmedOrder."Shortcut Dimension 1 Code");
+                                TestNoofdays.Validate("Associate ID", NewConfirmedOrder."Introducer Code");
+                                TestNoofdays."Posting Date/DOJ" := NewConfirmedOrder."Posting Date";
+                                TestNoofdays.Modify();
                                 DataInsert := TRUE;
 
                             END ELSE
                                 IF (NOT DataInsert) AND (StartDt > EndDate) THEN BEGIN
                                     TestNoofdays.INIT;
+                                    TestNoofdays."Entry ID" := CreateGuid();
                                     TestNoofdays."Application No." := NewConfirmedOrder."No.";
                                     TestNoofdays."Plot No." := NewConfirmedOrder."Unit Code";
                                     TestNoofdays."No. of Days" := (EndDate - StartDt);
@@ -220,10 +264,16 @@ codeunit 50048 "WhatsApp Data Push"
                                     TestNoofdays."Min. allotment Amount" := NewConfirmedOrder."Min. Allotment Amount";
                                     TestNoofdays."Creation Date Time" := CURRENTDATETIME;
                                     TestNoofdays.INSERT;
+                                    TestNoofdays.Validate("Customer No.", NewConfirmedOrder."Customer No.");
+                                    TestNoofdays.Validate("Project No.", NewConfirmedOrder."Shortcut Dimension 1 Code");
+                                    TestNoofdays.Validate("Associate ID", NewConfirmedOrder."Introducer Code");
+                                    TestNoofdays."Posting Date/DOJ" := NewConfirmedOrder."Posting Date";
+                                    TestNoofdays.Modify();
                                     DataInsert := TRUE;
                                 END ELSE
                                     IF (NOT DataInsert) AND (StartDt < EndDate) THEN BEGIN
                                         TestNoofdays.INIT;
+                                        TestNoofdays."Entry ID" := CreateGuid();
                                         TestNoofdays."Application No." := NewConfirmedOrder."No.";
                                         TestNoofdays."Plot No." := NewConfirmedOrder."Unit Code";
                                         TestNoofdays."No. of Days" := (EndDate - StartDt);
@@ -234,6 +284,11 @@ codeunit 50048 "WhatsApp Data Push"
                                         TestNoofdays."Min. allotment Amount" := NewConfirmedOrder."Min. Allotment Amount";
                                         TestNoofdays."Creation Date Time" := CURRENTDATETIME;
                                         TestNoofdays.INSERT;
+                                        TestNoofdays.Validate("Customer No.", NewConfirmedOrder."Customer No.");
+                                        TestNoofdays.Validate("Project No.", NewConfirmedOrder."Shortcut Dimension 1 Code");
+                                        TestNoofdays.Validate("Associate ID", NewConfirmedOrder."Introducer Code");
+                                        TestNoofdays."Posting Date/DOJ" := NewConfirmedOrder."Posting Date";
+                                        TestNoofdays.Modify();
                                         DataInsert := TRUE;
                                     END;
                         END;
@@ -242,6 +297,7 @@ codeunit 50048 "WhatsApp Data Push"
                             DueDate := NewConfirmedOrder."Posting Date" + ResponsibilityCenter."Option B Days (First Days)";
                             IF (StartDt >= DueDate) AND (StartDt <= EndDate) THEN BEGIN
                                 TestNoofdays.INIT;
+                                TestNoofdays."Entry ID" := CreateGuid();
                                 TestNoofdays."Application No." := NewConfirmedOrder."No.";
                                 TestNoofdays."Plot No." := NewConfirmedOrder."Unit Code";
                                 TestNoofdays."No. of Days" := (EndDate - StartDt);
@@ -252,10 +308,16 @@ codeunit 50048 "WhatsApp Data Push"
                                 TestNoofdays."Min. allotment Amount" := NewConfirmedOrder."Min. Allotment Amount";
                                 TestNoofdays."Creation Date Time" := CURRENTDATETIME;
                                 TestNoofdays.INSERT;
+                                TestNoofdays.Validate("Customer No.", NewConfirmedOrder."Customer No.");
+                                TestNoofdays.Validate("Project No.", NewConfirmedOrder."Shortcut Dimension 1 Code");
+                                TestNoofdays.Validate("Associate ID", NewConfirmedOrder."Introducer Code");
+                                TestNoofdays."Posting Date/DOJ" := NewConfirmedOrder."Posting Date";
+                                TestNoofdays.Modify();
                                 DataInsert := TRUE;
                             END ELSE
                                 IF (NOT DataInsert) AND (StartDt > EndDate) THEN BEGIN
                                     TestNoofdays.INIT;
+                                    TestNoofdays."Entry ID" := CreateGuid();
                                     TestNoofdays."Application No." := NewConfirmedOrder."No.";
                                     TestNoofdays."Plot No." := NewConfirmedOrder."Unit Code";
                                     TestNoofdays."No. of Days" := (EndDate - StartDt);
@@ -266,10 +328,16 @@ codeunit 50048 "WhatsApp Data Push"
                                     TestNoofdays."Min. allotment Amount" := NewConfirmedOrder."Min. Allotment Amount";
                                     TestNoofdays."Creation Date Time" := CURRENTDATETIME;
                                     TestNoofdays.INSERT;
+                                    TestNoofdays.Validate("Customer No.", NewConfirmedOrder."Customer No.");
+                                    TestNoofdays.Validate("Project No.", NewConfirmedOrder."Shortcut Dimension 1 Code");
+                                    TestNoofdays.Validate("Associate ID", NewConfirmedOrder."Introducer Code");
+                                    TestNoofdays."Posting Date/DOJ" := NewConfirmedOrder."Posting Date";
+                                    TestNoofdays.Modify();
                                     DataInsert := TRUE;
                                 END ELSE
                                     IF (NOT DataInsert) AND (StartDt < EndDate) THEN BEGIN
                                         TestNoofdays.INIT;
+                                        TestNoofdays."Entry ID" := CreateGuid();
                                         TestNoofdays."Application No." := NewConfirmedOrder."No.";
                                         TestNoofdays."Plot No." := NewConfirmedOrder."Unit Code";
                                         TestNoofdays."No. of Days" := (EndDate - StartDt);
@@ -280,6 +348,11 @@ codeunit 50048 "WhatsApp Data Push"
                                         TestNoofdays."Min. allotment Amount" := NewConfirmedOrder."Min. Allotment Amount";
                                         TestNoofdays."Creation Date Time" := CURRENTDATETIME;
                                         TestNoofdays.INSERT;
+                                        TestNoofdays.Validate("Customer No.", NewConfirmedOrder."Customer No.");
+                                        TestNoofdays.Validate("Project No.", NewConfirmedOrder."Shortcut Dimension 1 Code");
+                                        TestNoofdays.Validate("Associate ID", NewConfirmedOrder."Introducer Code");
+                                        TestNoofdays."Posting Date/DOJ" := NewConfirmedOrder."Posting Date";
+                                        TestNoofdays.Modify();
                                         DataInsert := TRUE;
                                     END;
                         END;
@@ -288,6 +361,7 @@ codeunit 50048 "WhatsApp Data Push"
                             DueDate := NewConfirmedOrder."Posting Date" + ResponsibilityCenter."Option C Days (First Days)";
                             IF (StartDt >= DueDate) AND (StartDt <= EndDate) THEN BEGIN
                                 TestNoofdays.INIT;
+                                TestNoofdays."Entry ID" := CreateGuid();
                                 TestNoofdays."Application No." := NewConfirmedOrder."No.";
                                 TestNoofdays."Plot No." := NewConfirmedOrder."Unit Code";
                                 TestNoofdays."No. of Days" := (EndDate - StartDt);
@@ -298,10 +372,16 @@ codeunit 50048 "WhatsApp Data Push"
                                 TestNoofdays."Min. allotment Amount" := NewConfirmedOrder."Min. Allotment Amount";
                                 TestNoofdays."Creation Date Time" := CURRENTDATETIME;
                                 TestNoofdays.INSERT;
+                                TestNoofdays.Validate("Customer No.", NewConfirmedOrder."Customer No.");
+                                TestNoofdays.Validate("Project No.", NewConfirmedOrder."Shortcut Dimension 1 Code");
+                                TestNoofdays.Validate("Associate ID", NewConfirmedOrder."Introducer Code");
+                                TestNoofdays."Posting Date/DOJ" := NewConfirmedOrder."Posting Date";
+                                TestNoofdays.Modify();
                                 DataInsert := TRUE;
                             END ELSE
                                 IF (NOT DataInsert) AND (StartDt > EndDate) THEN BEGIN
                                     TestNoofdays.INIT;
+                                    TestNoofdays."Entry ID" := CreateGuid();
                                     TestNoofdays."Application No." := NewConfirmedOrder."No.";
                                     TestNoofdays."Plot No." := NewConfirmedOrder."Unit Code";
                                     TestNoofdays."No. of Days" := (EndDate - StartDt);
@@ -312,10 +392,16 @@ codeunit 50048 "WhatsApp Data Push"
                                     TestNoofdays."Min. allotment Amount" := NewConfirmedOrder."Min. Allotment Amount";
                                     TestNoofdays."Creation Date Time" := CURRENTDATETIME;
                                     TestNoofdays.INSERT;
+                                    TestNoofdays.Validate("Customer No.", NewConfirmedOrder."Customer No.");
+                                    TestNoofdays.Validate("Project No.", NewConfirmedOrder."Shortcut Dimension 1 Code");
+                                    TestNoofdays.Validate("Associate ID", NewConfirmedOrder."Introducer Code");
+                                    TestNoofdays."Posting Date/DOJ" := NewConfirmedOrder."Posting Date";
+                                    TestNoofdays.Modify();
                                     DataInsert := TRUE;
                                 END ELSE
                                     IF (NOT DataInsert) AND (StartDt < EndDate) THEN BEGIN
                                         TestNoofdays.INIT;
+                                        TestNoofdays."Entry ID" := CreateGuid();
                                         TestNoofdays."Application No." := NewConfirmedOrder."No.";
                                         TestNoofdays."Plot No." := NewConfirmedOrder."Unit Code";
                                         TestNoofdays."No. of Days" := (EndDate - StartDt);
@@ -326,6 +412,11 @@ codeunit 50048 "WhatsApp Data Push"
                                         TestNoofdays."Min. allotment Amount" := NewConfirmedOrder."Min. Allotment Amount";
                                         TestNoofdays."Creation Date Time" := CURRENTDATETIME;
                                         TestNoofdays.INSERT;
+                                        TestNoofdays.Validate("Customer No.", NewConfirmedOrder."Customer No.");
+                                        TestNoofdays.Validate("Project No.", NewConfirmedOrder."Shortcut Dimension 1 Code");
+                                        TestNoofdays.Validate("Associate ID", NewConfirmedOrder."Introducer Code");
+                                        TestNoofdays."Posting Date/DOJ" := NewConfirmedOrder."Posting Date";
+                                        TestNoofdays.Modify();
                                         DataInsert := TRUE;
                                     END;
                         END;
@@ -334,5 +425,22 @@ codeunit 50048 "WhatsApp Data Push"
             END;
         END;
         EXIT(TestNoofdays."No. of Days");
+    end;
+
+    procedure DataTransfer()
+    var
+        WhatsAppDataPushDetails: Record "WhatsApp Data Push Details";
+        PtdWhatsAppDataPushDetails: Record "Ptd WhatsApp Data Push Details";
+    begin
+        WhatsAppDataPushDetails.Reset();
+        WhatsAppDataPushDetails.SetFilter("Application No.", '<>%1', '');
+        IF WhatsAppDataPushDetails.FindSet() then begin
+            repeat
+                PtdWhatsAppDataPushDetails.Init();
+                PtdWhatsAppDataPushDetails.TransferFields(WhatsAppDataPushDetails);
+                PtdWhatsAppDataPushDetails.Insert();
+            until WhatsAppDataPushDetails.Next() = 0;
+            WhatsAppDataPushDetails.DeleteAll();
+        end;
     end;
 }

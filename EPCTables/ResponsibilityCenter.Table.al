@@ -772,10 +772,44 @@ table 97761 "Responsibility Center 1"
         field(60105; "Project Consider on MIS Report"; Boolean)
         {
             DataClassification = ToBeClassified;
+            trigger OnValidate()
+            var
+                myInt: Integer;
+            begin
+                IF "Project Consider on MIS Report" THEN
+                    Rec.TestField("MIS Project Code");   //Added new field 09042026
+            end;
         }
         field(60106; "Min. Allotement % for BSPs"; Decimal)  //Added new field 13032026 
         {
             DataClassification = ToBeClassified;
+        }
+        Field(60107; "MIS Project Code"; Code[20])   //Added new field 09042026
+        {
+            DataClassification = ToBeClassified;
+            Description = 'Use this field for MIS SummaryReport';
+            trigger OnValidate()
+            var
+                Company: Record Company;
+                RespCenter: Record "Responsibility Center 1";
+            begin
+                //Added new field 09042026 Start
+                Company.RESET;
+                Company.SetFilter(name, '<>%1', COMPANYNAME);
+                IF Company.FIND('-') THEN BEGIN
+                    REPEAT
+                        RespCenter.RESET;
+                        RespCenter.CHANGECOMPANY(Company.Name);
+                        RespCenter.SETRANGE(Code, Code);
+                        IF RespCenter.FINDFIRST THEN BEGIN
+                            RespCenter."MIS Project Code" := "MIS Project Code";
+                            RespCenter.MODIFY;
+                        END;
+                    UNTIL Company.NEXT = 0;
+                END;
+                //Added new field 09042026 END
+
+            end;
         }
     }
 
@@ -796,6 +830,10 @@ table 97761 "Responsibility Center 1"
         }
         key(Key5; "Cluster Code", "Sequence of Project")
         {
+        }
+        Key(Kays6; "MIS Project Code", Code)   //Added new key 09042026
+        {
+
         }
     }
 

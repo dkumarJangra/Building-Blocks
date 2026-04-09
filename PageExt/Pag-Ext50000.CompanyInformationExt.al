@@ -99,6 +99,11 @@ pageextension 50000 "BBG Company Information Ext" extends "Company Information"
                 ApplicationArea = all;
                 Caption = 'Send Customer Cheque Bounce SMS';
             }
+            field("Data Push on Jiva"; Rec."Data Push on Jiva")   //Added new field 05042026
+            {
+                ApplicationArea = all;
+                Caption = 'Data Push on Jiva';
+            }
         }
         addafter("Home Page")
         {

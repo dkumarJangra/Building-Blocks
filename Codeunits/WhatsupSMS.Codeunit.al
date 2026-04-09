@@ -5,6 +5,136 @@ codeunit 50225 "DGC Whatsup SMS"
 
     end;
 
+    procedure CreateBodyForPaymentReminder(FrommobileNo: Text; TomobileNo: Text; Parameter1: Text; Parameter2: Text; Parameter3: Text; Parameter4: Text; Parameter5: Text; Parameter6: Text; LWhatsAppDataPushDetails: Record "WhatsApp Data Push Details")
+    var
+        RequestJson: JsonObject;
+        MessageJson: JsonObject;
+        ContentJson: JsonObject;
+        TemplateJson: JsonObject;
+        RecipientJson: JsonObject;
+        LanguageJson: JsonObject;
+        ReferenceJson: JsonObject;
+        ParameterJson: JsonObject;
+        SenderJson: JsonObject;
+        PreferencesJson: JsonObject;
+        MetaDataJson: JsonObject;
+        Json: Text;
+    begin
+        GWhatsAppDataPushDetails.Reset();
+        GWhatsAppDataPushDetails.SetRange("Entry ID", LWhatsAppDataPushDetails."Entry ID");
+        IF GWhatsAppDataPushDetails.FindFirst() then;
+
+        MessageJson.Add(channellbl, WABAlbl);
+
+        ContentJson.add(preview_urllbl, false);
+        ContentJson.add(typeLbl, TEMPLATElbl);
+
+        TemplateJson.add(templateIdlbl, duereminderlbl);
+
+        ParameterJson.add(Zerolbl, Parameter1);
+        ParameterJson.add(Onelbl, Parameter2);
+        ParameterJson.Add(Twolbl, Parameter3);
+        ParameterJson.Add(Threelbl, Parameter4);
+        ParameterJson.Add(Fourlbl, Parameter5);
+        ParameterJson.Add(Fivelbl, Parameter6);
+
+        TemplateJson.add(parameterValueslbl, ParameterJson);
+        TemplateJson.add(headerTitlelbl, '{{1}}');
+
+        ContentJson.Add(templatevaluelbl, TemplateJson);
+        ContentJson.add(shorten_urllbl, true);
+
+        MessageJson.Add(contentlbl, ContentJson);
+
+        RecipientJson.Add(toLbl, TomobileNo);
+        RecipientJson.Add(recipient_typeLbl, individualLbl);
+
+        ReferenceJson.add(cust_reflbl, Some_Customer_Reflbl);
+        ReferenceJson.add(messageTag1lbl, Message_Tag_Val1lbl);
+        ReferenceJson.add(conversationIdlbl, Some_Optional_Conversation_IDlbl);
+
+        RecipientJson.Add(referencelbl, ReferenceJson);
+        MessageJson.Add(recipientlbl, RecipientJson);
+
+        SenderJson.Add(fromlbl, FrommobileNo);
+        MessageJson.Add(senderlbl, SenderJson);
+
+        PreferencesJson.Add(webHookDNIdlbl, '1001');
+
+        MetaDataJson.add(versionlbl, 'v1.0.9');
+
+        RequestJson.Add(messagelbl, MessageJson);
+        RequestJson.Add(metaDatalbl, MetaDataJson);
+        RequestJson.WriteTo(Json);
+        //Message(Json);
+        SendSMS(Json);
+    end;
+
+    procedure CreateBodyForPaymentReminderForVendor(FrommobileNo: Text; TomobileNo: Text; Parameter1: Text; Parameter2: Text; Parameter3: Text; Parameter4: Text; Parameter5: Text; Parameter6: Text; LWhatsAppDataPushDetails: Record "WhatsApp Data Push Details")
+    var
+        RequestJson: JsonObject;
+        MessageJson: JsonObject;
+        ContentJson: JsonObject;
+        TemplateJson: JsonObject;
+        RecipientJson: JsonObject;
+        LanguageJson: JsonObject;
+        ReferenceJson: JsonObject;
+        ParameterJson: JsonObject;
+        SenderJson: JsonObject;
+        PreferencesJson: JsonObject;
+        MetaDataJson: JsonObject;
+        Json: Text;
+    begin
+        GWhatsAppDataPushDetailsVend.Reset();
+        GWhatsAppDataPushDetailsVend.SetRange("Entry ID", LWhatsAppDataPushDetails."Entry ID");
+        IF GWhatsAppDataPushDetailsVend.FindFirst() then;
+
+        MessageJson.Add(channellbl, WABAlbl);
+
+        ContentJson.add(preview_urllbl, false);
+        ContentJson.add(typeLbl, TEMPLATElbl);
+
+        TemplateJson.add(templateIdlbl, duereminderlbl);
+
+        ParameterJson.add(Zerolbl, Parameter1);
+        ParameterJson.add(Onelbl, Parameter2);
+        ParameterJson.Add(Twolbl, Parameter3);
+        ParameterJson.Add(Threelbl, Parameter4);
+        ParameterJson.Add(Fourlbl, Parameter5);
+        ParameterJson.Add(Fivelbl, Parameter6);
+
+        TemplateJson.add(parameterValueslbl, ParameterJson);
+        TemplateJson.add(headerTitlelbl, '{{1}}');
+
+        ContentJson.Add(templatevaluelbl, TemplateJson);
+        ContentJson.add(shorten_urllbl, true);
+
+        MessageJson.Add(contentlbl, ContentJson);
+
+        RecipientJson.Add(toLbl, TomobileNo);
+        RecipientJson.Add(recipient_typeLbl, individualLbl);
+
+        ReferenceJson.add(cust_reflbl, Some_Customer_Reflbl);
+        ReferenceJson.add(messageTag1lbl, Message_Tag_Val1lbl);
+        ReferenceJson.add(conversationIdlbl, Some_Optional_Conversation_IDlbl);
+
+        RecipientJson.Add(referencelbl, ReferenceJson);
+        MessageJson.Add(recipientlbl, RecipientJson);
+
+        SenderJson.Add(fromlbl, FrommobileNo);
+        MessageJson.Add(senderlbl, SenderJson);
+
+        PreferencesJson.Add(webHookDNIdlbl, '1001');
+
+        MetaDataJson.add(versionlbl, 'v1.0.9');
+
+        RequestJson.Add(messagelbl, MessageJson);
+        RequestJson.Add(metaDatalbl, MetaDataJson);
+        RequestJson.WriteTo(Json);
+        //Message(Json);
+        SendSMSForVendor(Json);
+    end;
+
     procedure CreateBodyForbillPayment(MobileNo: Text; Parameter1: Text; Parameter2: Text; Parameter3: Text)
     var
         RequestJson: JsonObject;
@@ -301,8 +431,8 @@ codeunit 50225 "DGC Whatsup SMS"
         // Set up the request content
         Content.WriteFrom(JsonPayload);
         Content.GetHeaders(ContentHeaders);
-        ContentHeaders.Remove('Content-Type');
-        ContentHeaders.Add('Content-Type', WhatsappIntegrationSetup."Header Value");
+        ContentHeaders.Remove(WhatsappIntegrationSetup.Header);
+        ContentHeaders.Add(WhatsappIntegrationSetup.Header, WhatsappIntegrationSetup."Header Value");
 
         // Set up the request message
         RequestMessage.Method := WhatsappIntegrationSetup.Method;
@@ -320,11 +450,143 @@ codeunit 50225 "DGC Whatsup SMS"
         // Handle response
         if ResponseMessage.IsSuccessStatusCode() then begin
             ResponseMessage.Content.ReadAs(ResponseText);
+            SaveReponceMessage(ResponseMessage);
             //Message('Success: ' + ResponseText); // Uncomment if needed
         end else begin
             ResponseMessage.Content.ReadAs(ResponseText);
+            SaveReponceMessage(ResponseMessage);
             //Error('WhatsApp API error (%1): %2', ResponseMessage.HttpStatusCode(), ResponseText);
         end;
+    end;
+
+    procedure SendSMSForVendor(JsonPayload: Text)
+    var
+        WhatsappIntegrationSetup: Record "Whatsup Integration Setup";
+        Client: HttpClient;
+        RequestMessage: HttpRequestMessage;
+        ResponseMessage: HttpResponseMessage;
+        Headers: HttpHeaders;
+        Content: HttpContent;
+        ContentHeaders: HttpHeaders;
+        ResponseText: Text;
+    begin
+        WhatsappIntegrationSetup.Get();
+
+        // Set up the request content
+        Content.WriteFrom(JsonPayload);
+        Content.GetHeaders(ContentHeaders);
+        ContentHeaders.Remove(WhatsappIntegrationSetup.Header);
+        ContentHeaders.Add(WhatsappIntegrationSetup.Header, WhatsappIntegrationSetup."Header Value");
+
+        // Set up the request message
+        RequestMessage.Method := WhatsappIntegrationSetup.Method;
+        RequestMessage.SetRequestUri(WhatsappIntegrationSetup."API URL");
+        RequestMessage.Content := Content;
+
+        // Add custom headers
+        RequestMessage.GetHeaders(Headers);
+        Headers.Add(WhatsappIntegrationSetup."Header 2", WhatsappIntegrationSetup."Header Value 2");
+
+        // Send the request
+        if not Client.Send(RequestMessage, ResponseMessage) then
+            Error('Failed to send WhatsApp message: %1', GetLastErrorText());
+
+        // Handle response
+        if ResponseMessage.IsSuccessStatusCode() then begin
+            ResponseMessage.Content.ReadAs(ResponseText);
+            SaveReponceMessageForVendor(ResponseMessage);
+            //Message('Success: ' + ResponseText); // Uncomment if needed
+        end else begin
+            ResponseMessage.Content.ReadAs(ResponseText);
+            SaveReponceMessageForVendor(ResponseMessage);
+            //Error('WhatsApp API error (%1): %2', ResponseMessage.HttpStatusCode(), ResponseText);
+        end;
+    end;
+
+    procedure SaveReponceMessage(var ResponseMessage: HttpResponseMessage)
+    var
+        JObject: JsonObject;
+        JToken: JsonToken;
+        RText: Text;
+    begin
+        if ResponseMessage.IsSuccessStatusCode() then begin
+            ResponseMessage.Content.ReadAs(RText);
+            IF GWhatsAppDataPushDetails."Receiver Type" = GWhatsAppDataPushDetails."Receiver Type"::Customer then begin
+                if not JObject.ReadFrom(RText) then
+                    Error('Invalid response, expected a JSON object');
+                if JObject.Get('statusCode', JToken) then
+                    GWhatsAppDataPushDetails."Whatsup Status Code For Cust" := JToken.AsValue().AsText();
+                if JObject.Get('statusDesc', JToken) then
+                    GWhatsAppDataPushDetails."Whatsup Status Desc For Cust" := JToken.AsValue().AsText();
+                if JObject.Get('mid', JToken) then
+                    GWhatsAppDataPushDetails."Whatsup mid For Customer" := JToken.AsValue().AsText();
+                GWhatsAppDataPushDetails."Select for send Whatsapp" := False;
+                GWhatsAppDataPushDetails."Sent Whatsapp Message For Cust" := True;
+                GWhatsAppDataPushDetails."Whats Mess DateTime For Cust" := CurrentDateTime;
+                GWhatsAppDataPushDetails.Modify();
+                Commit();
+            end else begin
+                ResponseMessage.Content.ReadAs(RText);
+
+                if not JObject.ReadFrom(RText) then
+                    Error('Invalid response, expected a JSON object');
+                if JObject.Get('statusCode', JToken) then
+                    GWhatsAppDataPushDetails."Whatsup Status Code For Cust" := JToken.AsValue().AsText();
+                if JObject.Get('statusDesc', JToken) then
+                    GWhatsAppDataPushDetails."Whatsup Status Desc For Cust" := JToken.AsValue().AsText();
+                if JObject.Get('mid', JToken) then
+                    GWhatsAppDataPushDetails."Whatsup mid For Customer" := JToken.AsValue().AsText();
+                GWhatsAppDataPushDetails."Select for send Whatsapp" := False;
+                GWhatsAppDataPushDetails."Sent Whatsapp Message For Cust" := True;
+                GWhatsAppDataPushDetails."Whats Mess DateTime For Cust" := CurrentDateTime;
+                GWhatsAppDataPushDetails.Modify();
+                Commit();
+            end;
+        end;
+
+    end;
+
+    procedure SaveReponceMessageForVendor(var ResponseMessage: HttpResponseMessage)
+    var
+        JObject: JsonObject;
+        JToken: JsonToken;
+        RText: Text;
+    begin
+        if ResponseMessage.IsSuccessStatusCode() then begin
+            ResponseMessage.Content.ReadAs(RText);
+            IF GWhatsAppDataPushDetailsVend."Receiver Type" = GWhatsAppDataPushDetailsVend."Receiver Type"::Customer then begin
+                if not JObject.ReadFrom(RText) then
+                    Error('Invalid response, expected a JSON object');
+                if JObject.Get('statusCode', JToken) then
+                    GWhatsAppDataPushDetailsVend."Whatsup Status Code For Vendor" := JToken.AsValue().AsText();
+                if JObject.Get('statusDesc', JToken) then
+                    GWhatsAppDataPushDetailsVend."Whatsup Status Desc For Vendor" := JToken.AsValue().AsText();
+                if JObject.Get('mid', JToken) then
+                    GWhatsAppDataPushDetailsVend."Whatsup mid For Vendor" := JToken.AsValue().AsText();
+                GWhatsAppDataPushDetailsVend."Select for send Whatsapp" := False;
+                GWhatsAppDataPushDetailsVend."Sent Whatsapp Message For Vend" := True;
+                GWhatsAppDataPushDetailsVend."Whats Mess DateTime For Vendor" := CurrentDateTime;
+                GWhatsAppDataPushDetailsVend.Modify();
+                Commit();
+            end else begin
+                ResponseMessage.Content.ReadAs(RText);
+
+                if not JObject.ReadFrom(RText) then
+                    Error('Invalid response, expected a JSON object');
+                if JObject.Get('statusCode', JToken) then
+                    GWhatsAppDataPushDetailsVend."Whatsup Status Code For Vendor" := JToken.AsValue().AsText();
+                if JObject.Get('statusDesc', JToken) then
+                    GWhatsAppDataPushDetailsVend."Whatsup Status Desc For Vendor" := JToken.AsValue().AsText();
+                if JObject.Get('mid', JToken) then
+                    GWhatsAppDataPushDetailsVend."Whatsup mid For Vendor" := JToken.AsValue().AsText();
+                GWhatsAppDataPushDetailsVend."Select for send Whatsapp" := False;
+                GWhatsAppDataPushDetailsVend."Sent Whatsapp Message For Vend" := True;
+                GWhatsAppDataPushDetailsVend."Whats Mess DateTime For Vendor" := CurrentDateTime;
+                GWhatsAppDataPushDetailsVend.Modify();
+                Commit();
+            end;
+        end;
+
     end;
 
     procedure SendSMSforMonthlyStatement(JsonPayload: Text)
@@ -372,10 +634,6 @@ codeunit 50225 "DGC Whatsup SMS"
     var
         messaging_productLbl: Label 'messaging_product';
         whatsappLbl: Label 'whatsapp';
-        recipient_typeLbl: Label 'recipient_type';
-        toLbl: Label 'to';
-        typeLbl: Label 'type';
-        templateLbl: Label 'template';
         nameLbl: Label 'name';
         languageLbl: Label 'language';
         codeLbl: Label 'code';
@@ -390,10 +648,52 @@ codeunit 50225 "DGC Whatsup SMS"
         credit_limitLbl: Label 'credit_limit';
         surcharge_informationLbl: Label 'surcharge_information';
         credit_limit_ver3Lbl: Label 'credit_limit_ver3';
-        individualLbl: Label 'individual';
+
         headerlbl: Label 'header';
         documentlbl: Label 'document';
         linklbl: Label 'link';
         filenamelbl: Label 'filename';
+
+        //For BBG Start >>
+        messagelbl: Label 'message';
+        channellbl: Label 'channel';
+        contentlbl: Label 'content';
+        preview_urllbl: Label 'preview_url';
+        typeLbl: Label 'type';
+        templateIdlbl: Label 'templateId';
+        parameterValueslbl: Label 'parameterValues';
+        headerTitlelbl: Label 'headerTitle';
+        shorten_urllbl: Label 'shorten_url';
+        recipientlbl: Label 'recipient';
+        recipient_typeLbl: Label 'recipient_type';
+        toLbl: Label 'to';
+        referencelbl: Label 'reference';
+        cust_reflbl: Label 'cust_ref';
+        messageTag1lbl: Label 'messageTag1';
+        conversationIdlbl: Label 'conversationId';
+        senderlbl: Label 'sender';
+        fromlbl: Label 'from';
+        preferenceslbl: Label 'preferences';
+        webHookDNIdlbl: Label 'webHookDNId';
+        metaDatalbl: Label 'metaData';
+        versionlbl: Label 'version';
+        Zerolbl: Label '0';
+        Onelbl: Label '1';
+        Twolbl: Label '2';
+        Threelbl: Label '3';
+        Fourlbl: Label '4';
+        Fivelbl: Label '5';
+        Sixlbl: Label '6';
+        WABAlbl: Label 'WABA';
+        TEMPLATElbl: Label 'TEMPLATE';
+        templatevaluelbl: Label 'template';
+        duereminderlbl: Label 'bcduefinal1';
+        individualLbl: Label 'individual';
+        Some_Customer_Reflbl: Label 'Some Customer Ref';
+        Message_Tag_Val1lbl: Label 'Message Tag Val1';
+        Some_Optional_Conversation_IDlbl: Label 'Some Optional Conversation ID';
+
+        GWhatsAppDataPushDetails: Record "WhatsApp Data Push Details";
+        GWhatsAppDataPushDetailsVend: Record "WhatsApp Data Push Details";
 
 }

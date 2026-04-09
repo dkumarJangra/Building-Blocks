@@ -70,7 +70,7 @@ codeunit 50003 "Web App Service"
 
     begin
         Compinfor.GET;  //Code added 05122025
-        IF NOT Compinfor."Stop Data Push to WebApp" then BEGIN  //Code added 05122025
+        IF Compinfor."Data push on Jiva" then BEGIN  //Code added 05042026
             Clear(CustObject);
             CustObject.Add('secret_key', 'U5Ga0Z1aaNlYHp0MjdEdXJ1aKVVVB1TP');
             CustObject.Add('navision_id', navision_id);
@@ -127,7 +127,7 @@ codeunit 50003 "Web App Service"
             //070425 Added Jiva Log End
 
         END;
-    end;  //Code added 05122025
+    end;  //Code added 05042026
 
 
 

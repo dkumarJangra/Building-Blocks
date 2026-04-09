@@ -59,10 +59,10 @@ codeunit 50227 "TDS Adjustment Post BBG"
 
     procedure PostGenJnlLine(var TDSJournalLine: Record "TDS Journal Line")
     begin
-        // if (TDSJournalLine."Journal Batch Name" = '') and (TDSJournalLine."Journal Template Name" = '') then  Code commented 18032026
-        DocNo := TDSJournalLine."Document No.";
-        // else  Code commented 18032026
-        //   DocNo := CheckDocumentNo(TDSJournalLine);  Code commented 18032026
+        if (TDSJournalLine."Journal Batch Name" = '') and (TDSJournalLine."Journal Template Name" = '') then
+            DocNo := TDSJournalLine."Document No."
+        else
+            DocNo := CheckDocumentNo(TDSJournalLine);
 
         InitGenJnlLine(TDSJournalLine);
     end;
