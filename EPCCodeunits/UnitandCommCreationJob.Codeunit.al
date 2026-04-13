@@ -1027,6 +1027,7 @@ codeunit 97726 "Unit and Comm. Creation Job"
         Bond."Mandal Code" := NewApplication."Mandal Code";
         Bond."Village Code" := NewApplication."Village Code";
         Bond."New Loan File" := NewApplication."New Loan File";//Ankur
+        Bond."New Company Name" := NewApplication."New Company Name";//10042026
         //Code added END 23072025
 
         UnitMaster.RESET;  //090921
@@ -1536,7 +1537,9 @@ codeunit 97726 "Unit and Comm. Creation Job"
         Bond."Unit Plan Name" := NewApplication."Unit Plan Name";
         Bond."New Loan File" := NewApplication."New Loan File";//Ankur
         Bond."Commission Hold on Full Pmt" := TRUE;
+        Bond."New Company Name" := NewApplication."New Company Name";//10042026
         //BBG2.0
+
         Bond."Development Charges" := NewApplication."Development Charges";
         v_CompanyInformation.RESET;
         v_CompanyInformation.CHANGECOMPANY(NewApplication."Company Name");

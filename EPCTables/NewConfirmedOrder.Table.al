@@ -1219,6 +1219,12 @@ table 50015 "New Confirmed Order"
             OptionCaption = ' ,Yes,No';
 
         }
+        field(60051; "New Company Name"; Text[30])  //10042026 Added new field
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+            TableRelation = Company;
+        }
     }
 
     keys

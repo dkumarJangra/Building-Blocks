@@ -497,6 +497,13 @@ table 97824 "Archive Confirmed Order"
             OptionMembers = " ",Yes,No;
             OptionCaption = ' ,Yes,No';
         }
+
+        field(60051; "New Company Name"; Text[30])  //10042026 Added new field
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+            TableRelation = Company;
+        }
         field(90123; "R194 Gift Issued"; Boolean)   //251124 Added new field
         {
             DataClassification = ToBeClassified;

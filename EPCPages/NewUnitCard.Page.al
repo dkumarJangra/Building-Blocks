@@ -100,6 +100,10 @@ page 50081 "New Unit Card"
                 {
                     Editable = false;
                 }
+                field("New Company Name"; Rec."New Company Name")  //added new field 10042026
+                {
+                    Editable = false;
+                }
                 field("Version No."; Rec."Version No.")
                 {
                 }

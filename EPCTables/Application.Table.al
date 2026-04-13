@@ -1012,10 +1012,18 @@ table 97790 Application
             OptionMembers = " ",Yes,No;
             OptionCaption = ' ,Yes,No';
         }
+        field(60051; "New Company Name"; Text[30])  //10042026 Added new field
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+            TableRelation = Company;
+        }
         field(50011; "Rank Code"; Code[10])   // Code added 01072025
         {
             Editable = false;
         }
+
+
         field(90121; "Travel applicable"; Boolean)  //New field added 01072025
         {
             Editable = False;

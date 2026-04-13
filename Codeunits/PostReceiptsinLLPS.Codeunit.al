@@ -180,6 +180,7 @@ codeunit 50008 "Post Receipts in LLPS"
             Application."Mandal Code" := NewConforder."Mandal Code";
             Application."Village Code" := NewConforder."Village Code";
             Application."New Loan File" := NewConforder."New Loan File";//Ankur
+            Application."New Company Name" := NewConforder."New Company Name";//10042026
             //Code added END 23072025
 
             Application.MODIFY;

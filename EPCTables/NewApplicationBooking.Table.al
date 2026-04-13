@@ -972,6 +972,32 @@ table 50016 "New Application Booking"
             Caption = 'Aadhar No.';
             DataClassification = ToBeClassified;
         }
+        field(60051; "New Company Name"; Text[30])  //10042026 Added new field
+        {
+            Caption = 'New Company Name';
+            DataClassification = ToBeClassified;
+            TableRelation = Company.Name;
+            trigger OnValidate()
+            var
+                responsibilityCenter: Record "Responsibility Center 1";
+            begin
+                //10042026 Added code
+                IF "New Company Name" <> '' THEN BEGIN
+
+                    responsibilityCenter.RESET;
+                    responsibilityCenter.ChangeCompany("New Company Name");
+                    responsibilityCenter.SetRange(Code, "Shortcut Dimension 1 Code");
+                    IF Not responsibilityCenter.FINDFIRST then
+                        ERROR('This Project does not exist in this company-' + "New Company Name");
+
+                    Rec."Company Name" := "New Company Name";
+                END ELSE
+                    Rec.Validate(Rec."Shortcut Dimension 1 Code");
+            END;
+
+
+        }
+
 
     }
 

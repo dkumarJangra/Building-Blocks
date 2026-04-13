@@ -1367,6 +1367,13 @@ table 97793 "Confirmed Order"
             OptionCaption = ' ,Yes,No';
         }
 
+        field(60051; "New Company Name"; Text[30])  //10042026 Added new field
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+            TableRelation = Company;
+        }
+
         field(90122; "Gold/Silver Voucher Issued"; Decimal)   //080425 New field added
         {
             CalcFormula = Sum("Item LEdger Entry"."Quantity" WHERE("Application No." = FIELD("No."),

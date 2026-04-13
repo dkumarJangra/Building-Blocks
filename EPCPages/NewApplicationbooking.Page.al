@@ -44,6 +44,12 @@ page 50079 "New Application booking"
                     Caption = 'Region_Rank Code';
 
                 }
+
+                field("New Company Name"; Rec."New Company Name")   //Added by new field 10042026
+                {
+                    Caption = 'New Company Name';
+
+                }
                 field("Customer No."; Rec."Customer No.")
                 {
                     Caption = 'Member No.';
