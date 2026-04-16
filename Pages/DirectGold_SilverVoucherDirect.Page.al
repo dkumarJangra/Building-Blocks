@@ -328,7 +328,27 @@ page 50238 "Gold/Silver Voucher Direct"
                         v_RequesttoApproveDocuments_1: Record "Request to Approve Documents";
                         ApprovalWorkflowforAuditPr: Record "Approval Workflow for Audit Pr";
                         v_GatePassLine: Record "Gate Pass Line";
+                        Recjob: Record Job;
                     begin
+
+                        //Added new code 13042026 Start
+                        // RecJob.RESET;
+                        // If RecJob.GET(Rec."Shortcut Dimension 1 Code") Then
+                        //     RecJob.TestField("Blocked For Receipt Entry", false);
+                        v_GatePassLine.RESET;
+                        v_GatePassLine.SETRANGE("Document Type", Rec."Document Type");
+                        v_GatePassLine.SETRANGE("Document No.", Rec."Document No.");
+                        IF v_GatePassLine.FINDFIRST THEN
+                            IF v_GatePassLine."Application No." <> '' THEN BEGIN
+                                ConfOrder.RESET;
+                                IF ConfOrder.GET(v_GatePassLine."Application No.") THEN
+                                    ConfOrder.TestField(ConfOrder."Restricted For Receipt Entry", false);
+                            END;
+                        //Added new code 13042026 END
+
+
+                        //Added new code 13042026 END
+
                         //270923 Approval Workflow
 
                         Rec.TESTFIELD("Send for Approval", FALSE);
@@ -597,7 +617,15 @@ page 50238 "Gold/Silver Voucher Direct"
                     trigger OnAction()
                     var
                         Tqty: Decimal;
+                        Recjob: Record Job;    //Added new code 13042026
                     begin
+
+                        //Added new code 13042026 Start
+                        // RecJob.RESET;
+                        // If RecJob.GET(Rec."Shortcut Dimension 1 Code") Then
+                        //     RecJob.TestField("Blocked For Receipt Entry", false);
+                        //Added new code 13042026 END
+
                         Rec.TESTFIELD("Approval Status", Rec."Approval Status"::Approved);  //270923 Approval Workflow
                         DocNo := '';
                         DocNo := Rec."Document No.";
@@ -627,6 +655,13 @@ page 50238 "Gold/Silver Voucher Direct"
                             RecGatePassLines.SETRANGE("Journal Line Created", FALSE);
                             IF RecGatePassLines.FIND('-') THEN BEGIN
                                 REPEAT
+                                    //Added new code 13042026 Start
+                                    IF RecGatePassLines."Application No." <> '' THEN BEGIN
+                                        ConfOrder.RESET;
+                                        IF ConfOrder.GET(RecGatePassLines."Application No.") THEN
+                                            ConfOrder.TestField(ConfOrder."Restricted For Receipt Entry", false);
+                                    END;
+                                    //Added new code 13042026 END
                                     RecGatePassLines.TESTFIELD("Item No.");
                                     RecGatePassLines.TESTFIELD("Shortcut Dimension 2 Code");
                                     Tqty := 0;

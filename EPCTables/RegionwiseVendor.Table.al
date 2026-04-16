@@ -45,8 +45,10 @@ table 50012 "Region wise Vendor"
             var
                 recRank: Record "Job Master";
             begin
+
                 IF "Parent Code" <> '' THEN
                     Vendor.GET("Parent Code");
+
                 TESTFIELD("Rank Code");
                 IF "Parent Code" = "No." THEN
                     ERROR(Text012);

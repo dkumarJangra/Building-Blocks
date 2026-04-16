@@ -483,7 +483,7 @@ table 97814 "Assoc Pmt Voucher Header"
         {
             DataClassification = ToBeClassified;
             TableRelation = "Confirmed Order"."No." WHERE("Introducer Code" = FIELD("Paid To"),
-                                                         Status = FILTER(<> Vacate & <> Cancelled));
+                                                         Status = FILTER(<> Vacate & <> Cancelled), "Restricted For Receipt Entry" = filter(false));
 
             trigger OnValidate()
             var

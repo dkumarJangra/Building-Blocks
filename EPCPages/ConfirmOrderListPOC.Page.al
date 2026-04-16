@@ -113,9 +113,15 @@ page 50083 "Confirm Order List (POC)"
                 {
 
                 }
+                field("Restricted For Receipt Entry"; Rec."Restricted For Receipt Entry")
+                {
+
+                }
+
             }
         }
     }
+
 
     actions
     {

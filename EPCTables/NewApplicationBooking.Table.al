@@ -74,7 +74,7 @@ table 50016 "New Application Booking"
         {
             CaptionClass = '1,2,1';
             Caption = 'Shortcut Dimension 1 Code';
-            TableRelation = "Responsibility Center 1".Code WHERE("Active Projects" = FILTER(true));
+            TableRelation = "Responsibility Center 1".Code WHERE("Active Projects" = FILTER(true), "Blocked For Booking" = filter(False));   //Alled "Blocked For Booking" 13042026
 
             trigger OnValidate()
             var

@@ -423,7 +423,17 @@ page 50091 "Refund/Negative Adj"
                         NewAppEntry_1: Record "Application Payment Entry";
                         CommEntry_2: Record "Commission Entry";
                         UpdatePostDoc: Record "Application Payment Entry";
+                        RecJob: Record Job;  //Added new code 13042026
                     begin
+
+                        //Added new code 13042026 Start
+                        // RecJob.RESET;
+                        // RecJob.ChangeCompany(Rec."Company Name");
+                        // If RecJob.GET(Rec."Shortcut Dimension 1 Code") Then
+                        //     RecJob.TestField("Blocked For Receipt Entry", false);
+                        REc.TestField("Restricted For Receipt Entry", false);
+                        //Added new code 13042026 END
+
                         Rec.TESTFIELD("Registration Status", Rec."Registration Status"::" ");  //090921
                         Rec.TESTFIELD("Application Closed", FALSE);  //190820
                         CheckVendor.RESET;

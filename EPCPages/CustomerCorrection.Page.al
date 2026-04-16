@@ -112,6 +112,7 @@ page 97982 "Customer Correction"
                     trigger OnAction()
                     var
                         ReleaseBondApplication: Codeunit "Release Unit Application";
+                        RecJob: Record Job;  //Added new code 13042026
                     begin
                         //ALLECK 160313 START
                         // ALLE MM Code Commented as Member of table has been remove in NAV 2016
@@ -128,6 +129,12 @@ page 97982 "Customer Correction"
                         ELSE
                             ERROR('Please define the New Member No.');
 
+                        //Added new code 13042026 Start
+                        // RecJob.RESET;
+                        // If RecJob.GET(ConfOrder."Shortcut Dimension 1 Code") Then
+                        //     RecJob.TestField("Blocked For Receipt Entry", false);
+                        ConfOrder.TestField("Restricted For Receipt Entry", false);
+                        //Added new code 13042026 END
 
                         IF CONFIRM('Update Member No.') THEN BEGIN
                             //ALLECK 310313 START

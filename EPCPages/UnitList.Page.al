@@ -135,6 +135,10 @@ page 97909 "Unit List"
                 field("Restriction Remark"; Rec."Restriction Remark")
                 {
                 }
+                field("Restricted For Receipt Entry"; Rec."Restricted For Receipt Entry")   //Added new field 13042026
+                {
+
+                }
             }
         }
     }

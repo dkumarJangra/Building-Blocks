@@ -50,6 +50,22 @@ page 97950 "Unit Payment Entry  Subform1"
                 {
                     Caption = 'Amount Excluding TDS/Club9';
                     Editable = true;
+
+                    trigger OnValidate()
+                    var
+
+                        Recjob: Record job;   //Added new code 13042026 
+                        RecConforder: Record "New Confirmed Order";   //Added new code 13042026 
+                    begin
+                        //Added new code 13042026 Start
+                        IF RecConforder.GET(Rec."Document No.") then
+                            RecConforder.TestField("Restricted For Receipt Entry", false);
+                        // RecJob.RESET;
+                        // Recjob.ChangeCompany(RecConforder."Company Name");
+                        // If RecJob.GET(RecConforder."Shortcut Dimension 1 Code") Then
+                        //     RecJob.TestField("Blocked For Receipt Entry", false);
+                        //Added new code 13042026 END
+                    end;
                 }
                 field("TDS %"; Rec."TDS %")
                 {

@@ -57,11 +57,34 @@ page 97976 "MTM Transfer sub form"
                 }
                 field(Amount; Rec.Amount)
                 {
+                    trigger OnValidate()
+                    var
+                        Recjob: Record job;   //Added new code 13042026 
+                        RecConforder: Record "New Confirmed Order";   //Added new code 13042026 
+                    begin
+                        //Added new code 13042026 Start
+                        IF RecConforder.GET(Rec."Document No.") then
+                            RecConforder.TestField("Restricted For Receipt Entry", false);
+                        // RecJob.RESET;
+                        // If RecJob.GET(RecConforder."Shortcut Dimension 1 Code") Then
+                        //     RecJob.TestField("Blocked For Receipt Entry", false);
+                        //Added new code 13042026 END
+
+                    end;
                 }
                 field("Order Ref No."; Rec."Order Ref No.")
                 {
                     Caption = 'Transfer From Appl. No.';
                     Visible = true;
+                    trigger OnValidate()
+                    var
+                        Conforder: Record "Confirmed Order";
+                    begin
+                        Conforder.RESET;
+                        If Conforder.GET(Rec."Order Ref No.") then
+                            Conforder.TestField("Restricted For Receipt Entry", false);
+
+                    end;
                 }
                 field("Application No."; Rec."Application No.")
                 {

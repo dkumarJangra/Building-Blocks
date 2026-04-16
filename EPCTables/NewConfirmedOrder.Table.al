@@ -1225,6 +1225,23 @@ table 50015 "New Confirmed Order"
             Editable = false;
             TableRelation = Company;
         }
+
+        field(60052; "Restricted For Receipt Entry"; Boolean)  //10042026 Added new field
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
+        field(60053; "Last Restricted By Receipt"; Text[50])  //10042026 Added new field
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
+        field(60054; "Last Restricted DT Receipt"; DateTime)  //10042026 Added new field
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
+
     }
 
     keys

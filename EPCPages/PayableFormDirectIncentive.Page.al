@@ -198,7 +198,22 @@ page 50043 "Payable Form Direct Incentive"
                     trigger OnAction()
                     var
                         UserSetup: Record "User Setup";
+                        RecJob: Record Job;  //Added new code 13042026
+                        Conforder: Record "Confirmed Order";
                     begin
+                        //Added new code 13042026 Start
+                        IF (Rec."Special Incentive for Bonanza") AND (Rec."Application No." <> '') then BEGIN
+                            //Added new code 13042026 Start
+                            Conforder.RESET;
+                            IF Conforder.GET(Rec."Application No.") THEN
+                                Conforder.TESTFIELD("Restricted For Receipt Entry");
+                            //Added new code 13042026 END
+                            // RecJob.RESET;
+                            // If RecJob.GET(Rec."Shortcut Dimension 1 Code") Then
+                            //     RecJob.TestField("Blocked For Receipt Entry", false);
+                        END;
+                        //Added new code 13042026 END
+
                         IF CONFIRM('Do you want to Send for Approval this document') THEN BEGIN
                             Rec."Spl. Inct. Send for Approval" := TRUE;
                             Rec."Send for App. Spl. Inc Date" := CURRENTDATETIME;
@@ -241,11 +256,28 @@ page 50043 "Payable Form Direct Incentive"
                     ShortCutKey = 'F9';
 
                     trigger OnAction()
+                    var
+                        RecJob: Record Job;  //Added new code 13042026
+                        Conforder: Record "Confirmed Order";
+
                     begin
+
+                        //Added new code 13042026 Start
+                        // RecJob.RESET;
+                        // If RecJob.GET(Rec."Shortcut Dimension 1 Code") Then
+                        //     RecJob.TestField("Blocked For Receipt Entry", false);
+                        //Added new code 13042026 END
+
                         Rec.TESTFIELD(Type);
                         IF Rec."Special Incentive for Bonanza" THEN BEGIN
                             Rec.TESTFIELD("Application No.");
                             Rec.TESTFIELD("Special Incentive Approved");
+                            //Added new code 13042026 Start
+                            Conforder.RESET;
+                            IF Conforder.GET(Rec."Application No.") THEN
+                                Conforder.TESTFIELD("Restricted For Receipt Entry", false);
+                            //Added new code 13042026 END
+
                         END;
 
 

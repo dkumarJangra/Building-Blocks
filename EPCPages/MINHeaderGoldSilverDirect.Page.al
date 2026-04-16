@@ -308,8 +308,27 @@ page 50028 "MIN Header-Gold/Silver Direct"
                         v_RequesttoApproveDocuments_1: Record "Request to Approve Documents";
                         ApprovalWorkflowforAuditPr: Record "Approval Workflow for Audit Pr";
                         v_GatePassLine: Record "Gate Pass Line";
+                        RecJob: Record Job;  //Added new code 13042026
                     begin
                         //270923 Approval Workflow
+                        //Added new code 13042026 Start
+                        // RecJob.RESET;
+                        // If RecJob.GET(Rec."Shortcut Dimension 1 Code") Then
+                        //     RecJob.TestField("Blocked For Receipt Entry", false);
+                        GatePassLines.RESET;
+                        GatePassLines.SETRANGE("Document Type", Rec."Document Type");
+                        GatePassLines.SETRANGE("Document No.", Rec."Document No.");
+                        IF GatePassLines.FINDSET THEN
+                            REPEAT
+                                //Added new code 13042026 Start
+                                If GatePassLines."Application No." <> '' Then begin
+                                    ConfOrder.RESET;
+                                    If ConfOrder.GET(GatePassLines."Application No.") Then
+                                        ConfOrder.TestField("Restricted For Receipt Entry", false);
+                                end;
+                            UNTIL GatePassLines.NEXT = 0;
+                        //Added new code 13042026 END
+
 
                         Rec.TESTFIELD("Send for Approval", FALSE);
                         IF Rec."Approval Status" = Rec."Approval Status"::Approved THEN
@@ -373,7 +392,16 @@ page 50028 "MIN Header-Gold/Silver Direct"
                     Visible = false;
 
                     trigger OnAction()
+                    var
+                        Recjob: Record Job;  //Added new code 13042026
                     begin
+
+                        //Added new code 13042026 Start
+                        RecJob.RESET;
+                        If RecJob.GET(Rec."Shortcut Dimension 1 Code") Then
+                            RecJob.TestField("Blocked For Booking", false);
+                        //Added new code 13042026 END
+
                         // ALLENB 16102012 START
                         IF Rec."Shortcut Dimension 1 Code" <> Rec."Responsibility Center" THEN
                             ERROR(' Please check, Region Dimension code is different from Responsibility Center code');
@@ -584,7 +612,14 @@ page 50028 "MIN Header-Gold/Silver Direct"
                     trigger OnAction()
                     var
                         Tqty: Decimal;
+                        RecJob: Record Job;  //Added new code 13042026
                     begin
+
+                        //Added new code 13042026 Start
+                        // RecJob.RESET;
+                        // If RecJob.GET(Rec."Shortcut Dimension 1 Code") Then
+                        //     RecJob.TestField("Blocked For Receipt Entry", false);
+                        //Added new code 13042026 END
                         Rec.TESTFIELD("Approval Status", Rec."Approval Status"::Approved);  //270923 Approval Workflow
                         DocNo := '';
                         DocNo := Rec."Document No.";
@@ -614,6 +649,15 @@ page 50028 "MIN Header-Gold/Silver Direct"
                             RecGatePassLines.SETRANGE("Journal Line Created", FALSE);
                             IF RecGatePassLines.FIND('-') THEN BEGIN
                                 REPEAT
+                                    //added below code 13042026 Start
+                                    If RecGatePassLines."Application No." <> '' Then Begin
+                                        ConfOrder.RESET;
+                                        IF ConfOrder.GET(RecGatePassLines."Application No.") THEN
+                                            ConfOrder.TestField("Restricted For Receipt Entry", false);
+                                    END;
+                                    //added below code 13042026 END
+
+
                                     RecGatePassLines.TESTFIELD("Item No.");
                                     RecGatePassLines.TESTFIELD("Shortcut Dimension 2 Code");
                                     Tqty := 0;

@@ -38,6 +38,9 @@ page 97897 "Member to Member list"
                 field("Posting Date"; Rec."Posting Date")
                 {
                 }
+                field("Restricted For Receipt Entry"; Rec."Restricted For Receipt Entry")
+                {
+                }
             }
         }
     }

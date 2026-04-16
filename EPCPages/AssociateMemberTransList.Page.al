@@ -8,6 +8,7 @@ page 97895 "Associate_ Member Trans. List"
                             Status = FILTER(<> Registered));
     UsageCategory = Lists;
     ApplicationArea = All;
+    Caption = 'Associate to Member Transfer List';
 
     layout
     {
@@ -35,6 +36,10 @@ page 97895 "Associate_ Member Trans. List"
                 }
                 field(Amount; Rec.Amount)
                 {
+                }
+                field("Restricted For Receipt Entry"; Rec."Restricted For Receipt Entry")
+                {
+
                 }
             }
         }

@@ -70,6 +70,20 @@ page 50082 "NewUnit Payment Entry  Subform"
                 }
                 field(Amount; Rec.Amount)
                 {
+                    trigger OnValidate()
+                    var
+                        Recjob: Record job;
+                        RecConforder: Record "New Confirmed Order";
+                    begin
+                        //Added new code 13042026 Start
+                        IF RecConforder.GET(Rec."Document No.") then
+                            RecConforder.TestField("Restricted For Receipt Entry", false);
+                        // RecJob.RESET;
+                        // Recjob.ChangeCompany(RecConforder."Company Name");
+                        // If RecJob.GET(RecConforder."Shortcut Dimension 1 Code") Then
+                        //     RecJob.TestField("Blocked For Receipt Entry", false);
+                        //Added new code 13042026 END
+                    end;
                 }
                 field("Order Ref No."; Rec."Order Ref No.")
                 {
@@ -151,7 +165,17 @@ page 50082 "NewUnit Payment Entry  Subform"
                     var
                         LineNo: Integer;
                         v_RequesttoApproveDocuments_1: Record "Request to Approve Documents";
+                        Recjob: Record job;   //Added new code 13042026 
+                        RecConforder: Record "New Confirmed Order";   //Added new code 13042026 
                     begin
+                        //Added new code 13042026 Start
+                        IF RecConforder.GET(Rec."Document No.") then
+                            RecConforder.TestField("Restricted For Receipt Entry", false);
+                        // RecJob.RESET;
+                        // If RecJob.GET(RecConforder."Shortcut Dimension 1 Code") Then
+                        //     RecJob.TestField("Blocked For Receipt Entry", false);
+                        //Added new code 13042026 END
+
                         IF CONFIRM('Do  you want to send Document Send for Approval') THEN BEGIN
                             Rec.TESTFIELD("Send for Approval", FALSE);
                             LineNo := 0;

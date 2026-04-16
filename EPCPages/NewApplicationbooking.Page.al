@@ -45,11 +45,6 @@ page 50079 "New Application booking"
 
                 }
 
-                field("New Company Name"; Rec."New Company Name")   //Added by new field 10042026
-                {
-                    Caption = 'New Company Name';
-
-                }
                 field("Customer No."; Rec."Customer No.")
                 {
                     Caption = 'Member No.';
@@ -57,7 +52,16 @@ page 50079 "New Application booking"
                     ShowMandatory = true;
 
                     trigger OnValidate()
+                    Var
+
+                        RecJob: Record Job;  //Added new code 13042026
                     begin
+                        //Added new code 13042026 Start
+                        RecJob.RESET;
+                        RecJob.ChangeCompany(Rec."Company Name");
+                        If RecJob.GET(Rec."Shortcut Dimension 1 Code") Then
+                            RecJob.TestField("Blocked For Booking", false);
+                        //Added new code 13042026 END
                         IF xRec."Customer No." <> Rec."Customer No." THEN BEGIN
                             IF Rec."Customer No." <> '' THEN
                                 IF Cust.GET(Rec."Customer No.") THEN
@@ -149,7 +153,16 @@ page 50079 "New Application booking"
                     ShowMandatory = true;
 
                     trigger OnValidate()
+                    var
+                        RecJob: Record Job;  //Added new code 13042026
                     begin
+                        //Added new code 13042026 Start
+                        RecJob.RESET;
+                        RecJob.ChangeCompany(Rec."Company Name");
+                        If RecJob.GET(Rec."Shortcut Dimension 1 Code") Then
+                            RecJob.TestField("Blocked For Booking", false);
+                        //Added new code 13042026 END
+
                         MMName := GetDescription.GetVendorName(Rec."Associate Code");
                         InvestmentFrequency := 0;
                         ReturnFrequency := 0;
@@ -242,6 +255,12 @@ page 50079 "New Application booking"
                 {
                     Caption = 'Company Name';
                     Editable = false;
+                }
+
+                field("New Company Name"; Rec."New Company Name")   //Added by new field 10042026
+                {
+                    Caption = 'New Company Name';
+
                 }
                 field("New Loan File"; Rec."New Loan File")
                 {
@@ -611,8 +630,16 @@ page 50079 "New Application booking"
                         ProjectwiseCommSetup: Record "Commission Structr Amount Base";
                         RecCustomer: Record Customer;
                         v_Documents: Record Document;
+                        RecJob: Record Job;  //Added new code 13042026
 
                     begin
+                        //Added new code 13042026 Start
+                        RecJob.RESET;
+                        RecJob.ChangeCompany(Rec."Company Name");
+                        If RecJob.GET(Rec."Shortcut Dimension 1 Code") Then
+                            RecJob.TestField("Blocked For Booking", false);
+                        //Added new code 13042026 END
+
                         //ERROR('WIP');
                         Rec.TESTFIELD("E-mail");
                         Rec.TestField("Customer State Code");

@@ -548,7 +548,16 @@ page 50015 "Unit Allocation"
                         NoInvoiceandCrMemoCreate: Boolean;  //251124 Added
                         UpdateTAGenerate: Boolean;
                         Conforder_2: Record "Confirmed Order";
+                        RecJob: Record Job;  //Added new code 13042026
                     begin
+
+                        //Added new code 13042026 Start
+                        // RecJob.RESET;
+                        // If RecJob.GET(Rec."Shortcut Dimension 1 Code") Then
+                        //     RecJob.TestField("Blocked For Receipt Entry", false);
+                        Rec.TestField("Restricted For Receipt Entry", false);
+                        //Added new code 13042026 END
+
                         Rec.TESTFIELD("Approval Status (Unit Allot)", Rec."Approval Status (Unit Allot)"::Approved);
                         Rec.TESTFIELD("Registration Status", Rec."Registration Status"::" ");  //ALLEDK 090921
                         Rec.TESTFIELD("Application Closed", FALSE);  //190820
@@ -1012,8 +1021,17 @@ page 50015 "Unit Allocation"
                     var
                         LineNo: Integer;
                         v_RequesttoApproveDocuments_1: Record "Request to Approve Documents";
-
+                        RecJob: Record Job;  //Added new code 13042026
                     begin
+
+                        //Added new code 13042026 Start
+                        // RecJob.RESET;
+                        // RecJob.ChangeCompany(Rec."Company Name");
+                        // If RecJob.GET(Rec."Shortcut Dimension 1 Code") Then
+                        //     RecJob.TestField("Blocked For Receipt Entry", false);
+                        Rec.TestField("Restricted For Receipt Entry", false);
+                        //Added new code 13042026 END
+
                         //Unit Allot
                         //IF Rec."Approval Status (Unit Allot)" = Rec."Approval Status (Unit Allot)"::Approved THEN  //24102025 Code commented
                         //  ERROR('Document already approved.');    //24102025 Code commented

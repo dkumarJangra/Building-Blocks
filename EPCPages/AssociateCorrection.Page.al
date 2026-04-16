@@ -162,7 +162,7 @@ page 97981 "Associate Correction"
                         UnitPostCu: Codeunit "Unit Post";   //Code added 06102025 
                         AssociateHierarcywithApp: Record "Associate Hierarcy with App.";  //Code added 06102025
                         UnitSetup: Record "unit setup";  //Code added 06102025
-
+                                                         //                        RecJob: Record Job;  //Added new code 13042026
                     begin
                         IF NewRegionCode = '' then
                             Error('Please define the Region Code');
@@ -177,6 +177,12 @@ page 97981 "Associate Correction"
                         RecConforder.RESET;
                         RecConforder.SETRANGE("No.", BondNo);
                         IF RecConforder.FINDFIRST THEN BEGIN
+                            //Added new code 13042026 Start
+                            RecConforder.TestField("Restricted For Receipt Entry", false);
+                            // RecJob.RESET;
+                            // If RecJob.GET(RecConforder."Shortcut Dimension 1 Code") Then
+                            //     RecJob.TestField("Blocked For Receipt Entry", false);
+                            //Added new code 13042026 END
 
                             RankCodeMaster.RESET;
                             IF RankCodeMaster.GET(NewRegionCode) then begin

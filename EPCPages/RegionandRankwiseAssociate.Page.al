@@ -42,6 +42,17 @@ page 50076 "Region and Rank wise Associate"
                 }
                 field("Parent Code"; Rec."Parent Code")
                 {
+                    trigger OnValidate()
+                    var
+                        Vendor: Record Vendor;
+                    begin
+
+                        If Rec."Parent Code" <> '' then begin
+                            Vendor.RESET;
+                            IF Vendor.GET(Rec."Parent Code") then
+                                Vendor.TestField("BBG Black List", false);
+                        END;
+                    end;
                 }
                 field("Parent Rank"; Rec."Parent Rank")
                 {

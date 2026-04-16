@@ -422,7 +422,44 @@ tableextension 50043 "BBG Job Ext" extends Job
                 CheckPermission;
             end;
         }
+        field(50225; "Blocked For Booking"; Boolean)  //Added new field 13042026
+        {
+            DataClassification = ToBeClassified;
 
+            trigger OnValidate()
+            var
+                CompanywiseGL: Record "Company wise G/L Account";
+                RecRespCenter: Record "Responsibility Center 1";
+
+            begin
+
+                CheckPermission;
+                CompanywiseGL.Reset();
+                CompanywiseGL.SetRange("MSC Company", true);
+                if CompanywiseGL.FindFirst() then BEGIN
+                    IF CompanywiseGL."Company Code" = CompanyName then
+                        Error('This process will do from respective company');
+                    RecRespCenter.RESET;
+                    RecRespCenter.ChangeCompany(CompanywiseGL."Company Code");
+                    RecRespCenter.SETRANGE("Code", "No.");
+                    IF RecRespCenter.FINDFIRST THEN BEGIN
+                        RecRespCenter."Blocked For Booking" := "Blocked For Booking";
+                        RecRespCenter.MODIFY;
+                    END;
+                END;
+
+            end;
+        }
+
+        // field(50226; "Blocked For Receipt Entry"; Boolean)  //Added new field 13042026
+        // {
+        //     DataClassification = ToBeClassified;
+
+        //     trigger OnValidate()
+        //     begin
+        //         CheckPermission;
+        //     end;
+        // }
 
     }
 

@@ -507,7 +507,20 @@ page 50510 "Direct 194R Gift Issue"
                             RecGatePassLines.SETRANGE("Journal Line Created", FALSE);
                             IF RecGatePassLines.FIND('-') THEN BEGIN
                                 REPEAT
-                                    RecGatePassLines.TESTFIELD("Item No.");
+                                    //Added new code 13042026 START
+                                    R194ApplGiftData.RESET;
+                                    R194ApplGiftData.SetFilter("Entry No.", Rec."R194_Application No.");
+                                    IF R194ApplGiftData.FINDSET THEN BEGIN
+                                        REPEAT
+                                            NewConforder.RESET;
+                                            NewConforder.SetFilter("No.", R194ApplGiftData."Application No.");
+                                            IF NewConforder.findset then
+                                                repeat
+                                                    NewConforder.TestField("Restricted For Receipt Entry", false);
+                                                until NewConforder.Next = 0;
+                                        until R194ApplGiftData.Next = 0;
+                                    END;
+                                    //Added new code 13042026 END
                                     RecGatePassLines.TESTFIELD("Shortcut Dimension 2 Code");
                                     Tqty := 0;
                                     APPNo := '';
@@ -560,7 +573,8 @@ page 50510 "Direct 194R Gift Issue"
                             IF R194ApplGiftData.FINDSET THEN BEGIN
                                 REPEAT
                                     NewConforder.RESET;
-                                    NewConforder.SetFilter("No.", rec."R194_Application No.");
+                                    //NewConforder.SetFilter("No.", rec."R194_Application No.");  //Commented old code 16042026
+                                    NewConforder.SetFilter("No.", R194ApplGiftData."Application No.");  //added new code 16042026
                                     IF NewConforder.findset then
                                         repeat
                                             ConfOrder.RESET;

@@ -65,6 +65,10 @@ page 97907 "Unit Allocation List"
                 field("Shortcut Dimension 1 Code"; Rec."Shortcut Dimension 1 Code")
                 {
                 }
+                field("Restricted For Receipt Entry"; Rec."Restricted For Receipt Entry")
+                {
+
+                }
             }
         }
     }

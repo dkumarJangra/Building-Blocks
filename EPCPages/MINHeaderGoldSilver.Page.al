@@ -392,7 +392,18 @@ page 97956 "MIN Header-Gold/Silver"
                     Visible = false;
 
                     trigger OnAction()
+                    var
+                        Recjob: Record Job;  //Added new code 13042026    
                     begin
+
+                        //Added new code 13042026 Start
+                        // RecJob.RESET;
+                        // If RecJob.GET(Rec."Shortcut Dimension 1 Code") Then
+                        //     RecJob.TestField("Blocked For Receipt Entry", false);
+
+
+                        //Added new code 13042026 END
+
                         // ALLENB 16102012 START
                         IF Rec."Shortcut Dimension 1 Code" <> Rec."Responsibility Center" THEN
                             ERROR(' Please check, Region Dimension code is different from Responsibility Center code');
@@ -405,6 +416,13 @@ page 97956 "MIN Header-Gold/Silver"
                         GatePassLines.SETRANGE("Document No.", Rec."Document No.");
                         IF GatePassLines.FINDSET THEN
                             REPEAT
+                                //Added new code 13042026 Start
+                                If GatePassLines."Application No." <> '' Then begin
+                                    ConfOrder.RESET;
+                                    If ConfOrder.GET(GatePassLines."Application No.") Then
+                                        ConfOrder.TestField("Restricted For Receipt Entry", false);
+                                end;
+                                //Added new code 13042026 END
                                 GatePassLines.TESTFIELD("Required Qty");
                                 GatePassLines.TESTFIELD(Qty);
                                 GatePassLines.TESTFIELD("Application No.");
@@ -594,7 +612,14 @@ page 97956 "MIN Header-Gold/Silver"
                     trigger OnAction()
                     var
                         Tqty: Decimal;
+                        RecJob: Record Job;  //Added new code 13042026
                     begin
+                        //Added new code 13042026 Start
+                        // RecJob.RESET;
+                        // If RecJob.GET(Rec."Shortcut Dimension 1 Code") Then
+                        //     RecJob.TestField("Blocked For Receipt Entry", false);
+                        //Added new code 13042026 END
+
                         CheckSilverGram;//070524 Added new code
                         Rec.TESTFIELD("Approval Status", Rec."Approval Status"::Approved);
                         //ALLECK 060313 START
@@ -641,6 +666,13 @@ page 97956 "MIN Header-Gold/Silver"
                             RecGatePassLines.SETRANGE("Journal Line Created", FALSE);
                             IF RecGatePassLines.FIND('-') THEN BEGIN
                                 REPEAT
+                                    //Added new code 13042026 Start
+                                    If RecGatePassLines."Application No." <> '' Then begin
+                                        ConfOrder.RESET;
+                                        If ConfOrder.GET(RecGatePassLines."Application No.") Then
+                                            ConfOrder.TestField("Restricted For Receipt Entry", false);
+                                    end;
+                                    //Added new code 13042026 END
                                     RecGatePassLines.TESTFIELD("Item No.");
                                     RecGatePassLines.TESTFIELD("Shortcut Dimension 2 Code");
                                     Tqty := 0;

@@ -463,7 +463,15 @@ page 98005 "Unit Vacate /Member Allocation"
                     var
                         LineNo: Integer;
                         v_RequesttoApproveDocuments_1: Record "Request to Approve Documents";
+                        RecJob: Record Job;  //Added new code 13042026
                     begin
+                        //Added new code 13042026 Start
+                        // RecJob.RESET;
+                        // If RecJob.GET(Rec."Shortcut Dimension 1 Code") Then
+                        //     RecJob.TestField("Blocked For Receipt Entry", false);
+                        Rec.TestField("Restricted For Receipt Entry", false);
+                        //Added new code 13042026 END
+
                         //Member
                         Rec.TESTFIELD("New Member");
 
@@ -513,7 +521,16 @@ page 98005 "Unit Vacate /Member Allocation"
                     trigger OnAction()
                     var
                         AccessControl: Record "Access Control";
+                        RecJob: Record Job;  //Added new code 13042026
                     begin
+
+                        //Added new code 13042026 Start
+                        // RecJob.RESET;
+                        // If RecJob.GET(Rec."Shortcut Dimension 1 Code") Then
+                        //     RecJob.TestField("Blocked For Receipt Entry", false);
+                        Rec.TestField("Restricted For Receipt Entry", false);
+                        //Added new code 13042026 END
+
                         Rec.TESTFIELD("Approval Status (Member)", Rec."Approval Status (Member)"::Approved);
                         Rec.TESTFIELD("Registration Status", Rec."Registration Status"::" ");  //090921
                         Rec.TESTFIELD("Application Closed", FALSE);  //190820
@@ -586,7 +603,17 @@ page 98005 "Unit Vacate /Member Allocation"
                     var
                         LineNo: Integer;
                         v_RequesttoApproveDocuments_1: Record "Request to Approve Documents";
+                        RecJob: Record Job;  //Added new code 13042026
                     begin
+
+                        //Added new code 13042026 Start
+                        // RecJob.RESET;
+                        // If RecJob.GET(Rec."Shortcut Dimension 1 Code") Then
+                        //     RecJob.TestField("Blocked For Receipt Entry", false);
+                        Rec.TestField("Restricted For Receipt Entry", false);
+                        //Added new code 13042026 END
+
+
                         //Unit Vacate
                         //Code added 24102025 Start
                         IF (Rec."Approval Status (Unit Vacte)" = Rec."Approval Status (Unit Vacte)"::" ") AND (REc."Send for Approval (Unit Vacte)") THEN
@@ -657,7 +684,15 @@ page 98005 "Unit Vacate /Member Allocation"
                         AutoPlotvacate: Report "Plot Vacate Auto Batch";
                         NewConfOrder_1: Record "New Confirmed Order";
                         ConfirmedOrder_5: Record "Confirmed Order";
+                        RecJob: Record Job;  //Added new code 13042026
                     begin
+                        //Added new code 13042026 Start
+                        // RecJob.RESET;
+                        // If RecJob.GET(Rec."Shortcut Dimension 1 Code") Then
+                        //     RecJob.TestField("Blocked For Receipt Entry", false);
+                        Rec.TestField("Restricted For Receipt Entry", false);
+                        //Added new code 13042026 END
+
                         Rec.TESTFIELD("Approval Status (Unit Vacte)", Rec."Approval Status (Unit Vacte)"::Approved);
                         Rec.TESTFIELD("Registration Status", Rec."Registration Status"::" ");  //090921
                         Rec.TESTFIELD("Application Closed", FALSE);  //190820

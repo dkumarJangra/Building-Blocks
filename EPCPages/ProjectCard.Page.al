@@ -141,6 +141,14 @@ page 97757 "Project Card"
                     end;
                 }
             }
+            // field("Blocked For Receipt Entry"; Rec."Blocked For Receipt Entry")
+            // {
+
+            // }
+            field("Blocked For Booking"; Rec."Blocked For Booking")
+            {
+
+            }
             part("Project Details1"; "Project Details1")
             {
                 SubPageLink = "Project Code" = FIELD("No."),

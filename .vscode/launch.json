@@ -6,7 +6,7 @@
             "request": "launch",
             "type": "al",
             "environmentType": "Sandbox",
-            "environmentName": "BBG_Dev2", 
+            "environmentName": "BBG_Test", 
             "tenant": "5d8c9e17-1468-4844-9f21-b92abacfd1cd",
             "startupObjectId": 22,
             "startupObjectType": "Page",

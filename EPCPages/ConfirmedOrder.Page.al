@@ -165,6 +165,11 @@ page 97932 "Confirmed Order"
                     Caption = 'Gold/Silver Voucher Issued';
                     Editable = False;
                 }
+                field("Restricted For Receipt Entry"; Rec."Restricted For Receipt Entry")  //Added new field 13042026
+                {
+                    Caption = 'Restricted For Receipt Entry';
+                    Editable = false;
+                }
             }
             part("Receipt Lines"; "Unit Payment Entry  Subform")
             {
@@ -486,6 +491,10 @@ page 97932 "Confirmed Order"
                     Editable = false;
                 }
                 field("R194 Gift Issued"; Rec."R194 Gift Issued")
+                {
+                    Editable = False;
+                }
+                field("Min. Allotment Amount for BSPs"; Rec."Min. Allotment Amount for BSPs")
                 {
                     Editable = False;
                 }

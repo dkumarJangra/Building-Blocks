@@ -1469,6 +1469,11 @@ table 97793 "Confirmed Order"
             Editable = False;
         }
 
+        field(60052; "Restricted For Receipt Entry"; Boolean)  //10042026 Added new field
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
 
     }
 

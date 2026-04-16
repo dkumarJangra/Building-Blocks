@@ -404,7 +404,17 @@ page 97949 "Associate to Member"
                     PromotedCategory = Process;
 
                     trigger OnAction()
+                    var
+                        RecJob: Record Job;  //Added new code 13042026
                     begin
+
+                        //Added new code 13042026 Start
+                        Rec.TestField("Restricted For Receipt Entry", false);
+                        // RecJob.RESET;
+                        // RecJob.ChangeCompany(Rec."Company Name");
+                        // If RecJob.GET(Rec."Shortcut Dimension 1 Code") Then
+                        //     RecJob.TestField("Blocked For Receipt Entry", false);
+                        //Added new code 13042026 END
                         Rec_Application.RESET;
                         Rec_Application.SETRANGE("Application No.", Rec."No.");
                         IF Rec_Application.FINDFIRST THEN BEGIN

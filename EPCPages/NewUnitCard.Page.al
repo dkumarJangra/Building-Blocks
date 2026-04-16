@@ -210,6 +210,11 @@ page 50081 "New Unit Card"
                     Caption = 'New Loan File';
                     Editable = false;
                 }
+                field("Restricted For Receipt Entry"; Rec."Restricted For Receipt Entry")   //Added new field 13042026
+                {
+                    Caption = 'Restricted For Receipt Entry';
+                    Editable = false;
+                }
             }
             part("Receipt Lines"; "NewUnit Payment Entry  Subform")
             {
@@ -548,6 +553,56 @@ page 50081 "New Unit Card"
     {
         area(navigation)
         {
+            //Added new code 13042026 Start
+            action("RestrictedForReceiptEntry")
+            {
+                Caption = 'Restricted OR Unrestricted Receipt Entry';
+                ApplicationArea = All;
+                trigger OnAction()
+                var
+                    Memberof: Record "Access Control";
+                    ConfOrder: Record "Confirmed Order";
+
+                begin
+                    Memberof.RESET;
+                    Memberof.SETRANGE("User Name", USERID);
+                    Memberof.SETFILTER("Role ID", 'A_RecptEntryRestrict');
+                    IF NOT Memberof.FINDFIRST THEN
+                        ERROR('Contact Admin');
+
+                    IF Rec."Restricted For Receipt Entry" THEN BEGIN
+                        If Confirm('Do you want to Unrestrict Receipt Entry for this application?') Then BEGIN
+                            Rec."Restricted For Receipt Entry" := FALSE;
+                            Rec."Last Restricted By Receipt" := USERID;
+                            Rec."Last Restricted DT Receipt" := CurrentDateTime;
+                            Rec.Modify;
+                            ConfOrder.Reset();
+                            ConfOrder.ChangeCompany(Rec."Company Name");
+                            IF ConfOrder.GET(Rec."No.") THEN BEGIN
+                                ConfOrder."Restricted For Receipt Entry" := FALSE;
+                                ConfOrder.Modify;
+                            END;
+                            MESSAGE('Receipt entry allowed for this application');
+                        END;
+                    END ELSE BEGIN
+                        IF Confirm('Do you want to Restrict Receipt Entry for this application?') Then BEGIN
+                            Rec."Restricted For Receipt Entry" := TRUE;
+                            Rec."Last Restricted By Receipt" := USERID;
+                            Rec."Last Restricted DT Receipt" := CurrentDateTime;
+                            Rec.Modify;
+                            ConfOrder.Reset();
+                            ConfOrder.ChangeCompany(Rec."Company Name");
+                            IF ConfOrder.GET(Rec."No.") THEN BEGIN
+                                ConfOrder."Restricted For Receipt Entry" := TRUE;
+                                ConfOrder.Modify;
+                            END;
+                            MESSAGE('Receipt entry restricted for this application');
+                        END;
+                    END;
+
+                end;
+            }
+            //Added new code 13042026 END
             action("&Attach Documents")
             {
                 Caption = '&Attach Documents';
@@ -672,7 +727,16 @@ page 50081 "New Unit Card"
                         AppPayEntry_1: Record "Application Payment Entry";
                         Updationofplotdetails: Codeunit "Updation of plot details";  //251124 Code 
                         webservice: Codeunit 50003;
+                        RecJob: Record Job;  //Added new code 13042026
                     begin
+
+                        //Added new code 13042026 Start
+                        // RecJob.RESET;
+                        // RecJob.ChangeCompany(Rec."Company Name");
+                        // If RecJob.GET(Rec."Shortcut Dimension 1 Code") Then
+                        //     RecJob.TestField("Blocked For Receipt Entry", false);
+                        Rec.TestField("Restricted For Receipt Entry", false);
+                        //Added new code 13042026 END
 
                         Rec.TESTFIELD("Registration Status", Rec."Registration Status"::" ");  //ALLEDK 090921
                         Rec.TESTFIELD("Application Closed", FALSE);  //190820

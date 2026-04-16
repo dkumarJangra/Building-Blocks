@@ -811,6 +811,12 @@ table 97761 "Responsibility Center 1"
 
             end;
         }
+
+        field(50225; "Blocked For Booking"; Boolean)  //Added new field 13042026
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
     }
 
     keys

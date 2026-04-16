@@ -411,9 +411,16 @@ page 97975 "Member to Member Transfer"
                         CheckVendor: Record Vendor;
                         CheckConfOrder: Record "Confirmed Order";
                         CheckNewConfirmedApproval: Record "New Confirmed Order";
+                        RecJob: Record Job;  //Added new code 13042026
                     begin
                         //ERROR('Plese contact Admin');
-
+                        //Added new code 13042026 Start
+                        // RecJob.RESET;
+                        // RecJob.ChangeCompany(Rec."Company Name");
+                        // If RecJob.GET(Rec."Shortcut Dimension 1 Code") Then
+                        //     RecJob.TestField("Blocked For Receipt Entry", false);
+                        Rec.TestField("Restricted For Receipt Entry", false);
+                        //Added new code 13042026 END
                         Rec.TESTFIELD("Application Closed", FALSE);  //190820
 
                         Rec.TESTFIELD("Application Transfered", FALSE);
